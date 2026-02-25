@@ -1,0 +1,54 @@
+services:
+  mysql_db:
+    image: mysql:8.0
+    container_name: mysql_db_petProject
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: Laravel_petProject
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_db_petProject:/var/lib/mysql
+
+  php:
+    build:
+      context: .
+      args:
+        UID: 1000
+        GID: 1000
+    container_name: php_fpm_petProject
+    restart: always
+    volumes:
+      - ./laravel-app:/var/www/html
+    depends_on:
+      - mysql_db
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx_web_petProject
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - ./laravel-app:/var/www/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+
+  node:
+    image: node:20
+    container_name: node_petProject
+    working_dir: /var/www/html
+    volumes:
+      - ./laravel-app:/var/www/html
+    ports:
+      - "5173:5173"
+    command: tail -f /dev/null
+
+volumes:
+  mysql_db_petProject:
+
+
