@@ -22,7 +22,9 @@ class CategoryController extends Controller
             'name' => 'required|string|unique:categories|max:255',
         ]);
         Category::create($category);
-        return redirect(route('category.index'));
+        return redirect()
+            ->route('category.index')
+            ->with('success', 'Категория ' . $category['name'] . ' успешно создана!');
     }
     public function edit(Category $category)
     {
@@ -34,11 +36,15 @@ class CategoryController extends Controller
             'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
         ]);
         $category->update($validated);
-        return redirect(route('category.index'));
+        return redirect()
+            ->route('category.index')
+            ->with('success', 'Категория ' . $category['name'] . ' успешно изменена!');
     }
     public function destroy(Category $category)
     {
         Category::destroy($category->id);
-        return redirect(route('category.index'));
+        return redirect()
+            ->route('category.index')
+            ->with('success', 'Категория ' . $category['name'] . ' успешно удалена!');
     }
 }

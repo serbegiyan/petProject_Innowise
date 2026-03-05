@@ -7,9 +7,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
+    use SoftDeletes;
     use HasSlug;
     protected $table = 'products';
     protected $fillable = ['name', 'price', 'brand', 'description', 'image', 'release_date', 'slug'];
@@ -39,6 +41,7 @@ class Product extends Model
     {
         return $this->belongsToMany(Service::class)->withPivot('price', 'term');
     }
+
     protected static function booted()
     {
         static::deleting(function ($product) {

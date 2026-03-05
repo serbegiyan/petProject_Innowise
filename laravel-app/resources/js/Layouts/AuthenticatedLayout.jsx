@@ -22,7 +22,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     href={route('dashboard')}
                                     active={route().current('dashboard')}
                                 >
-                                    Dashboard
+                                    Профиль
                                 </NavLink>
                             </div>
                         </div>

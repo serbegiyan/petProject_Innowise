@@ -1,11 +1,11 @@
 import { Head } from '@inertiajs/react';
 import Header from '@/Components/Header';
-import DashBar from '@/Components/DashBar';
+import NavBar from '@/Components/NavBar';
 
 export default function Dashboard() {
     return (
         <>
-            <Header><DashBar /></Header>
+            <Header><NavBar /></Header>
             <Head title="Dashboard" />
 
             <div className="py-12">

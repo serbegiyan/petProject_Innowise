@@ -14,32 +14,16 @@ class CatalogController extends Controller
     {
         return Inertia::render('Catalog/Index', [
             'products' => Product::latest()->get(),
-            'canLogin' => Route::has('login'),
-            'canRegister' => Route::has('register'),
-            'laravelVersion' => Application::VERSION,
-            'phpVersion' => PHP_VERSION,
         ]);
     }
 
-    public function show(Product $product)
+    public function show(Product $product, Request $request)
     {
         $product->load('services', 'categories');
         return Inertia::render('Catalog/Show', [
             'product' => $product,
-            'canLogin' => Route::has('login'),
-            'canRegister' => Route::has('register'),
-            'laravelVersion' => Application::VERSION,
-            'phpVersion' => PHP_VERSION,
-        ]);
-    }
-
-    public function basket()
-    {
-        return Inertia::render('Basket/Index', [
-            'canLogin' => Route::has('login'),
-            'canRegister' => Route::has('register'),
-            'laravelVersion' => Application::VERSION,
-            'phpVersion' => PHP_VERSION,
+            'preSelectedIds' => $request->query('selected', []),
+            'edit_cart_id' => $request->query('edit_cart_id'),
         ]);
     }
 }

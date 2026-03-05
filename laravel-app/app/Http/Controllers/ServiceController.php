@@ -27,18 +27,24 @@ class ServiceController extends Controller
     {
         $data = $request->validated();
         $service->update($data);
-        return redirect(route('service.index'));
+        return redirect()
+            ->route('service.index')
+            ->with('success', 'Услуга ' . $service['name'] . ' успешно изменена!');
     }
     public function store(ServiceRequest $request)
     {
         $service = $request->validated();
         Service::create($service);
-        return redirect(route('service.index'));
+        return redirect()
+            ->route('service.index')
+            ->with('success', 'Услуга ' . $service['name'] . ' успешно создана!');
     }
     public function destroy(Service $service)
     {
         Service::destroy($service->id);
-        return redirect(route('service.index'));
+        return redirect()
+            ->route('service.index')
+            ->with('success', 'Услуга ' . $service['name'] . ' успешно удалена!');
     }
     public function show(Service $service)
     {

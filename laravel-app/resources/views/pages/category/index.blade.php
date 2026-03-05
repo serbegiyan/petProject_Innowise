@@ -3,6 +3,7 @@
 @section('title', 'Категории')
 
 @section('content')
+    <x-flash />
     <h2 class="text-xl font-bold mb-4">Категории</h2>
     <x-title-link href="{{ route('category.create') }}">Создать новую категорию</x-title-link>
     <ul>

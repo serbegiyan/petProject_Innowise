@@ -12,9 +12,17 @@ use App\Http\Requests\ProductRequest;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::latest()->paginate(10);
+        $products = Product::query()
+            ->when($request->category_id, function ($query, $categoryId) {
+                // Ищем продукты, у которых в связанной таблице categories есть этот ID
+                return $query->whereHas('categories', function ($q) use ($categoryId) {
+                    $q->where('categories.id', $categoryId);
+                });
+            })
+            ->latest()
+            ->paginate(10);
         return view('pages.product.index', compact('products'));
     }
 
@@ -44,21 +52,19 @@ class ProductController extends Controller
         $data = $request->validated();
         return DB::transaction(function () use ($request, $data, $product) {
             if ($request->hasFile('image')) {
-                // 1. Удаляем старое фото с диска, если оно существует
                 if ($product->image && Storage::disk('public')->exists($product->image)) {
                     Storage::disk('public')->delete($product->image);
                 }
 
-                // 2. Сохраняем новое фото
                 $data['image'] = $request->file('image')->store('products', 'public');
             }
 
             $product->update($data);
 
-            // 3. Синхронизируем категории (sync заменяет все старые связи на новые)
+            // Синхронизируем категории (sync заменяет все старые связи на новые)
             $product->categories()->sync($request->category_id);
 
-            // 4. Подготавливаем данные для услуг (Pivot)
+            // Подготавливаем данные для услуг (Pivot)
             $servicesData = [];
             if ($request->has('services')) {
                 foreach ($request->services as $serviceId) {
@@ -69,10 +75,12 @@ class ProductController extends Controller
                 }
             }
 
-            // Синхронизируем услуги (удалит старые, добавит/обновит текущие)
+            // Синхронизируем услуги
             $product->services()->sync($servicesData);
 
-            return redirect()->route('product.index');
+            return redirect()
+                ->route('product.index')
+                ->with('success', 'Товар ' . $product->name . ' успешно изменен!');
         });
     }
 
@@ -102,13 +110,17 @@ class ProductController extends Controller
                 $product->services()->attach($pivotData);
             }
 
-            return redirect()->route('product.index')->with('success', 'Продукт успешно создан!');
+            return redirect()
+                ->route('product.index')
+                ->with('success', 'Товар ' . $product->name . ' успешно создан!');
         });
     }
 
     public function destroy(Product $product)
     {
         $product->delete();
-        return redirect()->route('product.index');
+        return redirect()
+            ->route('product.index')
+            ->with('success', 'Товар ' . $product->name . ' успешно удален!');
     }
 }

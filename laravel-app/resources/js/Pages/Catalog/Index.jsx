@@ -15,10 +15,14 @@ export default function Index({ products }) {
                         {products.map((product) => (
                             <div key={product.id}>
                                 <Link title={product.name} href={`/catalog/${product.slug}`}>
-                                    <div className='p-4 bg-gray-300'>
+                                    <div className='p-4 bg-gray-300 hover:scale-105 transition'>
                                         <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
                                         <p className="mt-2 font-semibold text-center truncate">{product.name}</p>
-                                        <p className='text-center'><span className='font-semibold'>Цена: </span>{product.price} BYN</p>
+                                        <p className='text-center'><span className='font-semibold'>Цена: </span>
+                                            {Number(product.price).toLocaleString('ru-RU', {
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2
+                                            })} BYN</p>
                                     </div>
                                 </Link>
                             </div>

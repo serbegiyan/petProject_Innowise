@@ -8,10 +8,13 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\BasketController;
+use App\Http\Controllers\MainController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\OrderController;
 
 Route::get('/catalog/{product:slug}', [CatalogController::class, 'show'])->name('catalog.show');
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
-Route::get('/basket', [CatalogController::class, 'basket'])->name('basket.index');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -20,14 +23,31 @@ Route::get('/dashboard', function () {
     ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::post('/basket/store', [BasketController::class, 'store'])->name('basket.store');
+    Route::patch('/basket/{id}', [BasketController::class, 'update'])->name('basket.update');
+    Route::delete('/basket/{id}', [BasketController::class, 'destroy'])->name('basket.destroy');
+    Route::get('/basket', [BasketController::class, 'index'])->name('basket.index');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth'])
+Route::middleware(['auth', 'admin'])
     ->prefix('admin')
     ->group(function () {
+        Route::get('/', [MainController::class, 'main'])->name('admin.main');
+
+        Route::get('/orders', [OrderController::class, 'index'])->name('order.index');
+
+        Route::get('/users', [UserController::class, 'index'])->name('user.index');
+        Route::get('/users/create', [UserController::class, 'create'])->name('user.create');
+        Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
+        Route::get('/users/{user}', [UserController::class, 'show'])->name('user.show');
+        Route::patch('/users/{user}', [UserController::class, 'update'])->name('user.update');
+        Route::post('/users/store', [UserController::class, 'store'])->name('user.store');
+        Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('user.destroy');
+
         Route::get('/categories', [CategoryController::class, 'index'])->name('category.index');
         Route::get('/categories/create', [CategoryController::class, 'create'])->name('category.create');
         Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('category.edit');
