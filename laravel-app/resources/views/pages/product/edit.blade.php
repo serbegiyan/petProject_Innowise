@@ -78,8 +78,11 @@
 
         <x-label for="image">Изображение продукта</x-label>
         @if ($product->image)
-            <div class="p-2"><img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}"
-                    class="w-32 h-32 object-cover rounded-lg"></div>
+            <div class="p-2"><img
+                    src="{{ $product->image && Storage::exists($product->image)
+                        ? Storage::url($product->image)
+                        : asset('images/product-image.png') }}"
+                    alt="{{ $product->name }}" class="w-32 h-32 object-cover rounded-lg"></div>
         @endif
         <x-input name="image" type="file" />
 

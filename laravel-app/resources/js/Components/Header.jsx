@@ -1,4 +1,5 @@
 import { usePage } from '@inertiajs/react';
+import Search from './Search';
 
 export default function Header({ children }) {
     const { auth } = usePage().props;

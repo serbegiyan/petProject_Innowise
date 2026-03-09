@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Service;
 use App\Models\User;
+use App\Models\Order;
 
 class MainController extends Controller
 {
@@ -16,6 +17,7 @@ class MainController extends Controller
         $categories = Category::count();
         $services = Service::count();
         $users = User::count();
-        return view('pages.home', compact('products', 'categories', 'services', 'users'));
+        $orders = Order::count();
+        return view('pages.home', compact('products', 'categories', 'services', 'users', 'orders'));
     }
 }

@@ -8,11 +8,13 @@ use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
     use SoftDeletes;
     use HasSlug;
+    use HasFactory;
     protected $table = 'products';
     protected $fillable = ['name', 'price', 'brand', 'description', 'image', 'release_date', 'slug'];
 

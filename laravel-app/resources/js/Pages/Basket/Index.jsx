@@ -137,9 +137,9 @@ export default function Index({ items }) {
                                     maximumFractionDigits: 2
                                 })} BYN</p>
                         </div>
-                        <button className="bg-white text-stone-900 px-8 py-4 rounded-lg font-bold hover:bg-stone-200 transition">
+                        <Link href={route('order.create')} className="bg-white text-stone-900 px-8 py-4 rounded-lg font-bold hover:bg-stone-200 transition">
                             Оформить заказ
-                        </button>
+                        </Link>
                     </div>
                 </>
                 :

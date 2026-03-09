@@ -6,22 +6,19 @@ import { router } from '@inertiajs/react';
 import FlashMessage from '@/Components/FlashMessage';
 import { usePage, Link, } from '@inertiajs/react';
 
-export default function Show({ product, preSelectedIds, edit_cart_id }) {
+export default function Show({ product, preSelectedIds, edit_cart_id, filters }) {
     const { auth } = usePage().props;
     const [selectedServices, setSelectedServices] = useState(
         preSelectedIds ? preSelectedIds.map(id => Number(id)) : []
     );
 
     const isInCart = useMemo(() => {
-        // Если пользователь не залогинен, кнопки "Перейти" быть не может
         if (!auth.user || !auth.user.basket) return false;
 
         return auth.user.basket.some(item => {
-            // 1. Проверяем ID продукта
             if (item.product_id !== product.id) return false;
 
             // 2. Сравниваем наборы услуг
-            // Извлекаем ID из того, что лежит в базе (item.services)
             const basketServiceIds = item.services.map(s => Number(s.id)).sort();
             const currentServiceIds = selectedServices.map(id => Number(id)).sort();
 
@@ -37,7 +34,6 @@ export default function Show({ product, preSelectedIds, edit_cart_id }) {
         return Number(product.price) + servicesSum;
     }, [selectedServices, product]);
 
-    // 3. Упрощаем функцию переключения
     function handleServiceChange(serviceId) {
         setSelectedServices(prev =>
             prev.includes(serviceId)
@@ -106,30 +102,38 @@ export default function Show({ product, preSelectedIds, edit_cart_id }) {
                         </div>
                     ))}
                 </div>
-                <div className='bg-cyan-50 p-4 rounded-xl flex flex-col items-center gap-3 h-fit'>
-                    <p><span className='font-semibold'>Стоимость товара: </span>{Number(product.price).toLocaleString('ru-RU', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    })} BYN</p>
-                    <p><span className='font-semibold'>Итоговая стоимость: </span>{Number(totalPrice).toLocaleString('ru-RU', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    })} BYN</p>
-                    {isInCart ? (
-                        <Link
-                            href={route('basket.index')}
-                            className="bg-blue-600 text-white hover:bg-blue-700 w-fit px-4 py-2 rounded mt-3"
-                        >
-                            Перейти в корзину
-                        </Link>
-                    ) : (
-                        <button
-                            onClick={handleBasket}
-                            className="bg-blue-600 text-white hover:bg-blue-700 w-fit px-4 py-2 rounded mt-3"
-                        >
-                            {edit_cart_id ? 'Обновить в корзине' : 'Добавить в корзину'}
-                        </button>
-                    )}
+                <div className='flex flex-col '>
+                    <Link
+                        href={route('catalog.index', filters)}
+                        className="w-full text-center border rounded-xl mb-5 h-12 p-3 mx-auto text-blue-600 hover:text-blue-800 transition"
+                    >
+                        <i className="mr-2 fa-solid fa-person-walking-arrow-loop-left"></i>Вернуться в каталог
+                    </Link>
+                    <div className='bg-cyan-50 p-4 rounded-xl flex flex-col items-center gap-3 h-fit'>
+                        <p><span className='font-semibold'>Стоимость товара: </span>{Number(product.price).toLocaleString('ru-RU', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        })} BYN</p>
+                        <p><span className='font-semibold'>Итоговая стоимость: </span>{Number(totalPrice).toLocaleString('ru-RU', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        })} BYN</p>
+                        {isInCart ? (
+                            <Link
+                                href={route('basket.index')}
+                                className="bg-blue-600 text-white hover:bg-blue-700 w-fit px-4 py-2 rounded mt-3"
+                            >
+                                Перейти в корзину
+                            </Link>
+                        ) : (
+                            <button
+                                onClick={handleBasket}
+                                className="bg-blue-600 text-white hover:bg-blue-700 w-fit px-4 py-2 rounded mt-3"
+                            >
+                                {edit_cart_id ? 'Обновить в корзине' : 'Добавить в корзину'}
+                            </button>
+                        )}
+                    </div>
                 </div>
             </div>
 

@@ -14,15 +14,22 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $products = Product::query()
-            ->when($request->category_id, function ($query, $categoryId) {
-                // Ищем продукты, у которых в связанной таблице categories есть этот ID
-                return $query->whereHas('categories', function ($q) use ($categoryId) {
-                    $q->where('categories.id', $categoryId);
-                });
-            })
-            ->latest()
-            ->paginate(10);
+        $query = Product::query();
+
+        if ($request->has('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        } else {
+            $query
+                ->when($request->category_id, function ($query, $categoryId) {
+                    return $query->whereHas('categories', function ($q) use ($categoryId) {
+                        $q->where('categories.id', $categoryId);
+                    });
+                })
+                ->latest();
+        }
+
+        $products = $query->paginate(10);
+
         return view('pages.product.index', compact('products'));
     }
 

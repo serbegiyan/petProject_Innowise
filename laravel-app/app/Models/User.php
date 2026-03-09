@@ -16,6 +16,7 @@ class User extends Authenticatable
 
     const ROLE_ADMIN = 'admin';
     const ROLE_USER = 'user';
+    protected $appends = ['role_class', 'role_label'];
 
     // Проверка на админа
     public function isAdmin(): bool
@@ -28,7 +29,7 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = ['name', 'email', 'password', 'role'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -52,5 +53,25 @@ class User extends Authenticatable
     function baskets(): HasMany
     {
         return $this->HasMany(Basket::class);
+    }
+    function orders(): HasMany
+    {
+        return $this->HasMany(Order::class);
+    }
+
+    public function getRoleClassAttribute()
+    {
+        return [
+            'admin' => 'bg-green-100 text-green-800 border-green-200',
+            'user' => 'bg-gray-100 text-gray-800',
+        ][$this->role] ?? 'bg-gray-100 text-gray-800';
+    }
+
+    public function getRoleLabelAttribute()
+    {
+        return [
+            'admin' => 'Администратор',
+            'user' => 'Пользователь',
+        ][$this->role] ?? 'Пользователь';
     }
 }

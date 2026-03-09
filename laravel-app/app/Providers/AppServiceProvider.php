@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Service;
 use App\Models\User;
+use App\Models\Order;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
                 'categories_count' => Category::count(),
                 'services_count' => Service::count(),
                 'users_count' => User::count(),
+                'orders_count' => Order::count(),
             ];
             $navCategories = Category::withCount('products')->get();
 

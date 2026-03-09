@@ -12,13 +12,12 @@ use App\Http\Controllers\BasketController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderAdminController;
 
 Route::get('/catalog/{product:slug}', [CatalogController::class, 'show'])->name('catalog.show');
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})
+Route::get('/dashboard', [OrderController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
@@ -27,6 +26,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/basket/{id}', [BasketController::class, 'update'])->name('basket.update');
     Route::delete('/basket/{id}', [BasketController::class, 'destroy'])->name('basket.destroy');
     Route::get('/basket', [BasketController::class, 'index'])->name('basket.index');
+    Route::get('/order', [OrderController::class, 'create'])->name('order.create');
+    Route::post('/order/store', [OrderController::class, 'store'])->name('order.store');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -37,8 +38,6 @@ Route::middleware(['auth', 'admin'])
     ->prefix('admin')
     ->group(function () {
         Route::get('/', [MainController::class, 'main'])->name('admin.main');
-
-        Route::get('/orders', [OrderController::class, 'index'])->name('order.index');
 
         Route::get('/users', [UserController::class, 'index'])->name('user.index');
         Route::get('/users/create', [UserController::class, 'create'])->name('user.create');
@@ -70,6 +69,14 @@ Route::middleware(['auth', 'admin'])
         Route::patch('/products/{product}', [ProductController::class, 'update'])->name('product.update');
         Route::post('/products/store', [ProductController::class, 'store'])->name('product.store');
         Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('product.destroy');
+
+        Route::get('/orders', [OrderAdminController::class, 'index'])->name('admin.order.index');
+        Route::get('/orders/create', [OrderAdminController::class, 'create'])->name('admin.order.create');
+        Route::get('/orders/{order}/edit', [OrderAdminController::class, 'edit'])->name('admin.order.edit');
+        Route::get('/orders/{order}', [OrderAdminController::class, 'show'])->name('admin.order.show');
+        Route::patch('/orders/{order}', [OrderAdminController::class, 'update'])->name('admin.order.update');
+        Route::post('/orders/store', [OrderAdminController::class, 'store'])->name('admin.order.store');
+        Route::delete('/orders/{order}', [OrderAdminController::class, 'destroy'])->name('admin.order.destroy');
     });
 
 require __DIR__ . '/auth.php';

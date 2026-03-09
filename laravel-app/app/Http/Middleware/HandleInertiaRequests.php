@@ -36,6 +36,8 @@ class HandleInertiaRequests extends Middleware
                     ? [
                         'id' => $request->user()->id,
                         'name' => $request->user()->name,
+                        'email' => $request->user()->email,
+                        'role' => $request->user()->role,
                         'basket' => $request->user()->baskets()->with('product')->get(),
                         'basket_count' => $request->user()->baskets()->count(),
                     ]

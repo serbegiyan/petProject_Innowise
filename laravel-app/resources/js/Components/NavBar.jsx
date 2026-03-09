@@ -36,8 +36,11 @@ export default function NavBar() {
             }
             {auth.user ? (
                 <>
-                    <NavLink href={route('dashboard')}>
+                    <NavLink href={route('dashboard')}
+                        active={route().current('dashboard')}
+                    >
                         <i className="mr-1 fa-solid fa-circle-user"></i>Профиль</NavLink>
+
                     <Link
                         className="text-gray-500 leading-5 hover:border-b-2 text-lg hover:text-gray-700 hover:border-gray-300"
                         href={route('logout')} method="post" as="button">

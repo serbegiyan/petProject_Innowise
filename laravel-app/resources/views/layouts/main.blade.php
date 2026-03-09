@@ -18,6 +18,7 @@
     <header class="w-full bg-stone-300 h-14.5 flex flex-row justify-between">
         <img src="/images/logo.jpg" className="w-10 rounded-full" />
         <div class=" p-4 ">Вы вошли как {{ auth()->user()->name }}</div>
+        <x-search class="" />
         @if (Route::has('login'))
             <nav class="flex items-center justify-end gap-4 mr-4">
                 @auth
@@ -34,10 +35,14 @@
                         <i class="mr-1 fa-solid fa-circle-user"></i>
                         Профиль
                     </a>
-                    <a href="{{ route('logout') }}" class="hover:underline inline-flex items-center text-lg pt-1 text">
+                    <a href="{{ route('logout') }}" class="hover:underline inline-flex items-center text-lg pt-1 text"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <i class="mr-1 fa-solid fa-right-from-bracket"></i>
                         Выйти
                     </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
                 @else
                     <a href="{{ route('login') }}"
                         class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] text-[#1b1b18] border border-transparent hover:border-[#19140035] dark:hover:border-[#3E3E3A] rounded-sm text-sm leading-normal">
@@ -101,7 +106,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('category.index') }}" @class([
+                    <a href="{{ route('user.index') }}" @class([
                         'block px-4 py-2 rounded-sm hover:bg-stone-300',
                         'block px-4 py-2 underline-offset-4 underline' => request()->routeIs(
                             'category.*'),
@@ -111,13 +116,13 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('category.index') }}" @class([
+                    <a href="{{ route('admin.order.index') }}" @class([
                         'block px-4 py-2 rounded-sm hover:bg-stone-300',
                         'block px-4 py-2 underline-offset-4 underline' => request()->routeIs(
-                            'category.*'),
+                            'admin.order.*'),
                     ])><i
                             class="mr-2 fa-solid fa-file-invoice-dollar"></i></i>
-                        Заказы ({{ $sidebar_stats['users_count'] }})
+                        Заказы ({{ $sidebar_stats['orders_count'] }})
                     </a>
                 </li>
             </ul>

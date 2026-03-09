@@ -28,6 +28,12 @@
                 <p class="text-center">Количество пользователей: {{ $users }}</p>
             </div>
         </a>
+        <a href="{{ route('admin.order.index') }}">
+            <div class="border rounded-lg bg-white p-3">
+                <h2 class="text-center text-xl font-bold mb-4">Заказы</h2>
+                <p class="text-center">Количество заказов: {{ $orders }}</p>
+            </div>
+        </a>
     </div>
 
 @endsection
