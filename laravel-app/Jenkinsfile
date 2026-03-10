@@ -44,7 +44,7 @@ pipeline {
                 sh '''
                     docker exec php_fpm_petProject bash -lc "
                         cd /var/www/html &&
-                        vendor/bin/phpstan analyse
+                        vendor/bin/phpstan analyse --memory-limit=1G
                     "
                 '''
             }
