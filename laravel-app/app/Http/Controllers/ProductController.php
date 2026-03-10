@@ -16,7 +16,7 @@ class ProductController extends Controller
         $query = Product::query();
 
         if ($request->has('search')) {
-            $query->where('name', 'like', '%'.$request->search.'%');
+            $query->where('name', 'like', '%' . $request->search . '%');
         } else {
             $query
                 ->when($request->category_id, function ($query, $categoryId) {
@@ -80,6 +80,6 @@ class ProductController extends Controller
 
         return redirect()
             ->route('product.index')
-            ->with('success', 'Товар '.$product->name.' успешно удален!');
+            ->with('success', 'Товар ' . $product->name . ' успешно удален!');
     }
 }

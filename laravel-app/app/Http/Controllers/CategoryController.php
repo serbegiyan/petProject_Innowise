@@ -28,7 +28,7 @@ class CategoryController extends Controller
 
         return redirect()
             ->route('category.index')
-            ->with('success', 'Категория '.$category['name'].' успешно создана!');
+            ->with('success', 'Категория ' . $category['name'] . ' успешно создана!');
     }
 
     public function edit(Category $category)
@@ -39,13 +39,13 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:categories,name,'.$category->id,
+            'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
         ]);
         $category->update($validated);
 
         return redirect()
             ->route('category.index')
-            ->with('success', 'Категория '.$category['name'].' успешно изменена!');
+            ->with('success', 'Категория ' . $category['name'] . ' успешно изменена!');
     }
 
     public function destroy(Category $category)
@@ -54,6 +54,6 @@ class CategoryController extends Controller
 
         return redirect()
             ->route('category.index')
-            ->with('success', 'Категория '.$category['name'].' успешно удалена!');
+            ->with('success', 'Категория ' . $category['name'] . ' успешно удалена!');
     }
 }
