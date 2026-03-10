@@ -46,7 +46,7 @@ class OrderAdminController extends Controller
 
         return redirect()
             ->route('admin.order.index')
-            ->with('success', 'Заказ ' . $order->id . ' успешно изменен!');
+            ->with('success', 'Заказ '.$order->id.' успешно изменен!');
     }
 
     public function destroy(Order $order)
@@ -55,6 +55,6 @@ class OrderAdminController extends Controller
 
         return redirect()
             ->route('admin.order.index')
-            ->with('success', 'Заказ ' . $order->id . ' успешно удален!');
+            ->with('success', 'Заказ '.$order->id.' успешно удален!');
     }
 }

@@ -81,7 +81,7 @@ class UserController extends Controller
 
             return redirect()
                 ->route('user.index')
-                ->with('success', 'Пользователь ' . $user->name . ' успешно создан!');
+                ->with('success', 'Пользователь '.$user->name.' успешно создан!');
         });
     }
 }
