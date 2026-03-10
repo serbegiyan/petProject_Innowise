@@ -11,7 +11,9 @@ use Spatie\Sluggable\SlugOptions;
 
 class Service extends Model
 {
-    use HasFactory, HasSlug, SoftDeletes;
+    use HasFactory;
+    use HasSlug;
+    use SoftDeletes;
 
     protected $table = 'services';
 

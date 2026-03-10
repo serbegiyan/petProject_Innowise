@@ -30,7 +30,7 @@ pipeline {
                         vendor/bin/pint &&
 
                         # 2. PHPCBF — исправляет то, что Pint не трогает
-                        vendor/bin/phpcbf &&
+                        vendor/bin/phpcbf || true &&
 
                         # 3. PHPCS — проверка
                         vendor/bin/phpcs
