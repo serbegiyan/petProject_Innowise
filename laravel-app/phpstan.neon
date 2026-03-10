@@ -1,18 +1,32 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
 parameters:
-  level: 4
+    level: 4
 
-  paths:
-    - app
-    - routes
+    paths:
+        - app
+        - routes
 
-  excludePaths:
-    - database
-    - bootstrap
-    - storage
-    - vendor
+    excludePaths:
+        - database
+        - bootstrap
+        - storage
+        - vendor
 
-  ignoreErrors:
-    - '#Call to an undefined method Illuminate\\.*#'
-    - '#Access to an undefined property Illuminate\\.*#'
-    - '#Method Illuminate\\.*::__call does not exist#'
+    # Настройки Larastan
+    larastan:
+        analyse_model_relations: true
+        check_model_properties: true
+        check_model_methods: true
+
+    # Игнорируем ложные срабатывания
+    ignoreErrors:
+        - '#Facade root not set#'
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::#'
+        - '#Access to an undefined property Illuminate\\Database\\Eloquent\\Model::#'
+
+    # Ускорение анализа
+    parallel:
+        maximumNumberOfProcesses: 4
 
