@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Product;
 use App\Models\Category;
+use App\Models\Product;
+use App\Models\Service;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
-use App\Models\Service;
 
 class ProductSeeder extends Seeder
 {
@@ -44,7 +44,7 @@ class ProductSeeder extends Seeder
                 foreach ($randomServices as $service) {
                     $product->services()->attach($service->id, [
                         'price' => rand(20, 150),
-                        'term' => rand(1, 7) . ' дней',
+                        'term' => rand(1, 7).' дней',
                     ]);
                 }
             }

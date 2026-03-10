@@ -30,6 +30,7 @@ class ServiceRequest extends FormRequest
             'slug' => ['nullable', 'string', 'max:255', Rule::unique('services')->ignore($serviceId)],
         ];
     }
+
     public function messages(): array
     {
         return [

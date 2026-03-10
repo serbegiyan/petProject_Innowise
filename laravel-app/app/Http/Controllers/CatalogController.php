@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Product;
-use Inertia\Inertia;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
 use App\Models\Category;
+use App\Models\Product;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class CatalogController extends Controller
 {
@@ -49,6 +47,7 @@ class CatalogController extends Controller
     public function show(Product $product, Request $request)
     {
         $product->load('services', 'categories');
+
         return Inertia::render('Catalog/Show', [
             'product' => $product,
             'filters' => [

@@ -4,10 +4,10 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -15,7 +15,9 @@ class User extends Authenticatable
     use HasFactory, Notifiable, SoftDeletes;
 
     const ROLE_ADMIN = 'admin';
+
     const ROLE_USER = 'user';
+
     protected $appends = ['role_class', 'role_label'];
 
     // Проверка на админа
@@ -50,11 +52,13 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    function baskets(): HasMany
+
+    public function baskets(): HasMany
     {
         return $this->HasMany(Basket::class);
     }
-    function orders(): HasMany
+
+    public function orders(): HasMany
     {
         return $this->HasMany(Order::class);
     }

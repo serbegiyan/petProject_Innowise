@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
-use App\Models\Product;
-use Illuminate\Support\Facades\Storage;
-use App\Models\Category;
-use App\Models\Service;
 use App\Http\Requests\ProductRequest;
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\Service;
 use App\Services\ProductService;
-use App\Services\ProductImageService;
-use App\Services\ProductRelationsService;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -20,7 +16,7 @@ class ProductController extends Controller
         $query = Product::query();
 
         if ($request->has('search')) {
-            $query->where('name', 'like', '%' . $request->search . '%');
+            $query->where('name', 'like', '%'.$request->search.'%');
         } else {
             $query
                 ->when($request->category_id, function ($query, $categoryId) {
@@ -40,6 +36,7 @@ class ProductController extends Controller
     {
         $categories = Category::all();
         $services = Service::all();
+
         return view('pages.product.create', compact('categories', 'services'));
     }
 
@@ -48,12 +45,14 @@ class ProductController extends Controller
         $product->load('services');
         $categories = Category::all();
         $services = Service::all();
+
         return view('pages.product.edit', compact('product', 'categories', 'services'));
     }
 
     public function show(Product $product)
     {
         $product->load('services');
+
         return view('pages.product.show', compact('product'));
     }
 
@@ -78,8 +77,9 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
+
         return redirect()
             ->route('product.index')
-            ->with('success', 'Товар ' . $product->name . ' успешно удален!');
+            ->with('success', 'Товар '.$product->name.' успешно удален!');
     }
 }

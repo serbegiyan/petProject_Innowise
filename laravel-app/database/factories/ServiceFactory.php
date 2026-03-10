@@ -13,7 +13,7 @@ class ServiceFactory extends Factory
 
         return [
             'name' => ucfirst($name),
-            'slug' => Str::slug($name) . '-' . Str::random(5),
+            'slug' => Str::slug($name).'-'.Str::random(5),
             'description' => $this->faker->sentence(),
         ];
     }

@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Services;
 
-use Tests\TestCase;
-use App\Models\Product;
 use App\Models\Category;
+use App\Models\Product;
 use App\Models\Service;
 use App\Services\ProductRelationsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ProductRelationsServiceTest extends TestCase
 {
@@ -22,7 +22,7 @@ class ProductRelationsServiceTest extends TestCase
             'category_id' => [$category->id],
         ]);
 
-        $service = new ProductRelationsService();
+        $service = new ProductRelationsService;
         $service->syncCategories($product, $request);
 
         $this->assertDatabaseHas('category_product', [
@@ -42,7 +42,7 @@ class ProductRelationsServiceTest extends TestCase
             'service_terms' => [$service->id => '3 дня'],
         ]);
 
-        $relations = new ProductRelationsService();
+        $relations = new ProductRelationsService;
         $relations->syncServices($product, $request);
 
         $this->assertDatabaseHas('product_service', [

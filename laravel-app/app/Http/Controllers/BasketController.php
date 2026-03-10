@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Basket;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\Service;
-use App\Models\Product;
 
 class BasketController extends Controller
 {
@@ -30,6 +27,7 @@ class BasketController extends Controller
                 'selected_services' => $selectedServices->values(),
             ];
         }
+
         return Inertia::render('Basket/Index', [
             'items' => $items,
         ]);
@@ -82,6 +80,7 @@ class BasketController extends Controller
             ->where('user_id', auth()->id())
             ->firstOrFail();
         $item->update(['quantity' => $request->quantity]);
+
         return redirect()->back();
     }
 

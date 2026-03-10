@@ -5,10 +5,6 @@ namespace App\Services;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\Category;
-use App\Models\Service;
-use App\Services\ProductImageService;
-use App\Services\ProductRelationsService;
 
 class ProductService
 {

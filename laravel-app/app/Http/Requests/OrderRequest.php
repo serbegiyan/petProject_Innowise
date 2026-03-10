@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Order;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class OrderRequest extends FormRequest
@@ -33,6 +33,7 @@ class OrderRequest extends FormRequest
             'status' => ['nullable', Rule::in(array_keys(Order::STATUSES))],
         ];
     }
+
     public function messages(): array
     {
         return [

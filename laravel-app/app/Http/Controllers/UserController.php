@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\User;
 use App\Http\Requests\UserRequest;
-use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -24,6 +23,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
+
         return view('pages.user.index', compact('users'));
     }
 
@@ -34,13 +34,15 @@ class UserController extends Controller
 
     public function create()
     {
-        $roles = collect($this->roles)->map(fn($role) => (object) $role);
+        $roles = collect($this->roles)->map(fn ($role) => (object) $role);
+
         return view('pages.user.create', compact('roles'));
     }
 
     public function edit(User $user)
     {
-        $roles = collect($this->roles)->map(fn($role) => (object) $role);
+        $roles = collect($this->roles)->map(fn ($role) => (object) $role);
+
         return view('pages.user.edit', compact('user', 'roles'));
     }
 
@@ -61,13 +63,15 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
+
         return redirect()->route('user.index')->with('success', 'Пользователь удален');
     }
 
     public function store(UserRequest $request)
     {
         $validated = $request->validated();
-        return DB::transaction(function () use ($request, $validated) {
+
+        return DB::transaction(function () use ($validated) {
             $user = User::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
@@ -77,7 +81,7 @@ class UserController extends Controller
 
             return redirect()
                 ->route('user.index')
-                ->with('success', 'Пользователь ' . $user->name . ' успешно создан!');
+                ->with('success', 'Пользователь '.$user->name.' успешно создан!');
         });
     }
 }

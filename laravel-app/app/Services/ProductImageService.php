@@ -10,7 +10,7 @@ class ProductImageService
 {
     public function handle(Request $request, ?Product $product = null): ?string
     {
-        if (!$request->hasFile('image')) {
+        if (! $request->hasFile('image')) {
             return $product?->image;
         }
 

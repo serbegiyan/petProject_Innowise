@@ -4,14 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Order extends Model
 {
     use SoftDeletes;
+
     protected $table = 'orders';
+
     protected $fillable = ['user_id', 'status', 'payment_method', 'comment', 'total_price', 'customer_name', 'customer_phone', 'customer_email', 'customer_address'];
+
     protected $appends = ['status_label', 'status_class'];
 
     public const STATUSES = [

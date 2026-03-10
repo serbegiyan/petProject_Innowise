@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Category;
 use App\Models\Service;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class ProductFactory extends Factory
 {
@@ -15,7 +15,7 @@ class ProductFactory extends Factory
 
         return [
             'name' => ucfirst($name),
-            'slug' => Str::slug($name) . '-' . Str::random(5),
+            'slug' => Str::slug($name).'-'.Str::random(5),
             'price' => $this->faker->numberBetween(10, 2000),
             'brand' => $this->faker->company(),
             'description' => $this->faker->paragraph(),

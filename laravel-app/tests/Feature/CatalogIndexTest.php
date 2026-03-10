@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class CatalogIndexTest extends TestCase
 {
@@ -22,6 +22,6 @@ class CatalogIndexTest extends TestCase
         // Проверяем ответ
         $response->assertStatus(200);
 
-        $response->assertInertia(fn($page) => $page->component('Catalog/Index')->where('filters.search', 'iphone')->has('products.data', 1)->where('products.data.0.id', $iphone->id));
+        $response->assertInertia(fn ($page) => $page->component('Catalog/Index')->where('filters.search', 'iphone')->has('products.data', 1)->where('products.data.0.id', $iphone->id));
     }
 }

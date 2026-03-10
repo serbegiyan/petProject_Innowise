@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Service;
-use Illuminate\Http\Request;
 use App\Http\Requests\ServiceRequest;
+use App\Models\Service;
 
 class ServiceController extends Controller
 {
     public function index()
     {
         $services = Service::latest()->paginate(10);
+
         return view('pages.service.index', compact('services'));
     }
 
@@ -23,29 +23,36 @@ class ServiceController extends Controller
     {
         return view('pages.service.edit', compact('service'));
     }
+
     public function update(ServiceRequest $request, Service $service)
     {
         $data = $request->validated();
         $service->update($data);
+
         return redirect()
             ->route('service.index')
-            ->with('success', 'Услуга ' . $service['name'] . ' успешно изменена!');
+            ->with('success', 'Услуга '.$service['name'].' успешно изменена!');
     }
+
     public function store(ServiceRequest $request)
     {
         $service = $request->validated();
         Service::create($service);
+
         return redirect()
             ->route('service.index')
-            ->with('success', 'Услуга ' . $service['name'] . ' успешно создана!');
+            ->with('success', 'Услуга '.$service['name'].' успешно создана!');
     }
+
     public function destroy(Service $service)
     {
         Service::destroy($service->id);
+
         return redirect()
             ->route('service.index')
-            ->with('success', 'Услуга ' . $service['name'] . ' успешно удалена!');
+            ->with('success', 'Услуга '.$service['name'].' успешно удалена!');
     }
+
     public function show(Service $service)
     {
         return view('pages.service.show', compact('service'));

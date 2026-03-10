@@ -1,18 +1,16 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\BasketController;
+use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MainController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderAdminController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/catalog/{product:slug}', [CatalogController::class, 'show'])->name('catalog.show');
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
@@ -79,4 +77,4 @@ Route::middleware(['auth', 'admin'])
         Route::delete('/orders/{order}', [OrderAdminController::class, 'destroy'])->name('admin.order.destroy');
     });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

@@ -2,14 +2,14 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Vite;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\View;
-use App\Models\Product;
 use App\Models\Category;
+use App\Models\Order;
+use App\Models\Product;
 use App\Models\Service;
 use App\Models\User;
-use App\Models\Order;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Vite;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {

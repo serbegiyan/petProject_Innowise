@@ -2,20 +2,22 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
-    use SoftDeletes;
-    use HasSlug;
     use HasFactory;
+    use HasSlug;
+    use SoftDeletes;
+
     protected $table = 'products';
+
     protected $fillable = ['name', 'price', 'brand', 'description', 'image', 'release_date', 'slug'];
 
     /**
@@ -34,12 +36,12 @@ class Product extends Model
         return 'slug';
     }
 
-    function categories(): BelongsToMany
+    public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class);
     }
 
-    function services(): BelongsToMany
+    public function services(): BelongsToMany
     {
         return $this->belongsToMany(Service::class)->withPivot('price', 'term');
     }

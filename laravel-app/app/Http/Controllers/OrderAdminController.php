@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Order;
-use Illuminate\Support\Facades\DB;
 use App\Http\Requests\OrderRequest;
+use App\Models\Order;
 
 class OrderAdminController extends Controller
 {
     public function index()
     {
         $orders = Order::with('items')->latest()->paginate(10);
+
         return view('pages.order.index', compact('orders'));
     }
 
     public function show(Order $order)
     {
         $order->load(['items', 'user']);
+
         return view('pages.order.show', compact('order'));
     }
 
@@ -46,14 +46,15 @@ class OrderAdminController extends Controller
 
         return redirect()
             ->route('admin.order.index')
-            ->with('success', 'Заказ ' . $order->id . ' успешно изменен!');
+            ->with('success', 'Заказ '.$order->id.' успешно изменен!');
     }
 
     public function destroy(Order $order)
     {
         $order->delete();
+
         return redirect()
             ->route('admin.order.index')
-            ->with('success', 'Заказ ' . $order->id . ' успешно удален!');
+            ->with('success', 'Заказ '.$order->id.' успешно удален!');
     }
 }

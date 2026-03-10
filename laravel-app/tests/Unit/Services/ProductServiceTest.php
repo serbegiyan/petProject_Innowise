@@ -2,14 +2,13 @@
 
 namespace Tests\Unit\Services;
 
-use Tests\TestCase;
-use App\Models\Product;
 use App\Models\Category;
 use App\Models\Service;
 use App\Services\ProductService;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ProductServiceTest extends TestCase
 {

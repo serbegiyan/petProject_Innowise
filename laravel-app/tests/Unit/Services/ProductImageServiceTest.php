@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Services;
 
-use Tests\TestCase;
 use App\Models\Product;
 use App\Services\ProductImageService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Tests\TestCase;
 
 class ProductImageServiceTest extends TestCase
 {
@@ -14,7 +14,7 @@ class ProductImageServiceTest extends TestCase
     {
         Storage::fake('public');
 
-        $service = new ProductImageService();
+        $service = new ProductImageService;
 
         $request = request();
         $request->files->set('image', UploadedFile::fake()->image('new.jpg'));
@@ -34,7 +34,7 @@ class ProductImageServiceTest extends TestCase
 
         Storage::disk('public')->put('products/old.jpg', 'old');
 
-        $service = new ProductImageService();
+        $service = new ProductImageService;
 
         $request = request();
         $request->files->set('image', UploadedFile::fake()->image('new.jpg'));
