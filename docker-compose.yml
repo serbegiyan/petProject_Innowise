@@ -50,12 +50,14 @@ services:
 
   jenkins:
     build:
-      context: ./jenkins
-    container_name: jenkins_petProject
+      context: .
+      dockerfile: jenkins/Dockerfile
+    image: jenkins_petproject
+    container_name: jenkins_petproject
     restart: always
+    user: "jenkins:984"
     ports:
       - "8081:8080"
-      - "50000:50000"
     volumes:
       - jenkins_home:/var/jenkins_home
       - ./laravel-app:/var/www/html

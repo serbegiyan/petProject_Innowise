@@ -3,7 +3,8 @@ includes:
 
 parameters:
     level: 4
-
+    memoryLimit: 1G
+    
     paths:
         - app
         - routes
