@@ -21,22 +21,17 @@ pipeline {
         }
 
         stage('Lint (PHPCS)') {
-            steps {
-                sh '''
-                    docker exec php_fpm_petProject bash -lc "
-                        cd /var/www/html &&
+    steps {
+        sh '''
+            docker exec php_fpm_petProject bash -lc "
+                cd /var/www/html
 
-                        # 1. Laravel Pint — форматирование
-                        vendor/bin/pint &&
-
-                        # 2. PHPCBF — исправляет то, что Pint не трогает
-                        vendor/bin/phpcbf || true &&
-
-                        # 3. PHPCS — проверка
-                        vendor/bin/phpcs
-                    "
-                '''
-            }
+                vendor/bin/pint
+                vendor/bin/phpcbf || true
+                vendor/bin/phpcs
+            "
+        '''
+    }
 }
 
         stage('Static Analysis (PHPStan)') {
