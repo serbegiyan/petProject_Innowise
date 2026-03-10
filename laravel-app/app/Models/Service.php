@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Service extends Model
 {
-    use HasSlug, SoftDeletes;
+    use HasSlug, SoftDeletes, HasFactory;
     protected $table = 'services';
     protected $fillable = ['name', 'description', 'slug'];
 

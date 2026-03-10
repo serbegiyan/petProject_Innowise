@@ -5,14 +5,16 @@ namespace App\Services;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Category;
+use App\Models\Service;
+use App\Services\ProductImageService;
+use App\Services\ProductRelationsService;
 
 class ProductService
 {
-    public function create(Request $request): Product
+    public function create(array $data, Request $request): Product
     {
-        return DB::transaction(function () use ($request) {
-            $data = $request->validated();
-
+        return DB::transaction(function () use ($data, $request) {
             $data['image'] = app(ProductImageService::class)->handle($request);
 
             $product = Product::create($data);
@@ -25,11 +27,9 @@ class ProductService
         });
     }
 
-    public function update(Product $product, Request $request): Product
+    public function update(Product $product, array $data, Request $request): Product
     {
-        return DB::transaction(function () use ($product, $request) {
-            $data = $request->validated();
-
+        return DB::transaction(function () use ($product, $data, $request) {
             $data['image'] = app(ProductImageService::class)->handle($request, $product);
 
             $product->update($data);

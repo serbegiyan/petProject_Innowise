@@ -1,0 +1,20 @@
+parameters:
+  level: 4
+
+  paths:
+    - app
+    - routes
+
+  excludePaths:
+    - database
+    - bootstrap
+    - storage
+    - vendor
+
+  ignoreErrors:
+    - '#Call to an undefined method Illuminate\\.*#'
+    - '#Access to an undefined property Illuminate\\.*#'
+    - '#Method Illuminate\\.*::__call does not exist#'
+
+  checkMissingIterableValueType: false
+  checkGenericClassInNonGenericObjectType: false

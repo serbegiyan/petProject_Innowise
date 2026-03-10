@@ -1,0 +1,54 @@
+pipeline {
+    agent any
+
+    environment {
+        APP_DIR = "/var/www/html"
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Install dependencies') {
+            steps {
+                dir(APP_DIR) {
+                    sh 'composer install --no-interaction --prefer-dist'
+                }
+            }
+        }
+
+        stage('Lint (PHPCS)') {
+            steps {
+                dir(APP_DIR) {
+                    sh './vendor/bin/phpcs --standard=PSR12 app'
+                }
+            }
+        }
+
+        stage('Static Analysis (PHPStan)') {
+            steps {
+                dir(APP_DIR) {
+                    sh './vendor/bin/phpstan analyse app --level=max'
+                }
+            }
+        }
+
+        stage('Unit tests (PHPUnit)') {
+            steps {
+                dir(APP_DIR) {
+                    sh './vendor/bin/phpunit --testdox --log-junit tests/junit.xml'
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            junit 'laravel-app/tests/junit.xml'
+        }
+    }
+}
