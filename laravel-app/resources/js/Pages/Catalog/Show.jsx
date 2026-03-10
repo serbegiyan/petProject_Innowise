@@ -69,7 +69,7 @@ export default function Show({ product, preSelectedIds, edit_cart_id, filters })
             <FlashMessage />
             <h1 className='text-2xl text-center font-bold my-3'>{product.name}</h1>
             <div className='flex flex-row justify-between mx-5'>
-                <img src={`/${product.image}`} alt={product.name} className='w-1/3 border' />
+                <img src={product.image_url} alt={product.name} className='w-1/3 border' />
                 <div className='flex flex-col gap-2 '>
                     <p>
                         <span className='font-semibold'>

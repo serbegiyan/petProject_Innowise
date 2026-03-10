@@ -18,6 +18,8 @@ class Product extends Model
 
     protected $table = 'products';
 
+    protected $appends = ['image_url'];
+
     protected $fillable = ['name', 'price', 'brand', 'description', 'image', 'release_date', 'slug'];
 
     /**
@@ -56,5 +58,10 @@ class Product extends Model
                 Storage::disk('public')->delete($product->image);
             }
         });
+    }
+
+    public function getImageUrlAttribute(): string
+    {
+        return $this->image ? Storage::url($this->image) : asset('images/product-image.png');
     }
 }

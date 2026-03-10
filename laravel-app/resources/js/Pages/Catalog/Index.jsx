@@ -126,7 +126,7 @@ export default function Index({ products, filters, categories }) {
                         <Link key={product.id} href={route('catalog.show', { product: product.slug, ...filters })}
                             className="hover:scale-105 transition">
                             <div className='p-4 bg-gray-300 h-full'>
-                                <img src={product.image} alt={product.name} className="w-full aspect-square object-cover" />
+                                <img src={product.image_url} alt={product.name} className="w-full aspect-square object-cover" />
                                 <p className="mt-2 font-semibold text-center truncate">{product.name}</p>
                                 <p className='text-center'>
                                     {Number(product.price).toLocaleString('ru-RU')} BYN

@@ -58,7 +58,7 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request, ProductService $service)
     {
-        $product = $service->create($request);
+        $product = $service->create($request->validated(), $request);
 
         return redirect()
             ->route('product.index')
@@ -67,7 +67,7 @@ class ProductController extends Controller
 
     public function update(ProductRequest $request, Product $product, ProductService $service)
     {
-        $service->update($product, $request);
+        $service->update($product, $request->validated(), $request);
 
         return redirect()
             ->route('product.index')

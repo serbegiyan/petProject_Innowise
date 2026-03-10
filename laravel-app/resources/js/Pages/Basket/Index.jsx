@@ -41,7 +41,7 @@ export default function Index({ items }) {
 
                             return (
                                 <li className="flex flex-row pl-5 p-3 even:bg-gray-100 odd:bg-white" key={item.cart_id} >
-                                    <img src={item.product.image} alt={item.product.name} className="h-40 border" />
+                                    <img src={item.product.image_url} alt={item.product.name} className="h-40 border" />
                                     <div className="ml-4 w-1/3">
                                         <p><span className="font-semibold">Название товара: </span>{item.product.name}</p>
                                         <p><span className="font-semibold">Цена: </span>

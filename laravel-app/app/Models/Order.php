@@ -45,7 +45,7 @@ class Order extends Model
 
     public function getStatusLabelAttribute()
     {
-        return self::STATUSES[$this->status] ?? $this->status;
+        return self::STATUSES[$this->status];
     }
 
     public function getStatusClassAttribute()
@@ -55,6 +55,6 @@ class Order extends Model
             'processing' => 'bg-blue-100 text-blue-800 border-blue-200',
             'done' => 'bg-green-100 text-green-800 border-green-200',
             'canceled' => 'bg-red-100 text-red-800 border-red-200',
-        ][$this->status] ?? 'bg-gray-100 text-gray-800';
+        ][$this->status];
     }
 }

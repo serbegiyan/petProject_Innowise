@@ -36,6 +36,7 @@ class CatalogController extends Controller
                         $query->orderBy('release_date', 'desc');
                     }
                 })
+                ->latest()
                 ->paginate(12)
                 ->withQueryString(),
 

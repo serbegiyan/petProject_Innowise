@@ -29,10 +29,11 @@
 
     @if ($product->image)
         <div class="p-2"><img
-                src="{{ $product->image && Storage::exists($product->image)
+                src="{{ $product->image && Storage::disk('public')->exists($product->image)
                     ? Storage::url($product->image)
                     : asset('images/product-image.png') }}"
-                alt="{{ $product->name }}" class="w-32 h-32 object-cover rounded-lg"></div>
+                alt="{{ $product->name }}" class="w-32 h-32 object-cover rounded-lg">
+        </div>
     @endif
 
 @endsection
