@@ -77,4 +77,4 @@ Route::middleware(['auth', 'admin'])
         Route::delete('/orders/{order}', [OrderAdminController::class, 'destroy'])->name('admin.order.destroy');
     });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

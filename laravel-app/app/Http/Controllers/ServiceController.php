@@ -31,7 +31,7 @@ class ServiceController extends Controller
 
         return redirect()
             ->route('service.index')
-            ->with('success', 'Услуга '.$service['name'].' успешно изменена!');
+            ->with('success', 'Услуга ' . $service['name'] . ' успешно изменена!');
     }
 
     public function store(ServiceRequest $request)
@@ -41,7 +41,7 @@ class ServiceController extends Controller
 
         return redirect()
             ->route('service.index')
-            ->with('success', 'Услуга '.$service['name'].' успешно создана!');
+            ->with('success', 'Услуга ' . $service['name'] . ' успешно создана!');
     }
 
     public function destroy(Service $service)
@@ -50,7 +50,7 @@ class ServiceController extends Controller
 
         return redirect()
             ->route('service.index')
-            ->with('success', 'Услуга '.$service['name'].' успешно удалена!');
+            ->with('success', 'Услуга ' . $service['name'] . ' успешно удалена!');
     }
 
     public function show(Service $service)
