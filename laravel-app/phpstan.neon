@@ -16,5 +16,3 @@ parameters:
     - '#Access to an undefined property Illuminate\\.*#'
     - '#Method Illuminate\\.*::__call does not exist#'
 
-  checkMissingIterableValueType: false
-  checkGenericClassInNonGenericObjectType: false
