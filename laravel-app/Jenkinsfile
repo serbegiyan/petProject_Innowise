@@ -1,33 +1,22 @@
 pipeline {
-    // Используем Docker-образ как среду выполнения. 
-    // Jenkins сам запустит контейнер, смонтирует рабочую директорию и удалит его после билда.
-    agent {
-        docker {
-            image 'php:8.5-fpm' // Укажи свою версию PHP
-            args '-u root'      // Нужно для прав на запись в mounted volume
-        }
-    }
-
-    environment {
-        // Отключаем интерактивность для composer и фиксируем пути
-        COMPOSER_ALLOW_SUPERUSER = "1"
-        REPORTS_DIR = "tests/_reports"
-    }
+    agent any
 
     stages {
-        stage('Prepare Environment') {
+        stage('Checkout') {
             steps {
-                // Устанавливаем системные зависимости и Composer внутри агента
-                sh '''
-                    apt-get update && apt-get install -y unzip git
-                    curl -sS https://getcomposer.org | php -- --install-dir=/usr/local/bin --filename=composer
-                '''
+                checkout scm
             }
         }
 
         stage('Install dependencies') {
             steps {
-                sh 'composer install --no-interaction --prefer-dist --optimize-autoloader'
+                // Заходим в папку laravel-app перед запуском команд
+                sh '''
+                    docker exec php_fpm_petProject bash -c "
+                        cd /var/www/html/laravel-app &&
+                        composer install --no-interaction --prefer-dist
+                    "
+                '''
             }
         }
 
@@ -35,14 +24,23 @@ pipeline {
             parallel {
                 stage('Check Style') {
                     steps {
-                        // Используем --test для Pint, чтобы он не менял файлы, а только проверял
-                        sh 'vendor/bin/pint --test'
-                        sh 'vendor/bin/phpcs'
+                        sh '''
+                            docker exec php_fpm_petProject bash -c "
+                                cd /var/www/html/laravel-app &&
+                                vendor/bin/pint --test &&
+                                vendor/bin/phpcs
+                            "
+                        '''
                     }
                 }
                 stage('PHPStan') {
                     steps {
-                        sh 'vendor/bin/phpstan analyse --memory-limit=1G'
+                        sh '''
+                            docker exec php_fpm_petProject bash -c "
+                                cd /var/www/html/laravel-app &&
+                                vendor/bin/phpstan analyse --memory-limit=1G
+                            "
+                        '''
                     }
                 }
             }
@@ -50,20 +48,21 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                // Создаем директорию для отчетов, если её нет
-                sh "mkdir -p ${REPORTS_DIR}"
-                sh "vendor/bin/phpunit --log-junit ${REPORTS_DIR}/junit.xml"
+                sh '''
+                    docker exec php_fpm_petProject bash -c "
+                        cd /var/www/html/laravel-app &&
+                        mkdir -p tests/_reports &&
+                        vendor/bin/phpunit --log-junit tests/_reports/junit.xml
+                    "
+                '''
             }
         }
     }
 
     post {
         always {
-            // Собираем отчеты (путь теперь совпадает с тем, что в тестах)
-            junit "tests/_reports/*.xml"
-            
-            // Очищаем рабочее пространство, чтобы не забивать диск агента
-            cleanWs()
+            // Jenkins ищет файлы в своем workspace, поэтому путь без docker exec
+            junit 'laravel-app/tests/_reports/*.xml'
         }
     }
 }
