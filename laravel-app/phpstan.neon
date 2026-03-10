@@ -17,3 +17,6 @@ parameters:
     parallel:
         maximumNumberOfProcesses: 4
 
+    larastan:
+        # Включает автоматическое определение свойств-отношений
+        enable_eloquent_relationships: true
