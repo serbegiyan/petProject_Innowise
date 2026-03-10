@@ -1,65 +1,69 @@
 pipeline {
-    agent any
+    // Используем Docker-образ как среду выполнения. 
+    // Jenkins сам запустит контейнер, смонтирует рабочую директорию и удалит его после билда.
+    agent {
+        docker {
+            image 'php:8.5-fpm' // Укажи свою версию PHP
+            args '-u root'      // Нужно для прав на запись в mounted volume
+        }
+    }
+
+    environment {
+        // Отключаем интерактивность для composer и фиксируем пути
+        COMPOSER_ALLOW_SUPERUSER = "1"
+        REPORTS_DIR = "tests/_reports"
+    }
 
     stages {
-
-        stage('Checkout') {
+        stage('Prepare Environment') {
             steps {
-                checkout scm
+                // Устанавливаем системные зависимости и Composer внутри агента
+                sh '''
+                    apt-get update && apt-get install -y unzip git
+                    curl -sS https://getcomposer.org | php -- --install-dir=/usr/local/bin --filename=composer
+                '''
             }
         }
 
         stage('Install dependencies') {
             steps {
-                sh '''
-                    docker exec php_fpm_petProject bash -lc "
-                        cd /var/www/html &&
-                        composer install --no-interaction --prefer-dist
-                    "
-                '''
+                sh 'composer install --no-interaction --prefer-dist --optimize-autoloader'
             }
         }
 
-        stage('Lint (PHPCS)') {
-    steps {
-        sh '''
-            docker exec php_fpm_petProject bash -lc "
-                cd /var/www/html
-
-                vendor/bin/pint
-                vendor/bin/phpcbf || true
-                vendor/bin/phpcs
-            "
-        '''
-    }
-}
-
-        stage('Static Analysis (PHPStan)') {
-            steps {
-                sh '''
-                    docker exec php_fpm_petProject bash -lc "
-                        cd /var/www/html &&
-                        vendor/bin/phpstan analyse --memory-limit=1G
-                    "
-                '''
+        stage('Lint & Static Analysis') {
+            parallel {
+                stage('Check Style') {
+                    steps {
+                        // Используем --test для Pint, чтобы он не менял файлы, а только проверял
+                        sh 'vendor/bin/pint --test'
+                        sh 'vendor/bin/phpcs'
+                    }
+                }
+                stage('PHPStan') {
+                    steps {
+                        sh 'vendor/bin/phpstan analyse --memory-limit=1G'
+                    }
+                }
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh '''
-                    docker exec php_fpm_petProject bash -lc "
-                        cd /var/www/html &&
-                        vendor/bin/phpunit --log-junit tests/_reports/junit.xml
-                    "
-                '''
+                // Создаем директорию для отчетов, если её нет
+                sh "mkdir -p ${REPORTS_DIR}"
+                sh "vendor/bin/phpunit --log-junit ${REPORTS_DIR}/junit.xml"
             }
         }
     }
 
     post {
         always {
-            junit 'laravel-app/tests/_reports/*.xml'
+            // Собираем отчеты (путь теперь совпадает с тем, что в тестах)
+            junit "tests/_reports/*.xml"
+            
+            // Очищаем рабочее пространство, чтобы не забивать диск агента
+            cleanWs()
         }
     }
 }
