@@ -2,10 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\User;
-use Illuminate\Validation\Rule;
-
-class ProfileUpdateRequest extends BaseRequest
+class CatalogRequest extends BaseRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -15,8 +12,9 @@ class ProfileUpdateRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
+            'search' => ['nullable', 'string', 'max:255'],
+            'category' => ['nullable', 'integer', 'exists:categories,id'],
+            'sort' => ['nullable', 'string', 'in:price_asc,price_desc,release_asc,release_desc'],
         ];
     }
 }

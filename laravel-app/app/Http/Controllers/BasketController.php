@@ -2,95 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Basket;
-use Illuminate\Http\Request;
+use App\Http\Requests\BasketStoreRequest;
+use App\Http\Requests\BasketUpdateRequest;
+use App\Services\BasketService;
 use Inertia\Inertia;
 
 class BasketController extends Controller
 {
-    public function index()
+    public function index(BasketService $basketService)
     {
-        $items = [];
-        $basketItems = Basket::where('user_id', auth()->id())
-            ->with(['product.services'])
-            ->get();
-
-        foreach ($basketItems as $item) {
-            $selectedIds = collect($item->services)->pluck('id')->toArray();
-
-            $selectedServices = $item->product->services->whereIn('id', $selectedIds);
-
-            $items[] = [
-                'cart_id' => $item->id,
-                'product' => $item->product,
-                'quantity' => $item->quantity,
-                'selected_services' => $selectedServices->values(),
-            ];
-        }
-
         return Inertia::render('Basket/Index', [
-            'items' => $items,
+            'items' => $basketService->getUserBasketItems(),
         ]);
     }
 
-    public function store(Request $request)
+    public function store(BasketStoreRequest $request, BasketService $basketService)
     {
-        $data = $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'services' => 'nullable|array',
-            'services.*.id' => 'required|exists:services,id',
-        ]);
-
-        if ($request->has('edit_cart_id')) {
-            Basket::where('id', $request->edit_cart_id)
-                ->where('user_id', auth()->id())
-                ->delete();
-        }
-
-        $services = collect($request->input('services', []))->sortBy('id')->values()->toArray();
-
-        // Используем cast к массиву, чтобы Eloquent сам сравнил JSON
-        $basketItem = Basket::where('user_id', auth()->id())
-            ->where('product_id', $data['product_id'])
-            ->get()
-            ->filter(function ($item) use ($services) {
-                return $item->services == $services;
-            })
-            ->first();
-
-        if ($basketItem) {
-            $basketItem->increment('quantity');
-        } else {
-            Basket::create([
-                'user_id' => auth()->id(),
-                'product_id' => $data['product_id'],
-                'services' => $services,
-                'quantity' => 1,
-            ]);
-        }
+        $basketService->addToBasket($request->validated(), $request->integer('edit_cart_id') ?: null);
 
         return redirect()->back()->with('success', 'Товар добавлен!');
     }
 
-    public function update(Request $request, $id)
+    public function update(BasketUpdateRequest $request, int $id, BasketService $basketService)
     {
-        $request->validate(['quantity' => 'required|integer|min:1']);
-
-        $item = Basket::where('id', $id)
-            ->where('user_id', auth()->id())
-            ->firstOrFail();
-        $item->update(['quantity' => $request->quantity]);
+        $basketService->updateQuantity($id, $request->integer('quantity'));
 
         return redirect()->back();
     }
 
-    public function destroy($id)
+    public function destroy(int $id, BasketService $basketService)
     {
-        $item = Basket::where('id', $id)
-            ->where('user_id', auth()->id())
-            ->firstOrFail();
-
-        $item->delete();
+        $basketService->removeItem($id);
 
         return redirect()->back()->with('error', 'Товар удален из корзины');
     }

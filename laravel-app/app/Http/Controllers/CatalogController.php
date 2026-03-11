@@ -2,44 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CatalogRequest;
 use App\Models\Category;
 use App\Models\Product;
+use App\Services\ProductFilterService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class CatalogController extends Controller
 {
-    public function index(Request $request)
+    protected $productFilterService;
+
+    public function __construct(ProductFilterService $productFilterService)
+    {
+        $this->productFilterService = $productFilterService;
+    }
+
+    public function index(CatalogRequest $request)
     {
         return Inertia::render('Catalog/Index', [
-            'products' => Product::query()
-                ->with('categories')
-                ->when($request->input('search'), function ($query, $search) {
-                    $query->where('name', 'like', "%{$search}%");
-                })
-                ->when($request->input('category'), function ($query, $categoryId) {
-                    $query->whereHas('categories', function ($q) use ($categoryId) {
-                        $q->where('categories.id', $categoryId);
-                    });
-                })
-                ->when($request->input('sort'), function ($query, $sort) {
-                    if ($sort === 'price_asc') {
-                        $query->orderBy('price', 'asc');
-                    }
-                    if ($sort === 'price_desc') {
-                        $query->orderBy('price', 'desc');
-                    }
-                    if ($sort === 'release_asc') {
-                        $query->orderBy('release_date', 'asc');
-                    }
-                    if ($sort === 'release_desc') {
-                        $query->orderBy('release_date', 'desc');
-                    }
-                })
-                ->latest()
-                ->paginate(12)
-                ->withQueryString(),
-
+            'products' => $this->productFilterService->filter($request->validated()),
             'categories' => Category::all(),
             'filters' => $request->only(['search', 'category', 'sort']),
         ]);

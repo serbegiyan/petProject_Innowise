@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -60,6 +61,31 @@ class Product extends Model
     protected $appends = ['image_url'];
 
     protected $fillable = ['name', 'price', 'brand', 'description', 'image', 'release_date', 'slug'];
+
+    // Фильтрация
+
+    public function scopeSearch(Builder $query, ?string $search): Builder
+    {
+        return $query->when($search, fn ($q) => $q->where('name', 'like', "%{$search}%"));
+    }
+
+    public function scopeByCategory(Builder $query, ?int $categoryId): Builder
+    {
+        return $query->when($categoryId, function ($q) use ($categoryId) {
+            $q->whereHas('categories', fn ($c) => $c->where('categories.id', $categoryId));
+        });
+    }
+
+    public function scopeApplySort(Builder $query, ?string $sort): Builder
+    {
+        return match ($sort) {
+            'price_asc' => $query->orderBy('price', 'asc'),
+            'price_desc' => $query->orderBy('price', 'desc'),
+            'release_asc' => $query->orderBy('release_date', 'asc'),
+            'release_desc' => $query->orderBy('release_date', 'desc'),
+            default => $query->latest(),
+        };
+    }
 
     /**
      * Настройки генерации слага

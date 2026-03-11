@@ -2,10 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\User;
-use Illuminate\Validation\Rule;
-
-class ProfileUpdateRequest extends BaseRequest
+class BasketUpdateRequest extends BaseRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -15,8 +12,7 @@ class ProfileUpdateRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
+            'quantity' => ['required', 'integer', 'min:1', 'max:99'],
         ];
     }
 }

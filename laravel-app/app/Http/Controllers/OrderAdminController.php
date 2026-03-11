@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\OrderRequest;
+use App\Http\Requests\OrderUpdateRequest;
 use App\Models\Order;
 
 class OrderAdminController extends Controller
@@ -23,10 +23,10 @@ class OrderAdminController extends Controller
 
     public function create()
     {
-        return view('pages.order.create');
+        //
     }
 
-    public function store(OrderRequest $request)
+    public function store()
     {
         //
     }
@@ -38,7 +38,7 @@ class OrderAdminController extends Controller
         return view('pages.order.edit', compact('order'));
     }
 
-    public function update(OrderRequest $request, Order $order)
+    public function update(OrderUpdateRequest $request, Order $order)
     {
         $data = $request->validated();
 

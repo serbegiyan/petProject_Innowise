@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -48,16 +46,15 @@ class UserController extends Controller
 
     public function update(UserRequest $request, User $user)
     {
-        $validated = $request->validated();
+        $data = $request->validated();
 
-        $user->fill(collect($validated)->except('password')->toArray());
-
-        if ($request->filled('password')) {
-            $user->password = Hash::make($validated['password']);
+        if (empty($data['password'])) {
+            unset($data['password']);
         }
-        $user->update();
 
-        return redirect()->route('user.index')->with('success', 'Пользователь обновлен');
+        $user->update($data);
+
+        return redirect()->route('user.index')->with('success', 'Данные обновлены');
     }
 
     public function destroy(User $user)
@@ -69,19 +66,12 @@ class UserController extends Controller
 
     public function store(UserRequest $request)
     {
-        $validated = $request->validated();
+        $data = $request->validated();
 
-        return DB::transaction(function () use ($validated) {
-            $user = User::create([
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'password' => Hash::make($validated['password']),
-                'role' => $validated['role'] ?? 'user',
-            ]);
+        $user = User::create($data);
 
-            return redirect()
-                ->route('user.index')
-                ->with('success', 'Пользователь '.$user->name.' успешно создан!');
-        });
+        return redirect()
+            ->route('user.index')
+            ->with('success', "Пользователь {$user->name} создан!");
     }
 }

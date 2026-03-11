@@ -121,7 +121,7 @@ export default function Show({ product, preSelectedIds, edit_cart_id, filters })
                         {isInCart ? (
                             <Link
                                 href={route('basket.index')}
-                                className="bg-blue-600 text-white hover:bg-blue-700 w-fit px-4 py-2 rounded mt-3"
+                                className="bg-green-500 text-white hover:bg-green-700 w-fit px-4 py-2 rounded mt-3"
                             >
                                 Перейти в корзину
                             </Link>

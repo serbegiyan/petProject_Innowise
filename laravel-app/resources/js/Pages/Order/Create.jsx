@@ -57,7 +57,7 @@ export default function Index({ items, totalAmount, userEmail, services }) {
                                                 {item.services.map(service => (
                                                     <li key={service.id}>
                                                         <p className="inline"><span className="font-semibold">
-                                                            {service.name}</span> - {service.price} BYN</p>
+                                                            {service.name}</span> - {service.pivot.price} BYN</p>
                                                     </li>
                                                 ))}
                                             </ol>
@@ -91,6 +91,7 @@ export default function Index({ items, totalAmount, userEmail, services }) {
 
                     <InputLabel value="Телефон" />
                     <TextInput
+                        className="p-2 border"
                         type="phone"
                         value={data.customer_phone}
                         onChange={e => setData('customer_phone', e.target.value)}

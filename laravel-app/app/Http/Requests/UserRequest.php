@@ -2,18 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class UserRequest extends FormRequest
+class UserRequest extends BaseRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -24,10 +14,10 @@ class UserRequest extends FormRequest
         $userId = $this->route('user')?->id;
 
         return [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,'.$userId,
-            'role' => 'required|string|max:255|in:user,admin',
-            'password' => $this->isMethod('post') ? 'required|string|min:8|confirmed' : 'nullable|string|min:8|confirmed',
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'unique:users,email,'.$userId],
+            'role' => ['required', 'string', 'max:255', 'in:user,admin'],
+            'password' => $this->isMethod('post') ? ['required', 'string', 'min:8', 'confirmed'] : ['nullable', 'string', 'min:8', 'confirmed'],
         ];
     }
 

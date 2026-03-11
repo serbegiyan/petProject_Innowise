@@ -109,7 +109,7 @@
                     <a href="{{ route('user.index') }}" @class([
                         'block px-4 py-2 rounded-sm hover:bg-stone-300',
                         'block px-4 py-2 underline-offset-4 underline' => request()->routeIs(
-                            'category.*'),
+                            'user.*'),
                     ])><i
                             class="mr-2 fa-solid fa-users"></i></i>
                         Пользователи ({{ $sidebar_stats['users_count'] }})

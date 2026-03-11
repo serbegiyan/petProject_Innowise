@@ -72,7 +72,7 @@
                             @foreach ($item->services as $service)
                                 <li class="p-2 pl-5 list-disc list-inside">
                                     {{ $service['name'] }} —
-                                    <strong>{{ Number::format($service['price'], precision: 2, locale: 'ru') }}
+                                    <strong>{{ Number::format($service['pivot']['price'], precision: 2, locale: 'ru') }}
                                         BYN</strong>
 
                                 </li>

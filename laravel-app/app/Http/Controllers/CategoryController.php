@@ -2,16 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
-use Illuminate\Http\Request;
+use App\Services\CategoryService;
 
 class CategoryController extends Controller
 {
+    public function __construct(protected CategoryService $service) {}
+
     public function index()
     {
-        $categories = Category::latest()->paginate(10);
+        return view('pages.category.index', [
+            'categories' => $this->service->getAllPaginated(),
+        ]);
+    }
 
-        return view('pages.category.index', compact('categories'));
+    public function store(CategoryRequest $request)
+    {
+        $category = $this->service->create($request->validated());
+
+        return to_route('category.index')->with('success', "Категория {$category->name} создана!");
+    }
+
+    public function destroy(Category $category)
+    {
+        $this->service->delete($category);
+
+        return to_route('category.index')->with('success', "Категория {$category->name} удалена!");
     }
 
     public function create()
@@ -19,41 +36,17 @@ class CategoryController extends Controller
         return view('pages.category.create');
     }
 
-    public function store(Request $request)
-    {
-        $category = $request->validate([
-            'name' => 'required|string|unique:categories|max:255',
-        ]);
-        Category::create($category);
-
-        return redirect()
-            ->route('category.index')
-            ->with('success', 'Категория '.$category['name'].' успешно создана!');
-    }
-
     public function edit(Category $category)
     {
         return view('pages.category.edit', compact('category'));
     }
 
-    public function update(Request $request, Category $category)
+    public function update(CategoryRequest $request, Category $category)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:categories,name,'.$category->id,
-        ]);
-        $category->update($validated);
+        $category->update($request->validated());
 
         return redirect()
             ->route('category.index')
             ->with('success', 'Категория '.$category['name'].' успешно изменена!');
-    }
-
-    public function destroy(Category $category)
-    {
-        Category::destroy($category->id);
-
-        return redirect()
-            ->route('category.index')
-            ->with('success', 'Категория '.$category['name'].' успешно удалена!');
     }
 }

@@ -2,19 +2,10 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class ProductRequest extends FormRequest
+class ProductRequest extends BaseRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -42,7 +33,6 @@ class ProductRequest extends FormRequest
             'services.*' => ['exists:services,id'],
 
             // Валидация цен и сроков для каждой выбранной услуги
-            // Используем "*" для проверки вложенных массивов из формы
             'service_prices' => ['nullable', 'array'],
             'service_prices.*' => ['nullable', 'numeric', 'min:0'],
 
