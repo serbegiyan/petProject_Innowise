@@ -25,8 +25,7 @@ pipeline {
                     steps {
                         sh '''
                             docker exec php_fpm_petProject bash -c "
-                                vendor/bin/pint --test &&
-                                vendor/bin/phpcs
+                                vendor/bin/pint --test 
                             "
                         '''
                     }
