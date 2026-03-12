@@ -5,6 +5,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout scm
+                sh 'pwd'
             }
         }
 
@@ -28,10 +29,14 @@ pipeline {
         stage('Run Tests') {
             steps {
                 sh '''
-                    docker exec php_fpm_petProject bash -c "
-                        mkdir -p tests/_reports &&
-                        vendor/bin/phpunit --log-junit tests/_reports/junit.xml
-                    "
+                    # Создаем папку заранее, чтобы не было проблем с правами
+                    docker exec php_fpm_petProject mkdir -p tests/_reports
+                    
+                    # Запускаем тесты
+                    docker exec php_fpm_petProject vendor/bin/phpunit --log-junit tests/_reports/junit.xml
+                    
+                    # Даем права на чтение для Jenkins (UID 1000)
+                    docker exec -u root php_fpm_petProject chown -R 1000:1000 tests/_reports
                 '''
             }
         }
@@ -39,8 +44,8 @@ pipeline {
 
     post {
         always {
-            // Указываем полный путь, куда примонтирован volume в контейнере Jenkins
-            junit '/var/www/html/tests/_reports/*.xml'
+            // Теперь путь 'tests/_reports/*.xml' будет верным относительно воркспейса
+            junit 'tests/_reports/*.xml'
         }
     }
 }
