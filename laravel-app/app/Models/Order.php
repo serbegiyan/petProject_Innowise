@@ -69,9 +69,7 @@ class Order extends Model
     public static function getStatusOptions()
     {
         return collect(self::STATUSES)
-            ->map(function ($name, $id) {
-                return (object) ['id' => $id, 'name' => $name];
-            })
+            ->map(fn ($name, $id) => (object) ['id' => $id, 'name' => $name])
             ->values();
     }
 

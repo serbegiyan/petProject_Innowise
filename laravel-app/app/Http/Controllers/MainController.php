@@ -18,6 +18,6 @@ class MainController extends Controller
         $users = User::count();
         $orders = Order::count();
 
-        return view('pages.home', compact('products', 'categories', 'services', 'users', 'orders'));
+        return view('pages.home', ['products' => $products, 'categories' => $categories, 'services' => $services, 'users' => $users, 'orders' => $orders]);
     }
 }

@@ -29,7 +29,7 @@ class OrderController extends Controller
 
     public function store(OrderStoreRequest $request, OrderService $orderService)
     {
-        $order = $orderService->createFromBasket(auth()->user(), $request->validated());
+        $orderService->createFromBasket(auth()->user(), $request->validated());
 
         return redirect()->route('dashboard');
     }

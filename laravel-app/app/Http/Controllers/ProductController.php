@@ -19,17 +19,15 @@ class ProductController extends Controller
             $query->where('name', 'like', '%'.$request->search.'%');
         } else {
             $query
-                ->when($request->category_id, function ($query, $categoryId) {
-                    return $query->whereHas('categories', function ($q) use ($categoryId) {
-                        $q->where('categories.id', $categoryId);
-                    });
-                })
+                ->when($request->category_id, fn ($query, $categoryId) => $query->whereHas('categories', function ($q) use ($categoryId): void {
+                    $q->where('categories.id', $categoryId);
+                }))
                 ->latest();
         }
 
         $products = $query->paginate(10);
 
-        return view('pages.product.index', compact('products'));
+        return view('pages.product.index', ['products' => $products]);
     }
 
     public function create()
@@ -37,7 +35,7 @@ class ProductController extends Controller
         $categories = Category::all();
         $services = Service::all();
 
-        return view('pages.product.create', compact('categories', 'services'));
+        return view('pages.product.create', ['categories' => $categories, 'services' => $services]);
     }
 
     public function edit(Product $product)
@@ -46,14 +44,14 @@ class ProductController extends Controller
         $categories = Category::all();
         $services = Service::all();
 
-        return view('pages.product.edit', compact('product', 'categories', 'services'));
+        return view('pages.product.edit', ['product' => $product, 'categories' => $categories, 'services' => $services]);
     }
 
     public function show(Product $product)
     {
         $product->load('services');
 
-        return view('pages.product.show', compact('product'));
+        return view('pages.product.show', ['product' => $product]);
     }
 
     public function store(ProductRequest $request, ProductService $service)

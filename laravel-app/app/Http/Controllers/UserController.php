@@ -7,7 +7,7 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-    private $roles = [
+    private array $roles = [
         [
             'id' => 'user',
             'name' => 'Пользователь',
@@ -22,26 +22,26 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        return view('pages.user.index', compact('users'));
+        return view('pages.user.index', ['users' => $users]);
     }
 
     public function show(User $user)
     {
-        return view('pages.user.show', compact('user'));
+        return view('pages.user.show', ['user' => $user]);
     }
 
     public function create()
     {
         $roles = collect($this->roles)->map(fn ($role) => (object) $role);
 
-        return view('pages.user.create', compact('roles'));
+        return view('pages.user.create', ['roles' => $roles]);
     }
 
     public function edit(User $user)
     {
         $roles = collect($this->roles)->map(fn ($role) => (object) $role);
 
-        return view('pages.user.edit', compact('user', 'roles'));
+        return view('pages.user.edit', ['user' => $user, 'roles' => $roles]);
     }
 
     public function update(UserRequest $request, User $user)

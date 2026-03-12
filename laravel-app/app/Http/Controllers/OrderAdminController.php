@@ -11,14 +11,14 @@ class OrderAdminController extends Controller
     {
         $orders = Order::with('items')->latest()->paginate(10);
 
-        return view('pages.order.index', compact('orders'));
+        return view('pages.order.index', ['orders' => $orders]);
     }
 
     public function show(Order $order)
     {
         $order->load(['items', 'user']);
 
-        return view('pages.order.show', compact('order'));
+        return view('pages.order.show', ['order' => $order]);
     }
 
     public function create()
@@ -35,7 +35,7 @@ class OrderAdminController extends Controller
     {
         $order->load(['items', 'user']);
 
-        return view('pages.order.edit', compact('order'));
+        return view('pages.order.edit', ['order' => $order]);
     }
 
     public function update(OrderUpdateRequest $request, Order $order)

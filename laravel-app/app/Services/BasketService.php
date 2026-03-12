@@ -70,7 +70,7 @@ class BasketService
 
         return [
             'items' => $items,
-            'totalAmount' => (float) round($items->sum('item_total'), 2),
+            'totalAmount' => round($items->sum('item_total'), 2),
         ];
     }
 

@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Vite::prefetch(concurrency: 3);
 
-        View::composer('layouts/main', function ($view) {
+        View::composer('layouts/main', function ($view): void {
             $stats = [
                 'products_count' => Product::count(),
                 'categories_count' => Category::count(),

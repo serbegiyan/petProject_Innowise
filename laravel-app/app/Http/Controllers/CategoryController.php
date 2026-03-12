@@ -38,7 +38,7 @@ class CategoryController extends Controller
 
     public function edit(Category $category)
     {
-        return view('pages.category.edit', compact('category'));
+        return view('pages.category.edit', ['category' => $category]);
     }
 
     public function update(CategoryRequest $request, Category $category)

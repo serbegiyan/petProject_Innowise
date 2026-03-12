@@ -120,7 +120,6 @@ export default function Index({ products, filters, categories }) {
             </div>
 
             {/* Сетка товаров */}
-            <p>test</p>
             {products.data.length > 0 ? (
                 <div className="grid grid-cols-4 gap-4 p-4">
                     {products.data.map((product) => (

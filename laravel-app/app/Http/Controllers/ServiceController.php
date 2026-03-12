@@ -11,7 +11,7 @@ class ServiceController extends Controller
     {
         $services = Service::latest()->paginate(10);
 
-        return view('pages.service.index', compact('services'));
+        return view('pages.service.index', ['services' => $services]);
     }
 
     public function create()
@@ -21,7 +21,7 @@ class ServiceController extends Controller
 
     public function edit(Service $service)
     {
-        return view('pages.service.edit', compact('service'));
+        return view('pages.service.edit', ['service' => $service]);
     }
 
     public function update(ServiceRequest $request, Service $service)
@@ -55,6 +55,6 @@ class ServiceController extends Controller
 
     public function show(Service $service)
     {
-        return view('pages.service.show', compact('service'));
+        return view('pages.service.show', ['service' => $service]);
     }
 }

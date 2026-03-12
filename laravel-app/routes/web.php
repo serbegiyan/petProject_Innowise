@@ -19,7 +19,7 @@ Route::get('/dashboard', [OrderController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth')->group(function (): void {
     Route::post('/basket/store', [BasketController::class, 'store'])->name('basket.store');
     Route::patch('/basket/{id}', [BasketController::class, 'update'])->name('basket.update');
     Route::delete('/basket/{id}', [BasketController::class, 'destroy'])->name('basket.destroy');
@@ -34,7 +34,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'admin'])
     ->prefix('admin')
-    ->group(function () {
+    ->group(function (): void {
         Route::get('/', [MainController::class, 'main'])->name('admin.main');
 
         Route::get('/users', [UserController::class, 'index'])->name('user.index');

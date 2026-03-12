@@ -71,7 +71,7 @@ class Product extends Model
 
     public function scopeByCategory(Builder $query, ?int $categoryId): Builder
     {
-        return $query->when($categoryId, function ($q) use ($categoryId) {
+        return $query->when($categoryId, function ($q) use ($categoryId): void {
             $q->whereHas('categories', fn ($c) => $c->where('categories.id', $categoryId));
         });
     }
@@ -115,7 +115,7 @@ class Product extends Model
 
     protected static function booted()
     {
-        static::deleting(function ($product) {
+        static::deleting(function ($product): void {
             $product->categories()->detach();
             $product->services()->detach();
             // Логика удаления файла при событии удаления модели

@@ -35,10 +35,6 @@ class Basket extends Model
 
     protected $fillable = ['user_id', 'product_id', 'quantity', 'services'];
 
-    protected $casts = [
-        'services' => 'array',
-    ];
-
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -47,5 +43,12 @@ class Basket extends Model
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'services' => 'array',
+        ];
     }
 }
