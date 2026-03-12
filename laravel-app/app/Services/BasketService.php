@@ -16,7 +16,12 @@ class BasketService
     }
 
         /**
-         * @return Collection<int, array>
+         * @return \Illuminate\Support\Collection<int, array{
+         *     cart_id: int,
+         *     product: \App\Models\Product,
+         *     quantity: int,
+         *     selected_services: \Illuminate\Support\Collection<int, \App\Models\Service>
+         * }>
          */
         public function getUserBasketItems(): Collection
         {
