@@ -20,7 +20,7 @@ class BasketService
          *     cart_id: int,
          *     product: \App\Models\Product,
          *     quantity: int,
-         *     selected_services: \Illuminate\Support\Collection<int, \App\Models\Service>
+         *     selected_services: \Illuminate\Database\Eloquent\Collection<int, \App\Models\Service>
          * }>
          */
         public function getUserBasketItems(): Collection
