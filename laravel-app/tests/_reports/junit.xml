@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="/var/www/html/phpunit.xml" tests="12" assertions="43" errors="0" failures="0" skipped="0" time="0.294300">
-    <testsuite name="Unit" tests="6" assertions="10" errors="0" failures="0" skipped="0" time="0.199944">
-      <testsuite name="Tests\Unit\ExampleTest" file="/var/www/html/tests/Unit/ExampleTest.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.001978">
-        <testcase name="test_that_true_is_true" file="/var/www/html/tests/Unit/ExampleTest.php" line="12" class="Tests\Unit\ExampleTest" classname="Tests.Unit.ExampleTest" assertions="1" time="0.001978"/>
+  <testsuite name="/var/www/html/phpunit.xml" tests="12" assertions="43" errors="0" failures="0" skipped="0" time="0.287195">
+    <testsuite name="Unit" tests="6" assertions="10" errors="0" failures="0" skipped="0" time="0.196974">
+      <testsuite name="Tests\Unit\ExampleTest" file="/var/www/html/tests/Unit/ExampleTest.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.001256">
+        <testcase name="test_that_true_is_true" file="/var/www/html/tests/Unit/ExampleTest.php" line="12" class="Tests\Unit\ExampleTest" classname="Tests.Unit.ExampleTest" assertions="1" time="0.001256"/>
       </testsuite>
-      <testsuite name="Tests\Unit\Services\ProductImageServiceTest" file="/var/www/html/tests/Unit/Services/ProductImageServiceTest.php" tests="2" assertions="3" errors="0" failures="0" skipped="0" time="0.169047">
-        <testcase name="test_it_uploads_new_image" file="/var/www/html/tests/Unit/Services/ProductImageServiceTest.php" line="13" class="Tests\Unit\Services\ProductImageServiceTest" classname="Tests.Unit.Services.ProductImageServiceTest" assertions="1" time="0.150639"/>
-        <testcase name="test_it_replaces_old_image" file="/var/www/html/tests/Unit/Services/ProductImageServiceTest.php" line="27" class="Tests\Unit\Services\ProductImageServiceTest" classname="Tests.Unit.Services.ProductImageServiceTest" assertions="2" time="0.018408"/>
+      <testsuite name="Tests\Unit\Services\ProductImageServiceTest" file="/var/www/html/tests/Unit/Services/ProductImageServiceTest.php" tests="2" assertions="3" errors="0" failures="0" skipped="0" time="0.168032">
+        <testcase name="test_it_uploads_new_image" file="/var/www/html/tests/Unit/Services/ProductImageServiceTest.php" line="13" class="Tests\Unit\Services\ProductImageServiceTest" classname="Tests.Unit.Services.ProductImageServiceTest" assertions="1" time="0.147151"/>
+        <testcase name="test_it_replaces_old_image" file="/var/www/html/tests/Unit/Services/ProductImageServiceTest.php" line="27" class="Tests\Unit\Services\ProductImageServiceTest" classname="Tests.Unit.Services.ProductImageServiceTest" assertions="2" time="0.020881"/>
       </testsuite>
-      <testsuite name="Tests\Unit\Services\ProductRelationsServiceTest" file="/var/www/html/tests/Unit/Services/ProductRelationsServiceTest.php" tests="2" assertions="2" errors="0" failures="0" skipped="0" time="0.018416">
-        <testcase name="test_it_syncs_categories" file="/var/www/html/tests/Unit/Services/ProductRelationsServiceTest.php" line="16" class="Tests\Unit\Services\ProductRelationsServiceTest" classname="Tests.Unit.Services.ProductRelationsServiceTest" assertions="1" time="0.010765"/>
-        <testcase name="test_it_syncs_services_with_pivot_data" file="/var/www/html/tests/Unit/Services/ProductRelationsServiceTest.php" line="34" class="Tests\Unit\Services\ProductRelationsServiceTest" classname="Tests.Unit.Services.ProductRelationsServiceTest" assertions="1" time="0.007651"/>
+      <testsuite name="Tests\Unit\Services\ProductRelationsServiceTest" file="/var/www/html/tests/Unit/Services/ProductRelationsServiceTest.php" tests="2" assertions="2" errors="0" failures="0" skipped="0" time="0.018690">
+        <testcase name="test_it_syncs_categories" file="/var/www/html/tests/Unit/Services/ProductRelationsServiceTest.php" line="16" class="Tests\Unit\Services\ProductRelationsServiceTest" classname="Tests.Unit.Services.ProductRelationsServiceTest" assertions="1" time="0.010225"/>
+        <testcase name="test_it_syncs_services_with_pivot_data" file="/var/www/html/tests/Unit/Services/ProductRelationsServiceTest.php" line="34" class="Tests\Unit\Services\ProductRelationsServiceTest" classname="Tests.Unit.Services.ProductRelationsServiceTest" assertions="1" time="0.008465"/>
       </testsuite>
-      <testsuite name="Tests\Unit\Services\ProductServiceTest" file="/var/www/html/tests/Unit/Services/ProductServiceTest.php" tests="1" assertions="4" errors="0" failures="0" skipped="0" time="0.010504">
-        <testcase name="test_it_creates_product_with_relations_and_image" file="/var/www/html/tests/Unit/Services/ProductServiceTest.php" line="17" class="Tests\Unit\Services\ProductServiceTest" classname="Tests.Unit.Services.ProductServiceTest" assertions="4" time="0.010504"/>
+      <testsuite name="Tests\Unit\Services\ProductServiceTest" file="/var/www/html/tests/Unit/Services/ProductServiceTest.php" tests="1" assertions="4" errors="0" failures="0" skipped="0" time="0.008995">
+        <testcase name="test_it_creates_product_with_relations_and_image" file="/var/www/html/tests/Unit/Services/ProductServiceTest.php" line="17" class="Tests\Unit\Services\ProductServiceTest" classname="Tests.Unit.Services.ProductServiceTest" assertions="4" time="0.008995"/>
       </testsuite>
     </testsuite>
-    <testsuite name="Feature" tests="6" assertions="33" errors="0" failures="0" skipped="0" time="0.094355">
-      <testsuite name="Tests\Feature\CatalogIndexTest" file="/var/www/html/tests/Feature/CatalogIndexTest.php" tests="1" assertions="16" errors="0" failures="0" skipped="0" time="0.035521">
-        <testcase name="test_catalog_filters_products_by_search" file="/var/www/html/tests/Feature/CatalogIndexTest.php" line="13" class="Tests\Feature\CatalogIndexTest" classname="Tests.Feature.CatalogIndexTest" assertions="16" time="0.035521"/>
+    <testsuite name="Feature" tests="6" assertions="33" errors="0" failures="0" skipped="0" time="0.090221">
+      <testsuite name="Tests\Feature\CatalogIndexTest" file="/var/www/html/tests/Feature/CatalogIndexTest.php" tests="1" assertions="16" errors="0" failures="0" skipped="0" time="0.034755">
+        <testcase name="test_catalog_filters_products_by_search" file="/var/www/html/tests/Feature/CatalogIndexTest.php" line="13" class="Tests\Feature\CatalogIndexTest" classname="Tests.Feature.CatalogIndexTest" assertions="16" time="0.034755"/>
       </testsuite>
-      <testsuite name="Tests\Feature\ExampleTest" file="/var/www/html/tests/Feature/ExampleTest.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.009643">
-        <testcase name="test_the_application_returns_a_successful_response" file="/var/www/html/tests/Feature/ExampleTest.php" line="13" class="Tests\Feature\ExampleTest" classname="Tests.Feature.ExampleTest" assertions="1" time="0.009643"/>
+      <testsuite name="Tests\Feature\ExampleTest" file="/var/www/html/tests/Feature/ExampleTest.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.008826">
+        <testcase name="test_the_application_returns_a_successful_response" file="/var/www/html/tests/Feature/ExampleTest.php" line="13" class="Tests\Feature\ExampleTest" classname="Tests.Feature.ExampleTest" assertions="1" time="0.008826"/>
       </testsuite>
-      <testsuite name="Tests\Feature\ProfileTest" file="/var/www/html/tests/Feature/ProfileTest.php" tests="4" assertions="16" errors="0" failures="0" skipped="0" time="0.049192">
-        <testcase name="test_profile_page_is_displayed" file="/var/www/html/tests/Feature/ProfileTest.php" line="13" class="Tests\Feature\ProfileTest" classname="Tests.Feature.ProfileTest" assertions="1" time="0.012259"/>
-        <testcase name="test_profile_information_can_be_updated" file="/var/www/html/tests/Feature/ProfileTest.php" line="22" class="Tests\Feature\ProfileTest" classname="Tests.Feature.ProfileTest" assertions="6" time="0.012630"/>
-        <testcase name="test_email_verification_status_is_unchanged_when_the_email_address_is_unchanged" file="/var/www/html/tests/Feature/ProfileTest.php" line="40" class="Tests\Feature\ProfileTest" classname="Tests.Feature.ProfileTest" assertions="4" time="0.010585"/>
-        <testcase name="test_correct_password_must_be_provided_to_delete_account" file="/var/www/html/tests/Feature/ProfileTest.php" line="72" class="Tests\Feature\ProfileTest" classname="Tests.Feature.ProfileTest" assertions="5" time="0.013717"/>
+      <testsuite name="Tests\Feature\ProfileTest" file="/var/www/html/tests/Feature/ProfileTest.php" tests="4" assertions="16" errors="0" failures="0" skipped="0" time="0.046640">
+        <testcase name="test_profile_page_is_displayed" file="/var/www/html/tests/Feature/ProfileTest.php" line="13" class="Tests\Feature\ProfileTest" classname="Tests.Feature.ProfileTest" assertions="1" time="0.011753"/>
+        <testcase name="test_profile_information_can_be_updated" file="/var/www/html/tests/Feature/ProfileTest.php" line="22" class="Tests\Feature\ProfileTest" classname="Tests.Feature.ProfileTest" assertions="6" time="0.012315"/>
+        <testcase name="test_email_verification_status_is_unchanged_when_the_email_address_is_unchanged" file="/var/www/html/tests/Feature/ProfileTest.php" line="40" class="Tests\Feature\ProfileTest" classname="Tests.Feature.ProfileTest" assertions="4" time="0.009213"/>
+        <testcase name="test_correct_password_must_be_provided_to_delete_account" file="/var/www/html/tests/Feature/ProfileTest.php" line="72" class="Tests\Feature\ProfileTest" classname="Tests.Feature.ProfileTest" assertions="5" time="0.013358"/>
       </testsuite>
     </testsuite>
   </testsuite>
