@@ -39,9 +39,8 @@ pipeline {
 
     post {
         always {
-            // Здесь путь остается laravel-app/..., так как Jenkins видит файлы 
-            // напрямую из репозитория, а не через volume контейнера PHP
-            junit 'tests/_reports/*.xml'
+            // Указываем полный путь, куда примонтирован volume в контейнере Jenkins
+            junit '/var/www/html/tests/_reports/*.xml'
         }
     }
 }
