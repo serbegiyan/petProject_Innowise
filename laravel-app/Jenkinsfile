@@ -10,35 +10,18 @@ pipeline {
 
         stage('Install dependencies') {
             steps {
-                // Убираем cd laravel-app, так как содержимое папки уже в /var/www/html
-                sh '''
-                    docker exec php_fpm_petProject bash -c "
-                        composer install --no-interaction --prefer-dist
-                    "
-                '''
+                sh 'docker exec php_fpm_petProject composer install --no-interaction --prefer-dist'
             }
         }
 
-        stage('Lint & Static Analysis') {
-            parallel {
-                stage('Check Style') {
-                    steps {
-                        sh '''
-                            docker exec php_fpm_petProject bash -c "
-                                vendor/bin/pint --test 
-                            "
-                        '''
-                    }
-                }
-                stage('PHPStan') {
-                    steps {
-                        sh '''
-                            docker exec php_fpm_petProject bash -c "
-                                vendor/bin/phpstan analyse --memory-limit=1G
-                            "
-                        '''
-                    }
-                }
+        stage('Check Style') {
+            steps {
+                sh 'docker exec php_fpm_petProject vendor/bin/pint --test'
+            }
+        }
+        stage('PHPStan') {
+            steps {
+                sh 'docker exec php_fpm_petProject vendor/bin/phpstan analyse --memory-limit=1G'
             }
         }
 
@@ -58,7 +41,7 @@ pipeline {
         always {
             // Здесь путь остается laravel-app/..., так как Jenkins видит файлы 
             // напрямую из репозитория, а не через volume контейнера PHP
-            junit 'laravel-app/tests/_reports/*.xml'
+            junit 'tests/_reports/*.xml'
         }
     }
 }

@@ -9,9 +9,12 @@ use Illuminate\Support\Facades\Auth;
 class BasketService
 {
     /**
-     * Получить все товары в корзине пользователя с трансформированными данными.
-     *
-     * @return Collection<int, array<string, mixed>>
+     * @return \Illuminate\Support\Collection<int, array{
+     *     cart_id: int,
+     *     product: \App\Models\Product,
+     *     quantity: int,
+     *     selected_services: \Illuminate\Database\Eloquent\Collection<int, \App\Models\Service>
+     * }>
      */
     public function getUserBasketItems(): Collection
     {
