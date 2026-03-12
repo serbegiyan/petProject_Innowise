@@ -11,7 +11,10 @@ pipeline {
 
         stage('Install dependencies') {
             steps {
-                sh 'docker exec php_fpm_petProject composer install --no-interaction --prefer-dist'
+                sh '''
+                    docker exec php_fpm_petProject composer install --no-interaction --prefer-dist
+                    docker exec php_fpm_petProject php artisan key:generate --env=testing || true
+                '''
             }
         }
 

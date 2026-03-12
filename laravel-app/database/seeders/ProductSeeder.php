@@ -34,7 +34,7 @@ class ProductSeeder extends Seeder
                     'description' => "Отличный представитель категории {$categoryName} от бренда {$item[1]}.",
                     'price' => $item[2],
                     'release_date' => now()->subMonths(rand(1, 12)),
-                    'image' => 'products/product-image.png',
+                    'image' => 'product-image.png',
                 ]);
 
                 $product->categories()->attach($category->id);

@@ -1,52 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="/var/www/html/phpunit.xml" tests="12" assertions="26" errors="1" failures="3" skipped="0" time="0.900414">
-    <testsuite name="Unit" tests="6" assertions="8" errors="1" failures="0" skipped="0" time="0.215907">
-      <testsuite name="Tests\Unit\ExampleTest" file="/var/www/html/tests/Unit/ExampleTest.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.001693">
-        <testcase name="test_that_true_is_true" file="/var/www/html/tests/Unit/ExampleTest.php" line="12" class="Tests\Unit\ExampleTest" classname="Tests.Unit.ExampleTest" assertions="1" time="0.001693"/>
+  <testsuite name="/var/www/html/phpunit.xml" tests="12" assertions="28" errors="0" failures="3" skipped="0" time="0.802265">
+    <testsuite name="Unit" tests="6" assertions="10" errors="0" failures="0" skipped="0" time="0.192437">
+      <testsuite name="Tests\Unit\ExampleTest" file="/var/www/html/tests/Unit/ExampleTest.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.001234">
+        <testcase name="test_that_true_is_true" file="/var/www/html/tests/Unit/ExampleTest.php" line="12" class="Tests\Unit\ExampleTest" classname="Tests.Unit.ExampleTest" assertions="1" time="0.001234"/>
       </testsuite>
-      <testsuite name="Tests\Unit\Services\ProductImageServiceTest" file="/var/www/html/tests/Unit/Services/ProductImageServiceTest.php" tests="2" assertions="1" errors="1" failures="0" skipped="0" time="0.119091">
-        <testcase name="test_it_uploads_new_image" file="/var/www/html/tests/Unit/Services/ProductImageServiceTest.php" line="13" class="Tests\Unit\Services\ProductImageServiceTest" classname="Tests.Unit.Services.ProductImageServiceTest" assertions="1" time="0.092496"/>
-        <testcase name="test_it_replaces_old_image" file="/var/www/html/tests/Unit/Services/ProductImageServiceTest.php" line="27" class="Tests\Unit\Services\ProductImageServiceTest" classname="Tests.Unit.Services.ProductImageServiceTest" assertions="0" time="0.026596">
-          <error type="Illuminate\Database\QueryException">Tests\Unit\Services\ProductImageServiceTest::test_it_replaces_old_image
-Illuminate\Database\QueryException: SQLSTATE[HY000]: General error: 1 no such table: products (Connection: sqlite, Database: :memory:, SQL: select exists(select * from "products" where "slug" = esse-maxime-sAxcD) as "exists")
-
-/var/www/html/vendor/laravel/framework/src/Illuminate/Database/Connection.php:838
-/var/www/html/vendor/laravel/framework/src/Illuminate/Database/Connection.php:794
-/var/www/html/vendor/laravel/framework/src/Illuminate/Database/Connection.php:411
-/var/www/html/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php:3811
-/var/www/html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php:2235
-/var/www/html/vendor/spatie/laravel-sluggable/src/HasSlug.php:171
-/var/www/html/vendor/spatie/laravel-sluggable/src/HasSlug.php:135
-/var/www/html/vendor/spatie/laravel-sluggable/src/HasSlug.php:82
-/var/www/html/vendor/spatie/laravel-sluggable/src/HasSlug.php:44
-/var/www/html/vendor/spatie/laravel-sluggable/src/HasSlug.php:18
-/var/www/html/vendor/laravel/framework/src/Illuminate/Events/Dispatcher.php:492
-/var/www/html/vendor/laravel/framework/src/Illuminate/Events/Dispatcher.php:319
-/var/www/html/vendor/laravel/framework/src/Illuminate/Events/Dispatcher.php:299
-/var/www/html/vendor/laravel/framework/src/Illuminate/Events/Dispatcher.php:259
-/var/www/html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/HasEvents.php:224
-/var/www/html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php:1384
-/var/www/html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php:1240
-/var/www/html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Factories/Factory.php:370
-/var/www/html/vendor/laravel/framework/src/Illuminate/Collections/Traits/EnumeratesValues.php:275
-/var/www/html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Factories/Factory.php:365
-/var/www/html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Factories/Factory.php:321
-/var/www/html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Factories/Factory.php:315
-/var/www/html/tests/Unit/Services/ProductImageServiceTest.php:31</error>
-        </testcase>
+      <testsuite name="Tests\Unit\Services\ProductImageServiceTest" file="/var/www/html/tests/Unit/Services/ProductImageServiceTest.php" tests="2" assertions="3" errors="0" failures="0" skipped="0" time="0.163930">
+        <testcase name="test_it_uploads_new_image" file="/var/www/html/tests/Unit/Services/ProductImageServiceTest.php" line="13" class="Tests\Unit\Services\ProductImageServiceTest" classname="Tests.Unit.Services.ProductImageServiceTest" assertions="1" time="0.146224"/>
+        <testcase name="test_it_replaces_old_image" file="/var/www/html/tests/Unit/Services/ProductImageServiceTest.php" line="27" class="Tests\Unit\Services\ProductImageServiceTest" classname="Tests.Unit.Services.ProductImageServiceTest" assertions="2" time="0.017706"/>
       </testsuite>
-      <testsuite name="Tests\Unit\Services\ProductRelationsServiceTest" file="/var/www/html/tests/Unit/Services/ProductRelationsServiceTest.php" tests="2" assertions="2" errors="0" failures="0" skipped="0" time="0.086336">
-        <testcase name="test_it_syncs_categories" file="/var/www/html/tests/Unit/Services/ProductRelationsServiceTest.php" line="16" class="Tests\Unit\Services\ProductRelationsServiceTest" classname="Tests.Unit.Services.ProductRelationsServiceTest" assertions="1" time="0.078554"/>
-        <testcase name="test_it_syncs_services_with_pivot_data" file="/var/www/html/tests/Unit/Services/ProductRelationsServiceTest.php" line="34" class="Tests\Unit\Services\ProductRelationsServiceTest" classname="Tests.Unit.Services.ProductRelationsServiceTest" assertions="1" time="0.007781"/>
+      <testsuite name="Tests\Unit\Services\ProductRelationsServiceTest" file="/var/www/html/tests/Unit/Services/ProductRelationsServiceTest.php" tests="2" assertions="2" errors="0" failures="0" skipped="0" time="0.017743">
+        <testcase name="test_it_syncs_categories" file="/var/www/html/tests/Unit/Services/ProductRelationsServiceTest.php" line="16" class="Tests\Unit\Services\ProductRelationsServiceTest" classname="Tests.Unit.Services.ProductRelationsServiceTest" assertions="1" time="0.010140"/>
+        <testcase name="test_it_syncs_services_with_pivot_data" file="/var/www/html/tests/Unit/Services/ProductRelationsServiceTest.php" line="34" class="Tests\Unit\Services\ProductRelationsServiceTest" classname="Tests.Unit.Services.ProductRelationsServiceTest" assertions="1" time="0.007603"/>
       </testsuite>
-      <testsuite name="Tests\Unit\Services\ProductServiceTest" file="/var/www/html/tests/Unit/Services/ProductServiceTest.php" tests="1" assertions="4" errors="0" failures="0" skipped="0" time="0.008788">
-        <testcase name="test_it_creates_product_with_relations_and_image" file="/var/www/html/tests/Unit/Services/ProductServiceTest.php" line="17" class="Tests\Unit\Services\ProductServiceTest" classname="Tests.Unit.Services.ProductServiceTest" assertions="4" time="0.008788"/>
+      <testsuite name="Tests\Unit\Services\ProductServiceTest" file="/var/www/html/tests/Unit/Services/ProductServiceTest.php" tests="1" assertions="4" errors="0" failures="0" skipped="0" time="0.009531">
+        <testcase name="test_it_creates_product_with_relations_and_image" file="/var/www/html/tests/Unit/Services/ProductServiceTest.php" line="17" class="Tests\Unit\Services\ProductServiceTest" classname="Tests.Unit.Services.ProductServiceTest" assertions="4" time="0.009531"/>
       </testsuite>
     </testsuite>
-    <testsuite name="Feature" tests="6" assertions="18" errors="0" failures="3" skipped="0" time="0.684507">
-      <testsuite name="Tests\Feature\CatalogIndexTest" file="/var/www/html/tests/Feature/CatalogIndexTest.php" tests="1" assertions="1" errors="0" failures="1" skipped="0" time="0.224564">
-        <testcase name="test_catalog_filters_products_by_search" file="/var/www/html/tests/Feature/CatalogIndexTest.php" line="13" class="Tests\Feature\CatalogIndexTest" classname="Tests.Feature.CatalogIndexTest" assertions="1" time="0.224564">
+    <testsuite name="Feature" tests="6" assertions="18" errors="0" failures="3" skipped="0" time="0.609828">
+      <testsuite name="Tests\Feature\CatalogIndexTest" file="/var/www/html/tests/Feature/CatalogIndexTest.php" tests="1" assertions="1" errors="0" failures="1" skipped="0" time="0.231310">
+        <testcase name="test_catalog_filters_products_by_search" file="/var/www/html/tests/Feature/CatalogIndexTest.php" line="13" class="Tests\Feature\CatalogIndexTest" classname="Tests.Feature.CatalogIndexTest" assertions="1" time="0.231310">
           <failure type="PHPUnit\Framework\ExpectationFailedException">Tests\Feature\CatalogIndexTest::test_catalog_filters_products_by_search
 Expected response status code [200] but received 500.
 Failed asserting that 500 is identical to 200.
@@ -222,185 +195,185 @@ Vite manifest not found at: /var/www/html/public/build/manifest.json (View: /var
 /var/www/html/tests/Feature/CatalogIndexTest.php:23</failure>
         </testcase>
       </testsuite>
-      <testsuite name="Tests\Feature\ExampleTest" file="/var/www/html/tests/Feature/ExampleTest.php" tests="1" assertions="1" errors="0" failures="1" skipped="0" time="0.240333">
-        <testcase name="test_the_application_returns_a_successful_response" file="/var/www/html/tests/Feature/ExampleTest.php" line="13" class="Tests\Feature\ExampleTest" classname="Tests.Feature.ExampleTest" assertions="1" time="0.240333">
+      <testsuite name="Tests\Feature\ExampleTest" file="/var/www/html/tests/Feature/ExampleTest.php" tests="1" assertions="1" errors="0" failures="1" skipped="0" time="0.172537">
+        <testcase name="test_the_application_returns_a_successful_response" file="/var/www/html/tests/Feature/ExampleTest.php" line="13" class="Tests\Feature\ExampleTest" classname="Tests.Feature.ExampleTest" assertions="1" time="0.172537">
           <failure type="PHPUnit\Framework\ExpectationFailedException">Tests\Feature\ExampleTest::test_the_application_returns_a_successful_response
 Expected response status code [200] but received 500.
 Failed asserting that 500 is identical to 200.
 
 The following exception occurred during the last request:
 
-PDOException: SQLSTATE[HY000]: General error: 1 no such table: products in /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Connection.php:420
+Illuminate\Foundation\ViteManifestNotFoundException: Vite manifest not found at: /var/www/html/public/build/manifest.json in /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Vite.php:946
 Stack trace:
-#0 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Connection.php(420): PDO-&gt;prepare('select count(*)...')
-#1 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Connection.php(827): Illuminate\Database\Connection-&gt;{closure:Illuminate\Database\Connection::select():411}('select count(*)...', Array)
-#2 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Connection.php(794): Illuminate\Database\Connection-&gt;runQueryCallback('select count(*)...', Array, Object(Closure))
-#3 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Connection.php(411): Illuminate\Database\Connection-&gt;run('select count(*)...', Array, Object(Closure))
-#4 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3438): Illuminate\Database\Connection-&gt;select('select count(*)...', Array, true)
-#5 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3423): Illuminate\Database\Query\Builder-&gt;runSelect()
-#6 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(4013): Illuminate\Database\Query\Builder-&gt;{closure:Illuminate\Database\Query\Builder::get():3422}()
-#7 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3422): Illuminate\Database\Query\Builder-&gt;onceWithColumns(Array, Object(Closure))
-#8 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3617): Illuminate\Database\Query\Builder-&gt;get()
-#9 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3576): Illuminate\Database\Query\Builder-&gt;runPaginationCountQuery(Array)
-#10 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(1120): Illuminate\Database\Query\Builder-&gt;getCountForPagination()
-#11 /var/www/html/app/Services/ProductFilterService.php(22): Illuminate\Database\Eloquent\Builder-&gt;paginate(12)
-#12 /var/www/html/app/Http/Controllers/CatalogController.php(24): App\Services\ProductFilterService-&gt;filter(Array)
-#13 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(46): App\Http\Controllers\CatalogController-&gt;index(Object(App\Http\Requests\CatalogRequest))
-#14 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Route.php(265): Illuminate\Routing\ControllerDispatcher-&gt;dispatch(Object(Illuminate\Routing\Route), Object(App\Http\Controllers\CatalogController), 'index')
-#15 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Route.php(211): Illuminate\Routing\Route-&gt;runController()
-#16 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(822): Illuminate\Routing\Route-&gt;run()
-#17 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\Routing\Router-&gt;{closure:Illuminate\Routing\Router::runRouteWithinStack():821}(Object(Illuminate\Http\Request))
-#18 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Middleware/AddLinkHeadersForPreloadedAssets.php(32): Illuminate\Pipeline\Pipeline-&gt;{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))
-#19 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#20 /var/www/html/vendor/inertiajs/inertia-laravel/src/Middleware.php(122): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#21 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Inertia\Middleware-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#22 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#23 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Routing\Middleware\SubstituteBindings-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#24 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/VerifyCsrfToken.php(87): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#25 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\VerifyCsrfToken-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#26 /var/www/html/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(48): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#27 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\View\Middleware\ShareErrorsFromSession-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#28 /var/www/html/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(120): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#29 /var/www/html/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(63): Illuminate\Session\Middleware\StartSession-&gt;handleStatefulRequest(Object(Illuminate\Http\Request), Object(Illuminate\Session\Store), Object(Closure))
-#30 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Session\Middleware\StartSession-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#31 /var/www/html/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(36): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#32 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#33 /var/www/html/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(74): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#34 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Cookie\Middleware\EncryptCookies-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#35 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#36 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(821): Illuminate\Pipeline\Pipeline-&gt;then(Object(Closure))
-#37 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(800): Illuminate\Routing\Router-&gt;runRouteWithinStack(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request))
-#38 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(764): Illuminate\Routing\Router-&gt;runRoute(Object(Illuminate\Http\Request), Object(Illuminate\Routing\Route))
-#39 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(753): Illuminate\Routing\Router-&gt;dispatchToRoute(Object(Illuminate\Http\Request))
-#40 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(200): Illuminate\Routing\Router-&gt;dispatch(Object(Illuminate\Http\Request))
-#41 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\Foundation\Http\Kernel-&gt;{closure:Illuminate\Foundation\Http\Kernel::dispatchToRouter():197}(Object(Illuminate\Http\Request))
-#42 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\Pipeline\Pipeline-&gt;{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))
-#43 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\Foundation\Http\Middleware\TransformsRequest-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#44 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#45 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#46 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(51): Illuminate\Foundation\Http\Middleware\TransformsRequest-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#47 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\TrimStrings-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#48 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php(27): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#49 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\ValidatePostSize-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#50 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(109): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#51 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#52 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(61): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#53 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\HandleCors-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#54 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(58): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#55 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\TrustProxies-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#56 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks.php(22): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#57 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#58 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePathEncoding.php(26): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#59 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\ValidatePathEncoding-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#60 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#61 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(175): Illuminate\Pipeline\Pipeline-&gt;then(Object(Closure))
-#62 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(144): Illuminate\Foundation\Http\Kernel-&gt;sendRequestThroughRouter(Object(Illuminate\Http\Request))
-#63 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/MakesHttpRequests.php(607): Illuminate\Foundation\Http\Kernel-&gt;handle(Object(Illuminate\Http\Request))
-#64 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/MakesHttpRequests.php(368): Illuminate\Foundation\Testing\TestCase-&gt;call('GET', '/catalog', Array, Array, Array, Array)
-#65 /var/www/html/tests/Feature/ExampleTest.php(15): Illuminate\Foundation\Testing\TestCase-&gt;get('/catalog')
-#66 /var/www/html/vendor/phpunit/phpunit/src/Framework/TestCase.php(1667): Tests\Feature\ExampleTest-&gt;test_the_application_returns_a_successful_response()
-#67 /var/www/html/vendor/phpunit/phpunit/src/Framework/TestCase.php(519): PHPUnit\Framework\TestCase-&gt;runTest()
-#68 /var/www/html/vendor/phpunit/phpunit/src/Framework/TestRunner/TestRunner.php(87): PHPUnit\Framework\TestCase-&gt;runBare()
-#69 /var/www/html/vendor/phpunit/phpunit/src/Framework/TestCase.php(365): PHPUnit\Framework\TestRunner-&gt;run(Object(Tests\Feature\ExampleTest))
-#70 /var/www/html/vendor/phpunit/phpunit/src/Framework/TestSuite.php(369): PHPUnit\Framework\TestCase-&gt;run()
-#71 /var/www/html/vendor/phpunit/phpunit/src/Framework/TestSuite.php(369): PHPUnit\Framework\TestSuite-&gt;run()
+#0 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Vite.php(384): Illuminate\Foundation\Vite-&gt;manifest('build')
+#1 /var/www/html/storage/framework/views/be4b983db7afa26600524eadc49be7a1.php(17): Illuminate\Foundation\Vite-&gt;__invoke(Object(Illuminate\Support\Collection))
+#2 /var/www/html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(123): require('/var/www/html/s...')
+#3 /var/www/html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(124): Illuminate\Filesystem\Filesystem::{closure:Illuminate\Filesystem\Filesystem::getRequire():120}()
+#4 /var/www/html/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(57): Illuminate\Filesystem\Filesystem-&gt;getRequire('/var/www/html/s...', Array)
+#5 /var/www/html/vendor/laravel/framework/src/Illuminate/View/Engines/CompilerEngine.php(76): Illuminate\View\Engines\PhpEngine-&gt;evaluatePath('/var/www/html/s...', Array)
+#6 /var/www/html/vendor/laravel/framework/src/Illuminate/View/View.php(208): Illuminate\View\Engines\CompilerEngine-&gt;get('/var/www/html/r...', Array)
+#7 /var/www/html/vendor/laravel/framework/src/Illuminate/View/View.php(191): Illuminate\View\View-&gt;getContents()
+#8 /var/www/html/vendor/laravel/framework/src/Illuminate/View/View.php(160): Illuminate\View\View-&gt;renderContents()
+#9 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Response.php(78): Illuminate\View\View-&gt;render()
+#10 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Response.php(34): Illuminate\Http\Response-&gt;setContent(Object(Illuminate\View\View))
+#11 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/ResponseFactory.php(61): Illuminate\Http\Response-&gt;__construct(Object(Illuminate\View\View), 200, Array)
+#12 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/ResponseFactory.php(91): Illuminate\Routing\ResponseFactory-&gt;make(Object(Illuminate\View\View), 200, Array)
+#13 /var/www/html/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(363): Illuminate\Routing\ResponseFactory-&gt;view('app', Array)
+#14 /var/www/html/vendor/inertiajs/inertia-laravel/src/Response.php(219): Illuminate\Support\Facades\Facade::__callStatic('view', Array)
+#15 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(921): Inertia\Response-&gt;toResponse(Object(Illuminate\Http\Request))
+#16 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(906): Illuminate\Routing\Router::toResponse(Object(Illuminate\Http\Request), Object(Inertia\Response))
+#17 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(821): Illuminate\Routing\Router-&gt;prepareResponse(Object(Illuminate\Http\Request), Object(Inertia\Response))
+#18 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\Routing\Router-&gt;{closure:Illuminate\Routing\Router::runRouteWithinStack():821}(Object(Illuminate\Http\Request))
+#19 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Middleware/AddLinkHeadersForPreloadedAssets.php(32): Illuminate\Pipeline\Pipeline-&gt;{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))
+#20 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#21 /var/www/html/vendor/inertiajs/inertia-laravel/src/Middleware.php(122): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#22 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Inertia\Middleware-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#23 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#24 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Routing\Middleware\SubstituteBindings-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#25 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/VerifyCsrfToken.php(87): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#26 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\VerifyCsrfToken-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#27 /var/www/html/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(48): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#28 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\View\Middleware\ShareErrorsFromSession-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#29 /var/www/html/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(120): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#30 /var/www/html/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(63): Illuminate\Session\Middleware\StartSession-&gt;handleStatefulRequest(Object(Illuminate\Http\Request), Object(Illuminate\Session\Store), Object(Closure))
+#31 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Session\Middleware\StartSession-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#32 /var/www/html/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(36): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#33 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#34 /var/www/html/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(74): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#35 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Cookie\Middleware\EncryptCookies-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#36 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#37 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(821): Illuminate\Pipeline\Pipeline-&gt;then(Object(Closure))
+#38 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(800): Illuminate\Routing\Router-&gt;runRouteWithinStack(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request))
+#39 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(764): Illuminate\Routing\Router-&gt;runRoute(Object(Illuminate\Http\Request), Object(Illuminate\Routing\Route))
+#40 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(753): Illuminate\Routing\Router-&gt;dispatchToRoute(Object(Illuminate\Http\Request))
+#41 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(200): Illuminate\Routing\Router-&gt;dispatch(Object(Illuminate\Http\Request))
+#42 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\Foundation\Http\Kernel-&gt;{closure:Illuminate\Foundation\Http\Kernel::dispatchToRouter():197}(Object(Illuminate\Http\Request))
+#43 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\Pipeline\Pipeline-&gt;{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))
+#44 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\Foundation\Http\Middleware\TransformsRequest-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#45 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#46 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#47 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(51): Illuminate\Foundation\Http\Middleware\TransformsRequest-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#48 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\TrimStrings-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#49 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php(27): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#50 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\ValidatePostSize-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#51 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(109): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#52 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#53 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(61): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#54 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\HandleCors-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#55 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(58): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#56 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\TrustProxies-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#57 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks.php(22): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#58 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#59 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePathEncoding.php(26): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#60 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\ValidatePathEncoding-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#61 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#62 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(175): Illuminate\Pipeline\Pipeline-&gt;then(Object(Closure))
+#63 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(144): Illuminate\Foundation\Http\Kernel-&gt;sendRequestThroughRouter(Object(Illuminate\Http\Request))
+#64 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/MakesHttpRequests.php(607): Illuminate\Foundation\Http\Kernel-&gt;handle(Object(Illuminate\Http\Request))
+#65 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/MakesHttpRequests.php(368): Illuminate\Foundation\Testing\TestCase-&gt;call('GET', '/catalog', Array, Array, Array, Array)
+#66 /var/www/html/tests/Feature/ExampleTest.php(15): Illuminate\Foundation\Testing\TestCase-&gt;get('/catalog')
+#67 /var/www/html/vendor/phpunit/phpunit/src/Framework/TestCase.php(1667): Tests\Feature\ExampleTest-&gt;test_the_application_returns_a_successful_response()
+#68 /var/www/html/vendor/phpunit/phpunit/src/Framework/TestCase.php(519): PHPUnit\Framework\TestCase-&gt;runTest()
+#69 /var/www/html/vendor/phpunit/phpunit/src/Framework/TestRunner/TestRunner.php(87): PHPUnit\Framework\TestCase-&gt;runBare()
+#70 /var/www/html/vendor/phpunit/phpunit/src/Framework/TestCase.php(365): PHPUnit\Framework\TestRunner-&gt;run(Object(Tests\Feature\ExampleTest))
+#71 /var/www/html/vendor/phpunit/phpunit/src/Framework/TestSuite.php(369): PHPUnit\Framework\TestCase-&gt;run()
 #72 /var/www/html/vendor/phpunit/phpunit/src/Framework/TestSuite.php(369): PHPUnit\Framework\TestSuite-&gt;run()
-#73 /var/www/html/vendor/phpunit/phpunit/src/TextUI/TestRunner.php(64): PHPUnit\Framework\TestSuite-&gt;run()
-#74 /var/www/html/vendor/phpunit/phpunit/src/TextUI/Application.php(211): PHPUnit\TextUI\TestRunner-&gt;run(Object(PHPUnit\TextUI\Configuration\Configuration), Object(PHPUnit\Runner\ResultCache\DefaultResultCache), Object(PHPUnit\Framework\TestSuite))
-#75 /var/www/html/vendor/phpunit/phpunit/phpunit(104): PHPUnit\TextUI\Application-&gt;run(Array)
-#76 /var/www/html/vendor/bin/phpunit(122): include('/var/www/html/v...')
-#77 {main}
+#73 /var/www/html/vendor/phpunit/phpunit/src/Framework/TestSuite.php(369): PHPUnit\Framework\TestSuite-&gt;run()
+#74 /var/www/html/vendor/phpunit/phpunit/src/TextUI/TestRunner.php(64): PHPUnit\Framework\TestSuite-&gt;run()
+#75 /var/www/html/vendor/phpunit/phpunit/src/TextUI/Application.php(211): PHPUnit\TextUI\TestRunner-&gt;run(Object(PHPUnit\TextUI\Configuration\Configuration), Object(PHPUnit\Runner\ResultCache\DefaultResultCache), Object(PHPUnit\Framework\TestSuite))
+#76 /var/www/html/vendor/phpunit/phpunit/phpunit(104): PHPUnit\TextUI\Application-&gt;run(Array)
+#77 /var/www/html/vendor/bin/phpunit(122): include('/var/www/html/v...')
+#78 {main}
 
-Next Illuminate\Database\QueryException: SQLSTATE[HY000]: General error: 1 no such table: products (Connection: sqlite, Database: :memory:, SQL: select count(*) as aggregate from "products" where "products"."deleted_at" is null) in /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Connection.php:838
+Next Illuminate\View\ViewException: Vite manifest not found at: /var/www/html/public/build/manifest.json (View: /var/www/html/resources/views/app.blade.php) in /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Vite.php:946
 Stack trace:
-#0 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Connection.php(794): Illuminate\Database\Connection-&gt;runQueryCallback('select count(*)...', Array, Object(Closure))
-#1 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Connection.php(411): Illuminate\Database\Connection-&gt;run('select count(*)...', Array, Object(Closure))
-#2 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3438): Illuminate\Database\Connection-&gt;select('select count(*)...', Array, true)
-#3 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3423): Illuminate\Database\Query\Builder-&gt;runSelect()
-#4 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(4013): Illuminate\Database\Query\Builder-&gt;{closure:Illuminate\Database\Query\Builder::get():3422}()
-#5 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3422): Illuminate\Database\Query\Builder-&gt;onceWithColumns(Array, Object(Closure))
-#6 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3617): Illuminate\Database\Query\Builder-&gt;get()
-#7 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(3576): Illuminate\Database\Query\Builder-&gt;runPaginationCountQuery(Array)
-#8 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(1120): Illuminate\Database\Query\Builder-&gt;getCountForPagination()
-#9 /var/www/html/app/Services/ProductFilterService.php(22): Illuminate\Database\Eloquent\Builder-&gt;paginate(12)
-#10 /var/www/html/app/Http/Controllers/CatalogController.php(24): App\Services\ProductFilterService-&gt;filter(Array)
-#11 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(46): App\Http\Controllers\CatalogController-&gt;index(Object(App\Http\Requests\CatalogRequest))
-#12 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Route.php(265): Illuminate\Routing\ControllerDispatcher-&gt;dispatch(Object(Illuminate\Routing\Route), Object(App\Http\Controllers\CatalogController), 'index')
-#13 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Route.php(211): Illuminate\Routing\Route-&gt;runController()
-#14 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(822): Illuminate\Routing\Route-&gt;run()
-#15 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\Routing\Router-&gt;{closure:Illuminate\Routing\Router::runRouteWithinStack():821}(Object(Illuminate\Http\Request))
-#16 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Middleware/AddLinkHeadersForPreloadedAssets.php(32): Illuminate\Pipeline\Pipeline-&gt;{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))
-#17 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#18 /var/www/html/vendor/inertiajs/inertia-laravel/src/Middleware.php(122): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#19 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Inertia\Middleware-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#20 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#21 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Routing\Middleware\SubstituteBindings-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#22 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/VerifyCsrfToken.php(87): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#23 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\VerifyCsrfToken-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#24 /var/www/html/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(48): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#25 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\View\Middleware\ShareErrorsFromSession-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#26 /var/www/html/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(120): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#27 /var/www/html/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(63): Illuminate\Session\Middleware\StartSession-&gt;handleStatefulRequest(Object(Illuminate\Http\Request), Object(Illuminate\Session\Store), Object(Closure))
-#28 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Session\Middleware\StartSession-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#29 /var/www/html/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(36): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#30 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#31 /var/www/html/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(74): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#32 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Cookie\Middleware\EncryptCookies-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#33 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#34 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(821): Illuminate\Pipeline\Pipeline-&gt;then(Object(Closure))
-#35 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(800): Illuminate\Routing\Router-&gt;runRouteWithinStack(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request))
-#36 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(764): Illuminate\Routing\Router-&gt;runRoute(Object(Illuminate\Http\Request), Object(Illuminate\Routing\Route))
-#37 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(753): Illuminate\Routing\Router-&gt;dispatchToRoute(Object(Illuminate\Http\Request))
-#38 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(200): Illuminate\Routing\Router-&gt;dispatch(Object(Illuminate\Http\Request))
-#39 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\Foundation\Http\Kernel-&gt;{closure:Illuminate\Foundation\Http\Kernel::dispatchToRouter():197}(Object(Illuminate\Http\Request))
-#40 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\Pipeline\Pipeline-&gt;{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))
-#41 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\Foundation\Http\Middleware\TransformsRequest-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#42 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#43 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#44 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(51): Illuminate\Foundation\Http\Middleware\TransformsRequest-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#45 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\TrimStrings-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#46 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php(27): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#47 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\ValidatePostSize-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#48 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(109): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#49 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#50 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(61): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#51 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\HandleCors-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#52 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(58): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#53 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\TrustProxies-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#54 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks.php(22): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#55 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#56 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePathEncoding.php(26): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#57 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\ValidatePathEncoding-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
-#58 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
-#59 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(175): Illuminate\Pipeline\Pipeline-&gt;then(Object(Closure))
-#60 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(144): Illuminate\Foundation\Http\Kernel-&gt;sendRequestThroughRouter(Object(Illuminate\Http\Request))
-#61 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/MakesHttpRequests.php(607): Illuminate\Foundation\Http\Kernel-&gt;handle(Object(Illuminate\Http\Request))
-#62 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/MakesHttpRequests.php(368): Illuminate\Foundation\Testing\TestCase-&gt;call('GET', '/catalog', Array, Array, Array, Array)
-#63 /var/www/html/tests/Feature/ExampleTest.php(15): Illuminate\Foundation\Testing\TestCase-&gt;get('/catalog')
-#64 /var/www/html/vendor/phpunit/phpunit/src/Framework/TestCase.php(1667): Tests\Feature\ExampleTest-&gt;test_the_application_returns_a_successful_response()
-#65 /var/www/html/vendor/phpunit/phpunit/src/Framework/TestCase.php(519): PHPUnit\Framework\TestCase-&gt;runTest()
-#66 /var/www/html/vendor/phpunit/phpunit/src/Framework/TestRunner/TestRunner.php(87): PHPUnit\Framework\TestCase-&gt;runBare()
-#67 /var/www/html/vendor/phpunit/phpunit/src/Framework/TestCase.php(365): PHPUnit\Framework\TestRunner-&gt;run(Object(Tests\Feature\ExampleTest))
-#68 /var/www/html/vendor/phpunit/phpunit/src/Framework/TestSuite.php(369): PHPUnit\Framework\TestCase-&gt;run()
+#0 /var/www/html/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(59): Illuminate\View\Engines\CompilerEngine-&gt;handleViewException(Object(Illuminate\Foundation\ViteManifestNotFoundException), 1)
+#1 /var/www/html/vendor/laravel/framework/src/Illuminate/View/Engines/CompilerEngine.php(76): Illuminate\View\Engines\PhpEngine-&gt;evaluatePath('/var/www/html/s...', Array)
+#2 /var/www/html/vendor/laravel/framework/src/Illuminate/View/View.php(208): Illuminate\View\Engines\CompilerEngine-&gt;get('/var/www/html/r...', Array)
+#3 /var/www/html/vendor/laravel/framework/src/Illuminate/View/View.php(191): Illuminate\View\View-&gt;getContents()
+#4 /var/www/html/vendor/laravel/framework/src/Illuminate/View/View.php(160): Illuminate\View\View-&gt;renderContents()
+#5 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Response.php(78): Illuminate\View\View-&gt;render()
+#6 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Response.php(34): Illuminate\Http\Response-&gt;setContent(Object(Illuminate\View\View))
+#7 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/ResponseFactory.php(61): Illuminate\Http\Response-&gt;__construct(Object(Illuminate\View\View), 200, Array)
+#8 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/ResponseFactory.php(91): Illuminate\Routing\ResponseFactory-&gt;make(Object(Illuminate\View\View), 200, Array)
+#9 /var/www/html/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(363): Illuminate\Routing\ResponseFactory-&gt;view('app', Array)
+#10 /var/www/html/vendor/inertiajs/inertia-laravel/src/Response.php(219): Illuminate\Support\Facades\Facade::__callStatic('view', Array)
+#11 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(921): Inertia\Response-&gt;toResponse(Object(Illuminate\Http\Request))
+#12 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(906): Illuminate\Routing\Router::toResponse(Object(Illuminate\Http\Request), Object(Inertia\Response))
+#13 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(821): Illuminate\Routing\Router-&gt;prepareResponse(Object(Illuminate\Http\Request), Object(Inertia\Response))
+#14 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\Routing\Router-&gt;{closure:Illuminate\Routing\Router::runRouteWithinStack():821}(Object(Illuminate\Http\Request))
+#15 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Middleware/AddLinkHeadersForPreloadedAssets.php(32): Illuminate\Pipeline\Pipeline-&gt;{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))
+#16 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#17 /var/www/html/vendor/inertiajs/inertia-laravel/src/Middleware.php(122): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#18 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Inertia\Middleware-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#19 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#20 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Routing\Middleware\SubstituteBindings-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#21 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/VerifyCsrfToken.php(87): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#22 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\VerifyCsrfToken-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#23 /var/www/html/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(48): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#24 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\View\Middleware\ShareErrorsFromSession-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#25 /var/www/html/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(120): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#26 /var/www/html/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(63): Illuminate\Session\Middleware\StartSession-&gt;handleStatefulRequest(Object(Illuminate\Http\Request), Object(Illuminate\Session\Store), Object(Closure))
+#27 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Session\Middleware\StartSession-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#28 /var/www/html/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(36): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#29 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#30 /var/www/html/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(74): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#31 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Cookie\Middleware\EncryptCookies-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#32 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#33 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(821): Illuminate\Pipeline\Pipeline-&gt;then(Object(Closure))
+#34 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(800): Illuminate\Routing\Router-&gt;runRouteWithinStack(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request))
+#35 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(764): Illuminate\Routing\Router-&gt;runRoute(Object(Illuminate\Http\Request), Object(Illuminate\Routing\Route))
+#36 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(753): Illuminate\Routing\Router-&gt;dispatchToRoute(Object(Illuminate\Http\Request))
+#37 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(200): Illuminate\Routing\Router-&gt;dispatch(Object(Illuminate\Http\Request))
+#38 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\Foundation\Http\Kernel-&gt;{closure:Illuminate\Foundation\Http\Kernel::dispatchToRouter():197}(Object(Illuminate\Http\Request))
+#39 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\Pipeline\Pipeline-&gt;{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))
+#40 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\Foundation\Http\Middleware\TransformsRequest-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#41 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#42 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#43 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(51): Illuminate\Foundation\Http\Middleware\TransformsRequest-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#44 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\TrimStrings-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#45 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php(27): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#46 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\ValidatePostSize-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#47 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(109): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#48 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#49 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(61): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#50 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\HandleCors-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#51 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(58): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#52 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\TrustProxies-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#53 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks.php(22): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#54 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#55 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePathEncoding.php(26): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#56 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\ValidatePathEncoding-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#57 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#58 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(175): Illuminate\Pipeline\Pipeline-&gt;then(Object(Closure))
+#59 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(144): Illuminate\Foundation\Http\Kernel-&gt;sendRequestThroughRouter(Object(Illuminate\Http\Request))
+#60 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/MakesHttpRequests.php(607): Illuminate\Foundation\Http\Kernel-&gt;handle(Object(Illuminate\Http\Request))
+#61 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/MakesHttpRequests.php(368): Illuminate\Foundation\Testing\TestCase-&gt;call('GET', '/catalog', Array, Array, Array, Array)
+#62 /var/www/html/tests/Feature/ExampleTest.php(15): Illuminate\Foundation\Testing\TestCase-&gt;get('/catalog')
+#63 /var/www/html/vendor/phpunit/phpunit/src/Framework/TestCase.php(1667): Tests\Feature\ExampleTest-&gt;test_the_application_returns_a_successful_response()
+#64 /var/www/html/vendor/phpunit/phpunit/src/Framework/TestCase.php(519): PHPUnit\Framework\TestCase-&gt;runTest()
+#65 /var/www/html/vendor/phpunit/phpunit/src/Framework/TestRunner/TestRunner.php(87): PHPUnit\Framework\TestCase-&gt;runBare()
+#66 /var/www/html/vendor/phpunit/phpunit/src/Framework/TestCase.php(365): PHPUnit\Framework\TestRunner-&gt;run(Object(Tests\Feature\ExampleTest))
+#67 /var/www/html/vendor/phpunit/phpunit/src/Framework/TestSuite.php(369): PHPUnit\Framework\TestCase-&gt;run()
+#68 /var/www/html/vendor/phpunit/phpunit/src/Framework/TestSuite.php(369): PHPUnit\Framework\TestSuite-&gt;run()
 #69 /var/www/html/vendor/phpunit/phpunit/src/Framework/TestSuite.php(369): PHPUnit\Framework\TestSuite-&gt;run()
-#70 /var/www/html/vendor/phpunit/phpunit/src/Framework/TestSuite.php(369): PHPUnit\Framework\TestSuite-&gt;run()
-#71 /var/www/html/vendor/phpunit/phpunit/src/TextUI/TestRunner.php(64): PHPUnit\Framework\TestSuite-&gt;run()
-#72 /var/www/html/vendor/phpunit/phpunit/src/TextUI/Application.php(211): PHPUnit\TextUI\TestRunner-&gt;run(Object(PHPUnit\TextUI\Configuration\Configuration), Object(PHPUnit\Runner\ResultCache\DefaultResultCache), Object(PHPUnit\Framework\TestSuite))
-#73 /var/www/html/vendor/phpunit/phpunit/phpunit(104): PHPUnit\TextUI\Application-&gt;run(Array)
-#74 /var/www/html/vendor/bin/phpunit(122): include('/var/www/html/v...')
-#75 {main}
+#70 /var/www/html/vendor/phpunit/phpunit/src/TextUI/TestRunner.php(64): PHPUnit\Framework\TestSuite-&gt;run()
+#71 /var/www/html/vendor/phpunit/phpunit/src/TextUI/Application.php(211): PHPUnit\TextUI\TestRunner-&gt;run(Object(PHPUnit\TextUI\Configuration\Configuration), Object(PHPUnit\Runner\ResultCache\DefaultResultCache), Object(PHPUnit\Framework\TestSuite))
+#72 /var/www/html/vendor/phpunit/phpunit/phpunit(104): PHPUnit\TextUI\Application-&gt;run(Array)
+#73 /var/www/html/vendor/bin/phpunit(122): include('/var/www/html/v...')
+#74 {main}
 
 ----------------------------------------------------------------------------------
 
-SQLSTATE[HY000]: General error: 1 no such table: products (Connection: sqlite, Database: :memory:, SQL: select count(*) as aggregate from "products" where "products"."deleted_at" is null)
+Vite manifest not found at: /var/www/html/public/build/manifest.json (View: /var/www/html/resources/views/app.blade.php)
 
 /var/www/html/vendor/laravel/framework/src/Illuminate/Testing/TestResponseAssert.php:45
 /var/www/html/vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:174
 /var/www/html/tests/Feature/ExampleTest.php:17</failure>
         </testcase>
       </testsuite>
-      <testsuite name="Tests\Feature\ProfileTest" file="/var/www/html/tests/Feature/ProfileTest.php" tests="4" assertions="16" errors="0" failures="1" skipped="0" time="0.219610">
-        <testcase name="test_profile_page_is_displayed" file="/var/www/html/tests/Feature/ProfileTest.php" line="13" class="Tests\Feature\ProfileTest" classname="Tests.Feature.ProfileTest" assertions="1" time="0.182609">
+      <testsuite name="Tests\Feature\ProfileTest" file="/var/www/html/tests/Feature/ProfileTest.php" tests="4" assertions="16" errors="0" failures="1" skipped="0" time="0.205981">
+        <testcase name="test_profile_page_is_displayed" file="/var/www/html/tests/Feature/ProfileTest.php" line="13" class="Tests\Feature\ProfileTest" classname="Tests.Feature.ProfileTest" assertions="1" time="0.171618">
           <failure type="PHPUnit\Framework\ExpectationFailedException">Tests\Feature\ProfileTest::test_profile_page_is_displayed
 Expected response status code [200] but received 500.
 Failed asserting that 500 is identical to 200.
@@ -580,9 +553,9 @@ Vite manifest not found at: /var/www/html/public/build/manifest.json (View: /var
 /var/www/html/vendor/laravel/framework/src/Illuminate/Testing/Concerns/AssertsStatusCodes.php:16
 /var/www/html/tests/Feature/ProfileTest.php:19</failure>
         </testcase>
-        <testcase name="test_profile_information_can_be_updated" file="/var/www/html/tests/Feature/ProfileTest.php" line="22" class="Tests\Feature\ProfileTest" classname="Tests.Feature.ProfileTest" assertions="6" time="0.013024"/>
-        <testcase name="test_email_verification_status_is_unchanged_when_the_email_address_is_unchanged" file="/var/www/html/tests/Feature/ProfileTest.php" line="40" class="Tests\Feature\ProfileTest" classname="Tests.Feature.ProfileTest" assertions="4" time="0.010424"/>
-        <testcase name="test_correct_password_must_be_provided_to_delete_account" file="/var/www/html/tests/Feature/ProfileTest.php" line="72" class="Tests\Feature\ProfileTest" classname="Tests.Feature.ProfileTest" assertions="5" time="0.013553"/>
+        <testcase name="test_profile_information_can_be_updated" file="/var/www/html/tests/Feature/ProfileTest.php" line="22" class="Tests\Feature\ProfileTest" classname="Tests.Feature.ProfileTest" assertions="6" time="0.011638"/>
+        <testcase name="test_email_verification_status_is_unchanged_when_the_email_address_is_unchanged" file="/var/www/html/tests/Feature/ProfileTest.php" line="40" class="Tests\Feature\ProfileTest" classname="Tests.Feature.ProfileTest" assertions="4" time="0.010052"/>
+        <testcase name="test_correct_password_must_be_provided_to_delete_account" file="/var/www/html/tests/Feature/ProfileTest.php" line="72" class="Tests\Feature\ProfileTest" classname="Tests.Feature.ProfileTest" assertions="5" time="0.012674"/>
       </testsuite>
     </testsuite>
   </testsuite>
