@@ -29,14 +29,15 @@ pipeline {
         stage('Run Tests') {
             steps {
                 sh '''
-                    # Создаем папку заранее, чтобы не было проблем с правами
+                    # 1. Создаем папку и запускаем тесты внутри PHP контейнера
                     docker exec php_fpm_petProject mkdir -p tests/_reports
-                    
-                    # Запускаем тесты
                     docker exec php_fpm_petProject vendor/bin/phpunit --log-junit tests/_reports/junit.xml
                     
-                    # Даем права на чтение для Jenkins (UID 1000)
-                    docker exec -u root php_fpm_petProject chown -R 1000:1000 tests/_reports
+                    # 2. СОЗДАЕМ папку в самом Jenkins (Workspace)
+                    mkdir -p tests/_reports
+                    
+                    # 3. КОПИРУЕМ файл из контейнера наружу в Jenkins
+                    docker cp php_fpm_petProject:/var/www/html/tests/_reports/junit.xml ./tests/_reports/junit.xml
                 '''
             }
         }

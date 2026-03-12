@@ -60,7 +60,6 @@ services:
       - "8081:8080"
     volumes:
       - jenkins_home:/var/jenkins_home # Монтируем проект прямо в папку workspace внутри Jenkins
-      - ./laravel-app:/var/jenkins_home/workspace/petProject
       - /var/run/docker.sock:/var/run/docker.sock
 
 volumes:
