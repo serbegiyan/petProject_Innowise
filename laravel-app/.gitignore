@@ -19,6 +19,7 @@
 /public/storage
 /storage/*.key
 /storage/pail
+/tests/_reports/
 /vendor
 Homestead.json
 Homestead.yaml
