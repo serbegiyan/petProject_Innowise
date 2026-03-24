@@ -4,6 +4,26 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property int $scale
+ * @property numeric $rate
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExchangeRate newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExchangeRate newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExchangeRate query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExchangeRate whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExchangeRate whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExchangeRate whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExchangeRate whereRate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExchangeRate whereScale($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ExchangeRate whereUpdatedAt($value)
+ *
+ * @mixin \Eloquent
+ */
 class ExchangeRate extends Model
 {
     protected $table = 'exchange_rates';
