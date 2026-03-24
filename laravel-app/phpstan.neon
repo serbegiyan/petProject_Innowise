@@ -5,6 +5,7 @@ parameters:
     level: 4
     
     paths:
+        - app/Models
         - app
         - routes
 
