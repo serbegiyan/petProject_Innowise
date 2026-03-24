@@ -7,48 +7,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-/**
- * @property int $id
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property int $user_id
- * @property string $status
- * @property string|null $payment_method
- * @property string|null $comment
- * @property numeric $total_price
- * @property string|null $customer_name
- * @property string|null $customer_phone
- * @property string|null $customer_email
- * @property string|null $customer_address
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read mixed $status_class
- * @property-read mixed $status_label
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\OrderItem> $items
- * @property-read int|null $items_count
- * @property-read \App\Models\User $user
- *
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Order newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Order newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Order onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Order query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Order whereComment($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Order whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Order whereCustomerAddress($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Order whereCustomerEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Order whereCustomerName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Order whereCustomerPhone($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Order whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Order whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Order wherePaymentMethod($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Order whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Order whereTotalPrice($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Order whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Order whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Order withTrashed(bool $withTrashed = true)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Order withoutTrashed()
- *
- * @mixin \Eloquent
- */
 class Order extends Model
 {
     use SoftDeletes;

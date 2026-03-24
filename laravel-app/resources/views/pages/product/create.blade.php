@@ -45,7 +45,7 @@
             <span class="text-red-500 text-sm italic">{{ $message }}</span>
         @enderror
 
-        <x-label for="price">Цена продукта</x-label>
+        <x-label for="price">Цена продукта, BYN</x-label>
         <x-input placeholder="Введите цену продукта" name="price" type="number" step="0.01" min="0" />
         @error('price')
             <span class="text-red-500 text-sm italic">{{ $message }}</span>

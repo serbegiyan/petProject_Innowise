@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\ExchangeRate;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -29,6 +30,9 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $currencyId = session('currency_id', 1); // 1 — ID валюты по умолчанию
+        $currentCurrency = ExchangeRate::find($currencyId);
+
         return [
             ...parent::share($request),
             'auth' => [
@@ -42,6 +46,7 @@ class HandleInertiaRequests extends Middleware
                         'basket_count' => $request->user()->baskets()->count(),
                     ]
                     : null,
+                'currency' => $currentCurrency,
             ],
             'flash' => [
                 'success' => $request->session()->get('success'),

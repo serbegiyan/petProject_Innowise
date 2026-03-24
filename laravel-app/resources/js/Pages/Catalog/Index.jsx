@@ -10,16 +10,16 @@ import Pagination from '@/Components/Pagination';
 
 export default function Index({ products, filters, categories }) {
     const [values, setValues] = useState({
-        search: filters?.search || '',
-        category: filters?.category || '',
-        sort: filters?.sort || '',
+        search: filters?.search ?? '',
+        category: filters?.category ?? '',
+        sort: typeof filters?.sort === 'string' ? filters.sort : '',
     });
 
     useEffect(() => {
         setValues({
-            search: filters.search ?? '',
-            category: filters.category ?? '',
-            sort: filters.sort ?? '',
+            search: filters?.search || '', // Используем опциональную цепочку ?.
+            category: filters?.category || '',
+            sort: typeof filters?.sort === 'string' ? filters.sort : '',
         });
     }, [filters]);
 
@@ -79,7 +79,9 @@ export default function Index({ products, filters, categories }) {
             {/* Фильтры */}
             <div className="flex flex-row justify-between p-4 border-b">
                 <select className="border rounded-lg py-2 w-fit"
-                    name="category" value={values.category || ''} onChange={handleChange}>
+                    name="category"
+                    value={String(values.category || '')}
+                    onChange={handleChange}>
                     <option value="">Все категории</option>
                     {categories.map(cat => (
                         <option key={cat.id} value={cat.id}>{cat.name}</option>

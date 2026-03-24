@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Category;
+use App\Models\ExchangeRate;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Service;
@@ -28,6 +29,8 @@ class AppServiceProvider extends ServiceProvider
     {
         Vite::prefetch(concurrency: 3);
 
+        View::share('rates', ExchangeRate::all());
+
         View::composer('layouts/main', function ($view): void {
             $stats = [
                 'products_count' => Product::count(),
@@ -37,7 +40,6 @@ class AppServiceProvider extends ServiceProvider
                 'orders_count' => Order::count(),
             ];
             $navCategories = Category::withCount('products')->get();
-
             $view->with([
                 'sidebar_stats' => $stats,
                 'navCategories' => $navCategories,

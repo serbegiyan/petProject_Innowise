@@ -8,6 +8,9 @@ parameters:
         - app
         - routes
 
+    scanFiles:
+        - _ide_helper_models.php
+
     excludePaths:
         - database
         - bootstrap

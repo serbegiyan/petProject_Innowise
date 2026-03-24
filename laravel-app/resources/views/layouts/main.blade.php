@@ -4,8 +4,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    @vite(['resources/css/app.css', 'resources/js/alert.js'])
+    <script>
+        window.routes = {
+            changeCurrency: "{{ route('currency.change') }}"
+        };
+    </script>
+    @vite(['resources/css/app.css', 'resources/js/alert.js', 'resources/js/app.js'])
     <title>@yield('title')</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Fonts -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -19,6 +25,10 @@
         <img src="/images/logo.jpg" className="w-10 rounded-full" />
         <div class=" p-4 ">Вы вошли как {{ auth()->user()->name }}</div>
         <x-search class="" />
+        <x-select class="bg-stone-300 w-max pl-5 pr-8 h-min my-auto rounded" name="rates" :options="$rates"
+            onchange="changeCurrency(this.value)" :selected="session('currency_id')">
+            Выберите валюту
+        </x-select>
         @if (Route::has('login'))
             <nav class="flex items-center justify-end gap-4 mr-4">
                 @auth
@@ -136,6 +146,7 @@
         <div class="h-14.5 hidden lg:block"></div>
     @endif
     @stack('scripts')
+
 </body>
 
 </html>

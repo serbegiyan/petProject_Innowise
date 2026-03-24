@@ -19,9 +19,12 @@ class ProductController extends Controller
             $query->where('name', 'like', '%'.$request->search.'%');
         } else {
             $query
-                ->when($request->category_id, fn ($query, $categoryId) => $query->whereHas('categories', function ($q) use ($categoryId): void {
-                    $q->where('categories.id', $categoryId);
-                }))
+                ->when(
+                    $request->category_id,
+                    fn ($query, $categoryId) => $query->whereHas('categories', function ($q) use ($categoryId): void {
+                        $q->where('categories.id', $categoryId);
+                    }),
+                )
                 ->latest();
         }
 

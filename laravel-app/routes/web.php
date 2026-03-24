@@ -3,6 +3,7 @@
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\OrderAdminController;
 use App\Http\Controllers\OrderController;
@@ -14,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/catalog/{product:slug}', [CatalogController::class, 'show'])->name('catalog.show');
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
+
+Route::post('/currency/change', [CurrencyController::class, 'change'])->name('currency.change');
 
 Route::get('/dashboard', [OrderController::class, 'index'])
     ->middleware(['auth', 'verified'])

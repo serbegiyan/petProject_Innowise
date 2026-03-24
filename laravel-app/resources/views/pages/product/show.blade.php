@@ -11,7 +11,7 @@
     <p class="p-2"><span class="font-bold">Slug:</span> {{ $product->slug }}</p>
     <p class="p-2"><span class="font-bold">Описание продукта:</span> {{ $product->description }}</p>
     <p class="p-2"><span class="font-bold">Цена продукта:</span>
-        {{ Number::format($product->price, precision: 2, locale: 'ru') }} BYN
+        {{ $product->formatted_price }}
     </p>
     <p class="p-2"><span class="font-bold">Дата выпуска:</span> {{ $product->release_date }}</p>
     <p class="p-2"><span class="font-bold">Категория продукта:</span>
@@ -21,7 +21,7 @@
     @foreach ($product->services as $service)
         <li class="p-2 list-none pl-5">
             {{ $service->name }} —
-            <strong>{{ $service->pivot->price }} BYN</strong>
+            <strong>{{ $service->formatted_price }} </strong>
             (Срок: {{ $service->pivot->term }})
         </li>
     @endforeach
