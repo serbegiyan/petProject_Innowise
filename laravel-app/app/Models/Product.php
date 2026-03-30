@@ -13,49 +13,6 @@ use Illuminate\Support\Facades\Storage;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-/**
- * @property int $id
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property string $name
- * @property string|null $description
- * @property string|null $brand
- * @property numeric $price
- * @property string|null $image
- * @property string $slug
- * @property string|null $release_date
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $categories
- * @property-read int|null $categories_count
- * @property-read mixed $formatted_price
- * @property-read string $image_url
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Service> $services
- * @property-read int|null $services_count
- *
- * @method static Builder<static>|Product applySort(?string $sort)
- * @method static Builder<static>|Product byCategory(?int $categoryId)
- * @method static \Database\Factories\ProductFactory factory($count = null, $state = [])
- * @method static Builder<static>|Product newModelQuery()
- * @method static Builder<static>|Product newQuery()
- * @method static Builder<static>|Product onlyTrashed()
- * @method static Builder<static>|Product query()
- * @method static Builder<static>|Product search(?string $search)
- * @method static Builder<static>|Product whereBrand($value)
- * @method static Builder<static>|Product whereCreatedAt($value)
- * @method static Builder<static>|Product whereDeletedAt($value)
- * @method static Builder<static>|Product whereDescription($value)
- * @method static Builder<static>|Product whereId($value)
- * @method static Builder<static>|Product whereImage($value)
- * @method static Builder<static>|Product whereName($value)
- * @method static Builder<static>|Product wherePrice($value)
- * @method static Builder<static>|Product whereReleaseDate($value)
- * @method static Builder<static>|Product whereSlug($value)
- * @method static Builder<static>|Product whereUpdatedAt($value)
- * @method static Builder<static>|Product withTrashed(bool $withTrashed = true)
- * @method static Builder<static>|Product withoutTrashed()
- *
- * @mixin \Eloquent
- */
 class Product extends Model
 {
     use HasFactory;

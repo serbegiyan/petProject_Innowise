@@ -22,7 +22,6 @@ class OrderService
 
             // 1. Создаем основной заказ.
             // Используем array_merge, так как ключи в $validatedData
-            // уже совпадают с твоим $fillable (customer_name, customer_phone и т.д.)
             $order = Order::create(
                 array_merge($validatedData, [
                     'user_id' => $user->id,
