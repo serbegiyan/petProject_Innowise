@@ -13,6 +13,7 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
 
+    use \Illuminate\Auth\MustVerifyEmail;
     use Notifiable;
     use SoftDeletes;
 
