@@ -31,8 +31,8 @@ pipeline {
                     docker exec php_fpm_petProject vendor/bin/phpstan clear-result-cache
                     
                     # 2. Генерируем хелперы прямо в контейнере (на случай, если база нужна для анализа)
-                    # Используем --write, чтобы обновить аннотации в памяти контейнера
-                    docker exec php_fpm_petProject php artisan ide-helper:models --write
+                    docker exec php_fpm_petProject php artisan ide-helper:generate
+                    docker exec php_fpm_petProject php artisan ide-helper:models --nowrite
                     
                     # 3. Запускаем анализ
                     docker exec php_fpm_petProject vendor/bin/phpstan analyse --memory-limit=1G
