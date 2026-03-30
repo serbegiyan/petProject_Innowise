@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\Basket;
+use App\Models\Product;
+use App\Models\Service;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,11 +18,11 @@ class BasketService
     }
 
         /**
-         * @return \Illuminate\Support\Collection<int, array{
+         * @return Collection<int, array{
          *     cart_id: int,
-         *     product: \App\Models\Product,
+         *     product: Product,
          *     quantity: int,
-         *     selected_services: \Illuminate\Database\Eloquent\Collection<int, \App\Models\Service>
+         *     selected_services: \Illuminate\Database\Eloquent\Collection<int, Service>
          * }>
          */
         public function getUserBasketItems(): Collection

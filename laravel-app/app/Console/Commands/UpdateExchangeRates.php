@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\UpdateExchangeRatesJob;
 use Illuminate\Console\Command;
 
 class UpdateExchangeRates extends Command
@@ -29,7 +30,7 @@ class UpdateExchangeRates extends Command
 
         // Выполняем задачу синхронно для команды (через dispatchSync)
         // или отправляем в фон (через dispatch)
-        \App\Jobs\UpdateExchangeRatesJob::dispatchSync();
+        UpdateExchangeRatesJob::dispatchSync();
 
         $this->info('Готово!');
     }

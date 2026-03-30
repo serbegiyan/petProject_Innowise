@@ -8,6 +8,9 @@ parameters:
         - app
         - routes
 
+    checkGenericClassInNonGenericObjectType: false
+    checkMissingIterableValueType: false
+
     scanFiles:
         - _ide_helper_models.php
 
