@@ -17,6 +17,9 @@ return new class extends Migration
 
             $table->decimal('price', 8, 2)->default(0);
             $table->string('term')->nullable();
+
+            $table->primary(['product_id', 'service_id']);
+            $table->index('service_id');
         });
     }
 

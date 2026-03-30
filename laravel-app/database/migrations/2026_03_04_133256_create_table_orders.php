@@ -24,6 +24,8 @@ return new class extends Migration
             $table->string('customer_phone')->nullable();
             $table->string('customer_email')->nullable();
             $table->text('customer_address')->nullable();
+
+            $table->index(['user_id', 'created_at']);
             $table->timestamps();
         });
     }
