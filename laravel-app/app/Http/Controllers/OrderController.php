@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\OrderStoreRequest;
 use App\Services\BasketService;
 use App\Services\OrderService;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class OrderController extends Controller
@@ -12,7 +13,7 @@ class OrderController extends Controller
     public function index()
     {
         return Inertia::render('Dashboard', [
-            'orders' => auth()->user()->orders()->with('items')->latest()->get(),
+            'orders' => Auth::user()->orders()->with('items')->latest()->get(),
         ]);
     }
 
@@ -29,7 +30,7 @@ class OrderController extends Controller
 
     public function store(OrderStoreRequest $request, OrderService $orderService)
     {
-        $orderService->createFromBasket(auth()->user(), $request->validated());
+        $orderService->createFromBasket(Auth::user(), $request->validated());
 
         return redirect()->route('dashboard');
     }

@@ -32,7 +32,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Basket whereServices($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Basket whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Basket whereUserId($value)
- * @mixin \Eloquent
  */
 	class Basket extends \Eloquent {}
 }
@@ -55,7 +54,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Category whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Category whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Category whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 	class Category extends \Eloquent {}
 }
@@ -77,7 +75,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ExchangeRate whereRate($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ExchangeRate whereScale($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ExchangeRate whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 	class ExchangeRate extends \Eloquent {}
 }
@@ -121,7 +118,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Order whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Order withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Order withoutTrashed()
- * @mixin \Eloquent
  */
 	class Order extends \Eloquent {}
 }
@@ -151,7 +147,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|OrderItem whereQuantity($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|OrderItem whereServices($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|OrderItem whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 	class OrderItem extends \Eloquent {}
 }
@@ -175,28 +170,27 @@ namespace App\Models{
  * @property-read string $image_url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Service> $services
  * @property-read int|null $services_count
- * @method static Builder<static>|Product applySort(?string $sort)
- * @method static Builder<static>|Product byCategory(?int $categoryId)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Product applySort(?string $sort)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Product byCategory(?int $categoryId)
  * @method static \Database\Factories\ProductFactory factory($count = null, $state = [])
- * @method static Builder<static>|Product newModelQuery()
- * @method static Builder<static>|Product newQuery()
- * @method static Builder<static>|Product onlyTrashed()
- * @method static Builder<static>|Product query()
- * @method static Builder<static>|Product search(?string $search)
- * @method static Builder<static>|Product whereBrand($value)
- * @method static Builder<static>|Product whereCreatedAt($value)
- * @method static Builder<static>|Product whereDeletedAt($value)
- * @method static Builder<static>|Product whereDescription($value)
- * @method static Builder<static>|Product whereId($value)
- * @method static Builder<static>|Product whereImage($value)
- * @method static Builder<static>|Product whereName($value)
- * @method static Builder<static>|Product wherePrice($value)
- * @method static Builder<static>|Product whereReleaseDate($value)
- * @method static Builder<static>|Product whereSlug($value)
- * @method static Builder<static>|Product whereUpdatedAt($value)
- * @method static Builder<static>|Product withTrashed(bool $withTrashed = true)
- * @method static Builder<static>|Product withoutTrashed()
- * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Product newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Product newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Product onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Product query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Product search(?string $search)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Product whereBrand($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Product whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Product whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Product whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Product whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Product whereImage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Product whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Product wherePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Product whereReleaseDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Product whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Product whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Product withTrashed(bool $withTrashed = true)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Product withoutTrashed()
  */
 	class Product extends \Eloquent {}
 }
@@ -227,7 +221,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Service whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Service withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Service withoutTrashed()
- * @mixin \Eloquent
  */
 	class Service extends \Eloquent {}
 }
@@ -269,7 +262,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutTrashed()
- * @mixin \Eloquent
  */
 	class User extends \Eloquent {}
 }
@@ -289,7 +281,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Wishes whereProductId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Wishes whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Wishes whereUserId($value)
- * @mixin \Eloquent
  */
 	class Wishes extends \Eloquent {}
 }
