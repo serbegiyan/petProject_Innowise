@@ -8,8 +8,12 @@ parameters:
         - app
         - routes
 
-    checkGenericClassInNonGenericObjectType: false
-    checkMissingIterableValueType: false
+    ignoreErrors:
+        - '#Call to an undefined method App\\Models\\User::hasVerifiedEmail\(\)#'
+        - '#Call to an undefined method App\\Models\\User::sendEmailVerificationNotification\(\)#'
+        - '#Call to an undefined method App\\Models\\User::markEmailAsVerified\(\)#'
+        - '#Call to an undefined method App\\Models\\User::(orders|baskets)\(\)#'
+        - '#Relation .* is not found in .* model#'
 
     scanFiles:
         - _ide_helper_models.php

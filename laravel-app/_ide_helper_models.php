@@ -20,8 +20,8 @@ namespace App\Models{
  * @property array<array-key, mixed>|null $services
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Product $product
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\Product|null $product
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Basket newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Basket newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Basket query()
@@ -98,7 +98,7 @@ namespace App\Models{
  * @property-read mixed $status_label
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\OrderItem> $items
  * @property-read int|null $items_count
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Order newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Order newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Order onlyTrashed()
@@ -133,8 +133,8 @@ namespace App\Models{
  * @property array<array-key, mixed>|null $services
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Order $order
- * @property-read \App\Models\Product $product
+ * @property-read \App\Models\Order|null $order
+ * @property-read \App\Models\Product|null $product
  * @method static \Illuminate\Database\Eloquent\Builder<static>|OrderItem newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|OrderItem newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|OrderItem query()
