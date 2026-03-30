@@ -18,10 +18,12 @@ class AdminMiddleware
     {
         $user = $request->user();
 
-        // Проверка instanceof — это "маяк" для PHPStan.
-        // После нее он знает, что у $user есть метод isAdmin()
-        if ($user instanceof User && $user->isAdmin()) {
-            return $next($request);
+        // 1. Сначала убеждаемся, что это НАШ юзер
+        if ($user instanceof User) {
+            // 2. Теперь внутри этого блока PHPStan ОБЯЗАН видеть isAdmin()
+            if ($user->isAdmin()) {
+                return $next($request);
+            }
         }
 
         return redirect('/catalog')->with('error', 'У вас нет прав доступа к этой странице.');
