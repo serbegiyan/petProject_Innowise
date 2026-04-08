@@ -4,6 +4,17 @@ import NavBar from '@/Components/NavBar';
 import FlashMessage from '@/Components/FlashMessage';
 
 export default function Dashboard({ orders }) {
+    const calculateOrderTotal = (order) => {
+        return order.items?.reduce((total, item) => {
+            const itemBasePrice = Number(item.price) * item.quantity;
+
+            const servicesTotal = item.services?.reduce((sTotal, service) => {
+                return sTotal + Number(service.pivot.price);
+            }, 0) || 0;
+
+            return total + itemBasePrice + servicesTotal;
+        }, 0);
+    };
     return (
         <>
             <Header><NavBar /></Header>
@@ -19,7 +30,7 @@ export default function Dashboard({ orders }) {
                 <ul className=' py-3 space-y-3'>
                     {orders.map(order => {
                         return (
-                            <li key={order.id} className='oven:bg-white odd:bg-stone-100 p-5 rounded-lg'>
+                            <li key={order.id} className='even:bg-white odd:bg-stone-100 p-5 rounded-lg'>
                                 <p className='pt-2'><span className='font-bold'>
                                     Заказ на имя: </span>{order.customer_name}</p>
                                 <p className='pt-2'><span className='font-bold'>
@@ -33,19 +44,11 @@ export default function Dashboard({ orders }) {
                                             minute: '2-digit'
                                         })
                                     }</p>
-                                <p className='pt-2'><span className='font-bold'>
-                                    Сумма заказа:&nbsp;
-                                </span>
-                                    {Number(order.total_price).toLocaleString('ru-RU', {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    })} BYN
-                                </p>
                                 <p className='pt-2'>
                                     <span className='font-bold'>
                                         Статус:&nbsp;
                                     </span>
-                                    <span className={`px-2 py-1 rounded border ${order.status_class}`}>
+                                    <span className={`px-2 py-1 rounded border ${order.status_css}`}>
                                         {order.status_label}
                                     </span>
                                 </p>
@@ -65,7 +68,7 @@ export default function Dashboard({ orders }) {
                                                 <ul className="text-xs text-gray-500 mt-1">
                                                     {item.services.map((service, idx) => (
                                                         <li key={idx}>
-                                                            + {service.name} ({Number(service.price).toLocaleString()} BYN)
+                                                            + {service.name} ({Number(service.pivot.price).toLocaleString()} BYN)
                                                         </li>
                                                     ))}
                                                 </ul>
@@ -75,9 +78,9 @@ export default function Dashboard({ orders }) {
                                 </div>
 
                                 <div className="mt-4 pt-2 border-t flex justify-between items-center font-bold text-lg">
-                                    <span>Итого:</span>
+                                    <span>Сумма заказа:</span>
                                     <span className="text-blue-600">
-                                        {Number(order.total_price).toLocaleString('ru-RU', { minimumFractionDigits: 2 })} BYN
+                                        {Number(calculateOrderTotal(order)).toLocaleString('ru-RU', { minimumFractionDigits: 2 })} BYN
                                     </span>
                                 </div>
                             </li>

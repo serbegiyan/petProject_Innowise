@@ -1,10 +1,11 @@
-export default function Search({ onSubmit, value, ...props }) {
+export default function Search({ onSubmit, onChange, value, ...props }) {
     return (
         <form className="flex flex-col justify-around" onSubmit={onSubmit}>
             <div className="flex flex-row">
-                <input className="bg-cyan-200  border rounded-lg p-2 w-full"
+                <input className="bg-cyan-200  border rounded-lg p-2"
                     name="search"
                     type="text"
+                    onChange={onChange}
                     value={value || ''}
                     {...props}
                     placeholder="Поиск"

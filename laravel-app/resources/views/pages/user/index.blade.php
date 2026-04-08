@@ -20,13 +20,14 @@
                 <p class="w-1/3"><span
                         class="badge {{ $user->role_class }} py-1 px-2 rounded-lg">{{ $user->role_label }}</span></p>
                 <div class="flex flex-row">
-                    <a class="ml-4 text-blue-600 hover:text-blue-800" href="{{ route('user.edit', $user) }}">
+                    <a title="Редактировать" class="ml-4 text-blue-600 hover:text-blue-800"
+                        href="{{ route('user.edit', $user) }}">
                         <i class="fa-regular fa-pen-to-square"></i>
                     </a>
                     <form action="{{ route('user.destroy', $user) }}" method="POST">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="ml-4 text-red-500 hover:text-red-700 cursor-pointer">
+                        <button title="Удалить" type="submit" class="ml-4 text-red-500 hover:text-red-700 cursor-pointer">
                             <i class="fa-solid fa-trash-can"></i>
                         </button>
                     </form>

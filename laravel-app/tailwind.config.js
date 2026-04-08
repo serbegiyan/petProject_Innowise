@@ -9,7 +9,7 @@ export default {
         './resources/views/**/*.blade.php',
         './resources/js/**/*.jsx',
         './app/Models/**/*.php',
-
+        './app/Enums/**/*.php',
     ],
 
     theme: {

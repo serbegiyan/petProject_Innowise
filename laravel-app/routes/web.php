@@ -4,6 +4,7 @@ use App\Http\Controllers\BasketController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CurrencyController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\OrderAdminController;
 use App\Http\Controllers\OrderController;
@@ -70,6 +71,10 @@ Route::middleware(['auth', 'admin'])
         Route::patch('/products/{product}', [ProductController::class, 'update'])->name('product.update');
         Route::post('/products/store', [ProductController::class, 'store'])->name('product.store');
         Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('product.destroy');
+
+        Route::get('/export/index', [ExportController::class, 'index'])->name('export.index');
+        Route::post('/export/run', [ExportController::class, 'export'])->name('export.run');
+        Route::delete('/exports/{id}', [ExportController::class, 'destroy'])->name('export.destroy');
 
         Route::get('/orders', [OrderAdminController::class, 'index'])->name('admin.order.index');
         Route::get('/orders/create', [OrderAdminController::class, 'create'])->name('admin.order.create');

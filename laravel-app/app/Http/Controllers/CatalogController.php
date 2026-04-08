@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CatalogRequest;
 use App\Models\Category;
+use App\Models\ExchangeRate;
 use App\Models\Product;
 use App\Services\ProductFilterService;
 use Illuminate\Http\Request;
@@ -23,6 +24,7 @@ class CatalogController extends Controller
         return Inertia::render('Catalog/Index', [
             'products' => $this->productFilterService->filter($request->validated()),
             'categories' => Category::all(),
+            'currencies' => ExchangeRate::all(),
             'filters' => $request->only(['search', 'category', 'sort']),
         ]);
     }
@@ -32,6 +34,7 @@ class CatalogController extends Controller
         $product->load('services', 'categories');
 
         return Inertia::render('Catalog/Show', [
+            'currencies' => ExchangeRate::all(),
             'product' => $product,
             'filters' => [
                 'search' => $request->query('search', ''),

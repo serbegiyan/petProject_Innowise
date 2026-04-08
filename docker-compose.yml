@@ -1,4 +1,31 @@
 services:
+  redis:
+    image: redis:alpine
+    container_name: redis_petProject
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  localstack:
+    image: localstack/localstack:3.0.2
+    container_name: localstack_s3
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=s3,ses,sqs
+      - DEFAULT_REGION=us-east-1
+    volumes:
+      - ./init-s3.sh:/etc/localstack/init/ready.d/init-s3.sh
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
   mysql_db:
     image: mysql:8.0
     container_name: mysql_db_petProject
@@ -25,6 +52,26 @@ services:
       - ./laravel-app:/var/www/html
     depends_on:
       - mysql_db
+      - rabbitmq
+      - localstack
+      - redis
+
+  worker:
+    build:
+      context: .
+      args:
+        UID: 1000
+        GID: 1000
+    container_name: php_worker_petProject
+    restart: always
+    user: laravel
+    volumes:
+      - ./laravel-app:/var/www/html
+    depends_on:
+      - php
+      - rabbitmq
+      - redis
+    command: php artisan queue:work --verbose --tries=3
 
   nginx:
     image: nginx:latest
@@ -59,9 +106,10 @@ services:
     ports:
       - "8081:8080"
     volumes:
-      - jenkins_home:/var/jenkins_home # Монтируем проект прямо в папку workspace внутри Jenkins
+      - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
 
 volumes:
   mysql_db_petProject:
   jenkins_home:
+  redis_data:

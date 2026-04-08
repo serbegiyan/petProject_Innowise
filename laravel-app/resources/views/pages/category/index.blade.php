@@ -17,13 +17,14 @@
                 <p class="w-1/2"><a href="{{ route('category.edit', $category) }}">{{ $category->name }}</a></p>
                 <p class="w-1/2">{{ $category->slug }}</p>
                 <div class="flex flex-row">
-                    <a class="ml-4 text-blue-600 hover:text-blue-800" href="{{ route('category.edit', $category) }}">
+                    <a class="ml-4 text-blue-600 hover:text-blue-800" title="Редактировать"
+                        href="{{ route('category.edit', $category) }}">
                         <i class="fa-regular fa-pen-to-square"></i>
                     </a>
                     <form action="{{ route('category.destroy', $category) }}" method="POST">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="ml-4 text-red-500 hover:text-red-700 cursor-pointer">
+                        <button type="submit" title="Удалить" class="ml-4 text-red-500 hover:text-red-700 cursor-pointer">
                             <i class="fa-solid fa-trash-can"></i>
                         </button>
                     </form>

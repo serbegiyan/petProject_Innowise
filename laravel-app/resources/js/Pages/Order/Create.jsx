@@ -1,13 +1,13 @@
 import Header from "@/Components/Header";
-import NavBar from "@/Components/NavBar";
 import FlashMessage from '@/Components/FlashMessage';
 import TextInput from "@/Components/TextInput";
 import InputLabel from "@/Components/InputLabel";
 import { usePage, useForm, Link } from '@inertiajs/react';
+import { useCurrency } from '@/Hooks/useCurrency';
 
-
-export default function Index({ items, totalAmount, userEmail, services }) {
+export default function Create({ items, totalAmount, currencies }) {
     const { auth } = usePage().props;
+    const { selectedCurrency, setCurrency, convert } = useCurrency(currencies);
 
     const { data, setData, post, errors, processing } = useForm({
         customer_name: auth.user?.name || '',
@@ -24,7 +24,17 @@ export default function Index({ items, totalAmount, userEmail, services }) {
 
     return (
         <div>
-            <Header><NavBar /> </Header>
+            <Header
+                currencySlot={
+                    <select
+                        value={selectedCurrency?.id}
+                        onChange={(e) => setCurrency(e.target.value)}
+                        className="w-24 bg-cyan-200 h-10 border rounded-lg"
+                    >
+                        {currencies.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                    </select>
+                }
+            />
             <FlashMessage />
             <div className="flex flex-row justify-items-end">
                 <h2 className="font-bold text-2xl mx-auto text-center p-3">Ваш заказ</h2>
@@ -47,7 +57,10 @@ export default function Index({ items, totalAmount, userEmail, services }) {
                                         {Number(item.product.price).toLocaleString('ru-RU', {
                                             minimumFractionDigits: 2,
                                             maximumFractionDigits: 2
-                                        })} BYN</p>
+                                        })} BYN&nbsp;
+                                        {selectedCurrency?.id !== 1 && (
+                                            <span className="text-sm text-gray-600">({convert(item.item_total)})</span>)}
+                                    </p>
                                     <p><span className="font-semibold">Количество: </span>{item.quantity}</p>
 
                                     {item.services.length > 0
@@ -57,7 +70,10 @@ export default function Index({ items, totalAmount, userEmail, services }) {
                                                 {item.services.map(service => (
                                                     <li key={service.id}>
                                                         <p className="inline"><span className="font-semibold">
-                                                            {service.name}</span> - {service.pivot.price} BYN</p>
+                                                            {service.name}</span> - {service.pivot.price} BYN&nbsp;
+                                                            {selectedCurrency?.id !== 1 && (
+                                                                <span className="text-sm text-gray-600">({convert(service.pivot.price)})</span>)}
+                                                        </p>
                                                     </li>
                                                 ))}
                                             </ol>
@@ -115,10 +131,16 @@ export default function Index({ items, totalAmount, userEmail, services }) {
                 </form>
             </div>
             <div className="w-full mt-3 p-6 bg-cyan-200 text-white rounded-xl shadow-lg flex justify-between items-center">
-                <p className="text-3xl font-semibold text-gray-700">Сумма заказа: {Number(totalAmount).toLocaleString('ru-RU', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                })} BYN</p>
+                <div className="flex flex-col gap-2">
+                    <p className="text-3xl font-semibold text-gray-700">Сумма заказа: {Number(totalAmount).toLocaleString('ru-RU', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    })} BYN*&nbsp;
+                        {selectedCurrency?.id !== 1 && (
+                            <span className="text-2xl text-gray-600">({convert(totalAmount)})</span>)}
+                    </p>
+                    <p className="text-gray-700 text-sm">* Оплата производится в белорусских рублях по крусу НБРБ</p>
+                </div>
                 <button
                     type="submit"
                     form="checkout-form"

@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\Service;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 class MainController extends Controller
 {
@@ -17,7 +18,8 @@ class MainController extends Controller
         $services = Service::count();
         $users = User::count();
         $orders = Order::count();
+        $exports = count(Storage::disk('s3')->files('exports'));
 
-        return view('pages.home', ['products' => $products, 'categories' => $categories, 'services' => $services, 'users' => $users, 'orders' => $orders]);
+        return view('pages.home', ['products' => $products, 'categories' => $categories, 'services' => $services, 'users' => $users, 'orders' => $orders, 'exports' => $exports]);
     }
 }

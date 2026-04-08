@@ -5,8 +5,11 @@ import { router } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
 import FlashMessage from '@/Components/FlashMessage';
 import { useMemo } from 'react';
+import { useCurrency } from '@/Hooks/useCurrency';
 
-export default function Index({ items }) {
+export default function Index({ items, currencies }) {
+    const { selectedCurrency, setCurrency, convert } = useCurrency(currencies);
+
     const grandTotal = useMemo(() => {
         const total = items.reduce((sum, item) => {
             const servicesSum = item.selected_services.reduce((sSum, service) => {
@@ -26,7 +29,17 @@ export default function Index({ items }) {
     return (
         <>
             <Head title="Каталог" />
-            <Header><NavBar /> </Header>
+            <Header
+                currencySlot={
+                    <select
+                        value={selectedCurrency?.id}
+                        onChange={(e) => setCurrency(e.target.value)}
+                        className="w-24 bg-cyan-200 h-10 border rounded-lg"
+                    >
+                        {currencies.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                    </select>
+                }
+            />
             <FlashMessage />
 
             {items.length > 0 ?
@@ -45,10 +58,7 @@ export default function Index({ items }) {
                                     <div className="ml-4 w-1/3">
                                         <p><span className="font-semibold">Название товара: </span>{item.product.name}</p>
                                         <p><span className="font-semibold">Цена: </span>
-                                            {Number(item.product.price).toLocaleString('ru-RU', {
-                                                minimumFractionDigits: 2,
-                                                maximumFractionDigits: 2
-                                            })} BYN</p>
+                                            {convert(item.product.price)}</p>
                                         <p><span className="font-semibold">Количество: </span>{item.quantity}</p>
 
                                         {item.selected_services.length > 0
@@ -58,7 +68,7 @@ export default function Index({ items }) {
                                                     {item.selected_services.map(service => (
                                                         <li key={service.id}>
                                                             <p className="inline"><span className="font-semibold">
-                                                                {service.name}</span> - {service.pivot.price} BYN</p>
+                                                                {service.name}</span> - {convert(service.pivot.price)}</p>
                                                         </li>
                                                     ))}
                                                 </ol>
@@ -105,10 +115,7 @@ export default function Index({ items }) {
 
                                         </div>
                                         <p className="mt-2 text-center"><span className="font-semibold">
-                                            Итого по позиции:</span> {rowTotal.toLocaleString('ru-RU', {
-                                                minimumFractionDigits: 2,
-                                                maximumFractionDigits: 2
-                                            })} BYN
+                                            Итого по позиции:</span> {convert(rowTotal)}
                                         </p>
 
                                     </div>
@@ -132,10 +139,7 @@ export default function Index({ items }) {
                         <div>
                             <h2 className="text-xl font-semibold text-gray-700 uppercase tracking-widest">К оплате</h2>
                             <p className="text-3xl font-semibold text-gray-700">
-                                {grandTotal.toLocaleString('ru-RU', {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2
-                                })} BYN</p>
+                                {convert(grandTotal)}</p>
                         </div>
                         <Link href={route('order.create')} className="bg-white text-stone-900 px-8 py-4 rounded-lg font-bold hover:bg-stone-200 transition">
                             Оформить заказ

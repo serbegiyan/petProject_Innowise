@@ -1,16 +1,18 @@
 import { Head } from '@inertiajs/react';
 import Header from '@/Components/Header';
 import { useState, useMemo } from 'react';
-import NavBar from '@/Components/NavBar';
 import { router } from '@inertiajs/react';
 import FlashMessage from '@/Components/FlashMessage';
 import { usePage, Link, } from '@inertiajs/react';
+import { useCurrency } from '@/Hooks/useCurrency';
 
-export default function Show({ product, preSelectedIds, edit_cart_id, filters }) {
+export default function Show({ product, preSelectedIds, edit_cart_id, filters, currencies }) {
     const { auth } = usePage().props;
     const [selectedServices, setSelectedServices] = useState(
         preSelectedIds ? preSelectedIds.map(id => Number(id)) : []
     );
+
+    const { selectedCurrency, setCurrency, convert } = useCurrency(currencies);
 
     const isInCart = useMemo(() => {
         if (!auth.user || !auth.user.basket) return false;
@@ -65,7 +67,17 @@ export default function Show({ product, preSelectedIds, edit_cart_id, filters })
     return (
         <div>
             <Head title={product.name} />
-            <Header><NavBar /> </Header>
+            <Header
+                currencySlot={
+                    <select
+                        value={selectedCurrency?.id}
+                        onChange={(e) => setCurrency(e.target.value)}
+                        className="w-24 bg-cyan-200 h-10 border rounded-lg"
+                    >
+                        {currencies.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                    </select>
+                } />
+
             <FlashMessage />
             <h1 className='text-2xl text-center font-bold my-3'>{product.name}</h1>
             <div className='flex flex-row justify-between mx-5'>
@@ -95,7 +107,9 @@ export default function Show({ product, preSelectedIds, edit_cart_id, filters })
                                     <h4 className='font-semibold'>{service.name}</h4>
                                 </div>
                                 <div className='flex flex-row justify-end'>
-                                    <div className='mr-4'>Цена: +{service.pivot.price} BYN</div>
+                                    <div className='mr-4'>Цена: +
+                                        {convert(service.pivot.price)}
+                                    </div>
                                     <div>Срок исполнения: {service.pivot.term}</div>
                                 </div>
                             </div>
@@ -110,14 +124,12 @@ export default function Show({ product, preSelectedIds, edit_cart_id, filters })
                         <i className="mr-2 fa-solid fa-person-walking-arrow-loop-left"></i>Вернуться в каталог
                     </Link>
                     <div className='bg-cyan-50 p-4 rounded-xl flex flex-col items-center gap-3 h-fit'>
-                        <p><span className='font-semibold'>Стоимость товара: </span>{Number(product.price).toLocaleString('ru-RU', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
-                        })} BYN</p>
-                        <p><span className='font-semibold'>Итоговая стоимость: </span>{Number(totalPrice).toLocaleString('ru-RU', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
-                        })} BYN</p>
+                        <p><span className='font-semibold'>Стоимость товара: </span>
+                            {convert(product.price)}
+                        </p>
+                        <p><span className='font-semibold'>Итоговая стоимость: </span>
+                            {convert(totalPrice)}
+                        </p>
                         {isInCart ? (
                             <Link
                                 href={route('basket.index')}

@@ -121,7 +121,7 @@
                         'block px-4 py-2 underline-offset-4 underline' => request()->routeIs(
                             'user.*'),
                     ])><i
-                            class="mr-2 fa-solid fa-users"></i></i>
+                            class="mr-2 fa-solid fa-users"></i>
                         Пользователи ({{ $sidebar_stats['users_count'] }})
                     </a>
                 </li>
@@ -131,8 +131,18 @@
                         'block px-4 py-2 underline-offset-4 underline' => request()->routeIs(
                             'admin.order.*'),
                     ])><i
-                            class="mr-2 fa-solid fa-file-invoice-dollar"></i></i>
+                            class="mr-2 fa-solid fa-file-invoice-dollar"></i>
                         Заказы ({{ $sidebar_stats['orders_count'] }})
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('export.index') }}" @class([
+                        'block px-4 py-2 rounded-sm hover:bg-stone-300',
+                        'block px-4 py-2 underline-offset-4 underline' => request()->routeIs(
+                            'admin.export.*'),
+                    ])><i
+                            class="fa-solid fa-file-csv"></i>
+                        Экспорты ({{ $sidebar_stats['exports_count'] }})
                     </a>
                 </li>
             </ul>
