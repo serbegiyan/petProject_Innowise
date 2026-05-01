@@ -28,8 +28,6 @@ class UpdateExchangeRates extends Command
     {
         $this->info('Отправка задачи в очередь...');
 
-        // Выполняем задачу синхронно для команды (через dispatchSync)
-        // или отправляем в фон (через dispatch)
         UpdateExchangeRatesJob::dispatchSync();
 
         $this->info('Готово!');

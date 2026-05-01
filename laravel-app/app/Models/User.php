@@ -25,7 +25,6 @@ class User extends Authenticatable
 
     protected $appends = ['role_class', 'role_label'];
 
-    // Проверка на админа
     public function isAdmin(): bool
     {
         return $this->role === self::ROLE_ADMIN;

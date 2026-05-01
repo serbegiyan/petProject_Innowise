@@ -59,15 +59,12 @@ pipeline {
 
     post {
         always {
-            // Теперь путь 'tests/_reports/*.xml' будет верным относительно воркспейса
             junit 'tests/_reports/*.xml'
         }
          success {
-            // Отправляем ЗЕЛЕНУЮ галочку в GitHub
             step([$class: 'GitHubCommitStatusSetter', statusResultSource: [$class: 'DefaultStatusResultSource']])
         }
         failure {
-            // Отправляем КРАСНЫЙ крестик в GitHub
             step([$class: 'GitHubCommitStatusSetter', statusResultSource: [$class: 'DefaultStatusResultSource']])
         }
     }

@@ -31,9 +31,6 @@ class Service extends Model
         return SlugOptions::create()->generateSlugsFrom('name')->saveSlugsTo('slug')->doNotGenerateSlugsOnUpdate();
     }
 
-    /**
-     * Позволяет Laravel искать модель по слагу в URL автоматически
-     */
     public function getRouteKeyName()
     {
         return 'slug';

@@ -1,6 +1,5 @@
 FROM php:8.5-fpm
 
-# Установим системные зависимости
 RUN apt-get update && apt-get install -y \
     libzip-dev \
     unzip \

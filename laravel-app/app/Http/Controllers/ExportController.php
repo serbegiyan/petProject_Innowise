@@ -26,7 +26,7 @@ class ExportController extends Controller
                 'status' => $export->status,
                 'url' => $export->file_path ? $disk->url($export->file_path) : null,
                 'date' => $export->created_at->format('d.m.Y H:i'),
-                // Размер файла в БД можно не хранить, а брать из S3 только для готовых
+                // Размер файла в БД берется из S3 только для готовых
                 'size' => ($export->file_path && $disk->exists($export->file_path))
                             ? round($disk->size($export->file_path) / 1024, 2).' KB'
                             : '—',
@@ -50,7 +50,8 @@ class ExportController extends Controller
 
         $data = Product::all()->toArray();
 
-        // Передаем ID. Воркер возьмет путь из модели по этому ID
+        // Передаем ID воркеру
+        
         ExportCatalogJob::dispatch($exportRecord->id, $data);
 
         return back()->with('success', 'Экспорт поставлен в очередь. Вы получите уведомление на почту.');
@@ -58,16 +59,13 @@ class ExportController extends Controller
 
     public function destroy($id)
     {
-        // 1. Находим запись в базе данных
         $export = Export::findOrFail($id);
 
         try {
-            // 2. Удаляем файл из S3 (используем путь, хранящийся в БД)
             if (Storage::disk('s3')->exists($export->file_path)) {
                 Storage::disk('s3')->delete($export->file_path);
             }
 
-            // 3. Удаляем запись из базы данных
             $export->delete();
 
             return back()->with('success', 'Экспорт успешно удален.');

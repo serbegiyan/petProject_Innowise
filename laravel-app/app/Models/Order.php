@@ -18,7 +18,6 @@ class Order extends Model
         'customer_email', 'customer_address',
     ];
 
-    // Указываем Laravel, что поле status — это Enum
     protected function casts(): array
     {
         return [

@@ -21,7 +21,10 @@ class ProductImageServiceTest extends TestCase
 
         $path = $service->handle($request);
 
-        Storage::disk('public')->assertExists($path);
+        /** @var \Illuminate\Filesystem\FilesystemAdapter $storage */
+        $storage = Storage::disk('public');
+
+        $storage->assertExists($path);
     }
 
     public function test_it_replaces_old_image()
@@ -41,7 +44,9 @@ class ProductImageServiceTest extends TestCase
 
         $path = $service->handle($request, $product);
 
-        Storage::disk('public')->assertMissing('products/old.jpg');
-        Storage::disk('public')->assertExists($path);
+        /** @var \Illuminate\Filesystem\FilesystemAdapter $storage */
+        $storage = Storage::disk('public');
+        $storage->assertMissing('products/old.jpg');
+        $storage->assertExists($path);
     }
 }

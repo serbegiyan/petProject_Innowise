@@ -21,8 +21,6 @@ class UpdateExchangeRatesJob implements ShouldQueue
     {
         Log::info('Начинаю обновление курсов...');
 
-        // 1. Сначала гарантируем наличие BYN под ID 1 (вне цикла!)
-        // updateOrInsert сделает всё за один запрос и не будет постоянно удалять/вставлять
         DB::table('exchange_rates')->updateOrInsert(
             ['id' => 1],
             ['name' => 'BYN', 'rate' => 1.0, 'scale' => 1, 'updated_at' => now()]
@@ -41,7 +39,6 @@ class UpdateExchangeRatesJob implements ShouldQueue
             return;
         }
 
-        // 2. Обрабатываем только нужные валюты
         $targetIso = ['USD', 'EUR', 'RUB'];
 
         foreach ($xml->xpath('//value') as $item) {
@@ -59,7 +56,6 @@ class UpdateExchangeRatesJob implements ShouldQueue
             }
         }
 
-        // 3. СБРАСЫВАЕМ КЭШ (очень важно для AppServiceProvider)
         Cache::forget('exchange_rates');
 
         Log::info('Курсы обновлены и кэш очищен.');

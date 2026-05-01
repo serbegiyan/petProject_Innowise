@@ -50,17 +50,13 @@ class Product extends Model
         };
     }
 
-    /**
-     * Настройки генерации слага
-     */
+    //Настройки генерации слага
+     
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()->generateSlugsFrom('name')->saveSlugsTo('slug')->doNotGenerateSlugsOnUpdate();
     }
 
-    /**
-     * Позволяет Laravel искать модель по слагу в URL автоматически
-     */
     public function getRouteKeyName()
     {
         return 'slug';
@@ -81,7 +77,6 @@ class Product extends Model
         static::deleting(function ($product): void {
             $product->categories()->detach();
             $product->services()->detach();
-            // Логика удаления файла при событии удаления модели
             if ($product->image) {
                 Storage::disk('public')->delete($product->image);
             }

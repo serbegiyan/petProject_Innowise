@@ -18,9 +18,8 @@ class AdminMiddleware
     {
         $user = $request->user();
 
-        // 1. Сначала убеждаемся, что это НАШ юзер
         if ($user instanceof User) {
-            // 2. Теперь внутри этого блока PHPStan ОБЯЗАН видеть isAdmin()
+            // Проверка для PHPStan
             if ($user->isAdmin()) {
                 return $next($request);
             }

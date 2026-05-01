@@ -9,9 +9,6 @@ class ProductFilterService
 {
     private const PER_PAGE = 12;
 
-    /**
-     * Универсальный метод фильтрации
-     */
     public function filter(array $params): LengthAwarePaginator
     {
         return Product::query()
@@ -20,6 +17,6 @@ class ProductFilterService
             ->byCategory($params['category'] ?? null)
             ->applySort($params['sort'] ?? null)
             ->paginate(self::PER_PAGE)
-            ->withQueryString(); // Сохраняет параметры фильтра в ссылках пагинации
+            ->withQueryString(); 
     }
 }

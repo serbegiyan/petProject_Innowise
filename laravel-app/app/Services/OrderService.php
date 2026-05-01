@@ -21,7 +21,6 @@ class OrderService
             $checkoutData = $this->basketService->getCheckoutDetails();
 
             // 1. Создаем основной заказ.
-            // Используем array_merge, так как ключи в $validatedData
             $order = Order::create(
                 array_merge($validatedData, [
                     'user_id' => $user->id,

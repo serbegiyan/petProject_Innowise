@@ -27,7 +27,6 @@ class ProductServiceTest extends TestCase
             'description' => 'Some text',
         ];
 
-        // 2. Request для файлов и связей
         $request = request()->merge([
             'category_id' => [$category->id],
             'services' => [$service->id],
@@ -37,11 +36,9 @@ class ProductServiceTest extends TestCase
 
         $request->files->set('image', UploadedFile::fake()->image('test.jpg'));
 
-        // 3. Вызов сервиса
         $serviceLayer = app(ProductService::class);
         $product = $serviceLayer->create($data, $request);
 
-        // 4. Проверки
         $this->assertDatabaseHas('products', [
             'id' => $product->id,
             'name' => 'Test Product',
@@ -58,7 +55,8 @@ class ProductServiceTest extends TestCase
             'price' => 50,
             'term' => '2 дня',
         ]);
-
-        Storage::disk('public')->assertExists($product->image);
+        /** @var \Illuminate\Filesystem\FilesystemAdapter $storage */
+        $storage = Storage::disk('public');
+        $storage->assertExists($product->image);
     }
 }

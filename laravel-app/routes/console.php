@@ -9,5 +9,4 @@ Artisan::command('inspire', function (): void {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-// Запускаем обновление курсов каждый день
 Schedule::job(new UpdateExchangeRatesJob)->hourly();

@@ -9,6 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 
 class CatalogExported extends Mailable
 {
@@ -35,11 +36,14 @@ class CatalogExported extends Mailable
     /**
      * Get the message content definition.
      */
+    
     public function content(): Content
     {
+        /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
+        $disk = Storage::disk('s3');
         return new Content(
             view: 'emails.catalog_exported',
-            with: ['url' => Storage::disk('s3')->url($this->fileName)],
+            with: ['url' => $disk->url($this->fileName)],
         );
     }
 

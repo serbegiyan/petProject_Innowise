@@ -22,10 +22,10 @@ class AppServiceProvider extends ServiceProvider
         /** @var StatsService $statsService */
         $statsService = $this->app->make(StatsService::class);
 
-        // 1. Делимся курсами валют со всеми вьюхами (через кэш внутри сервиса)
+        // Курсы валют для всемх вьюх (через кэш внутри сервиса)
         View::share('rates', $statsService->getExchangeRates());
 
-        // 2. Настраиваем композер для главного лейаута админки
+        // Настройка композера для главного лейаута админки
         View::composer('layouts/main', function ($view) use ($statsService) {
             $view->with([
                 'sidebar_stats' => $statsService->getSidebarStats(),

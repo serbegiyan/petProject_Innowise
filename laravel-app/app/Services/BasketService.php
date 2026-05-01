@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class BasketService
 {
-    // PHP 8.5: Свойство с хуком для быстрого доступа к ID текущего юзера
     private int $userId {
         get {
             return Auth::id() ?? throw new \Exception('User not authenticated');
@@ -34,7 +33,6 @@ class BasketService
                     'cart_id' => $item->id,
                     'product' => $item->product,
                     'quantity' => $item->quantity,
-                    // PHP 8.4: array_find упрощает поиск внутри вложенных структур
                     'selected_services' => $item->product->services->whereIn(
                         'id',
                         collect($item->services)->pluck('id')->toArray()
@@ -68,11 +66,9 @@ class BasketService
 
         $services = collect($data['services'] ?? [])->sortBy('id')->values()->toArray();
 
-        // PHP 8.5: Используем именованные аргументы и упрощенный поиск
         $basketItem = Basket::where('user_id', $this->userId)
             ->where('product_id', $data['product_id'])
             ->get()
-            // Нативный поиск по условию (PHP 8.4+)
             ->first(fn ($item) => $item->services === $services);
 
         if ($basketItem) {
