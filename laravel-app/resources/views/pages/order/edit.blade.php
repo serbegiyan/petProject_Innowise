@@ -30,8 +30,9 @@
                     value="{{ old('customer_address', $order->customer_address) }}" />
 
                 <x-label class="mt-3 " for="comment">Комментарий</x-label>
-                <x-textarea placeholder="Комментарий" name="comment" type="text"
-                    value="{{ old('comment', $order->comment) }}" />
+                <x-textarea placeholder="Комментарий" name="comment" type="text">
+                    {{ old('comment', $order->comment) }}
+                </x-textarea>
             </div>
 
             <div class="w-1/2 flex flex-col">

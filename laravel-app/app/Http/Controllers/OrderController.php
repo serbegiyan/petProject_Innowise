@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\DTO\OrderData;
 use App\Http\Requests\OrderStoreRequest;
-use App\Models\ExchangeRate;
 use App\Models\User;
 use App\Services\BasketService;
 use App\Services\OrderService;
+use App\Services\StatsService;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class OrderController extends Controller
 {
+    public function __construct(
+        protected StatsService $statsService
+    ) {}
+
     public function index()
     {
         /** @var User $user */
@@ -33,7 +38,6 @@ class OrderController extends Controller
                     'items' => $order->items,
                     'created_at' => $order->created_at->format('d.m.Y H:i'),
                 ]),
-            'currencies' => ExchangeRate::all(),
         ]);
     }
 
@@ -48,13 +52,14 @@ class OrderController extends Controller
         return Inertia::render('Order/Create', [
             'items' => $checkoutData['items'],
             'totalAmount' => $checkoutData['totalAmount'],
-            'currencies' => ExchangeRate::all(),
         ]);
     }
 
     public function store(OrderStoreRequest $request, OrderService $orderService)
     {
-        $orderService->createFromBasket(Auth::user(), $request->validated());
+        $orderData = OrderData::fromRequest($request->validated());
+
+        $orderService->createFromBasket($request->user(), $orderData);
 
         return redirect()->route('dashboard');
     }

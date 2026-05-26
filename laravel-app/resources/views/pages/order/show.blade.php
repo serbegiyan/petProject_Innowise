@@ -26,7 +26,8 @@
                     BYN</strong>
             </p>
             <p class="p-2"><span class="font-bold">Статус:</span>
-                <span class="badge {{ $order->status_class }} py-1 px-2 rounded-lg">{{ $order->status_label }}</span>
+                <span
+                    class="badge {{ $order->status->cssClass() }} py-1 px-2 rounded-lg">{{ $order->status->label() }}</span>
             </p>
         </div>
     </div>
@@ -36,8 +37,11 @@
         @foreach ($order->items as $item)
             <li class="list-decimal list-inside even:bg-stone-200 p-2">
                 <span class="p-2"><span class="font-bold">Название продукта:</span> {{ $item->product_name }}</span>
-                <p class="p-2"><span class="font-bold">Цена товара:</span><strong>
-                        {{ Number::format($item->price, precision: 2, locale: 'ru') }} BYN</p></strong>
+                <p class="p-2"><span class="font-bold">Цена за ед. (с услугами):</span>
+                    <strong>{{ Number::format($item->price, precision: 2, locale: 'ru') }} BYN</strong></p>
+                <p class="p-2"><span class="font-bold">Количество:</span> {{ $item->quantity }}</p>
+                <p class="p-2"><span class="font-bold">Итого по строке:</span>
+                    <strong>{{ Number::format($item->price * $item->quantity, precision: 2, locale: 'ru') }} BYN</strong></p>
                 @if (!empty($item->services) && count($item->services) > 0)
                     <div>
                         <p class="px-2 font-bold">Выбранные услуги:</p>
@@ -45,9 +49,8 @@
                             @foreach ($item->services as $service)
                                 <li class="p-2 pl-5 list-disc list-inside">
                                     {{ $service['name'] }} —
-                                    <strong>{{ Number::format($service['pivot']['price'], precision: 2, locale: 'ru') }}
+                                    <strong>{{ Number::format($service['price'] ?? $service['pivot']['price'] ?? 0, precision: 2, locale: 'ru') }}
                                         BYN</strong>
-
                                 </li>
                             @endforeach
                         </ul>

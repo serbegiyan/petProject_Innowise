@@ -3,18 +3,10 @@ import Header from '@/Components/Header';
 import NavBar from '@/Components/NavBar';
 import FlashMessage from '@/Components/FlashMessage';
 
+const servicePrice = (service) =>
+    Number(service.price ?? service.pivot?.price ?? 0);
+
 export default function Dashboard({ orders }) {
-    const calculateOrderTotal = (order) => {
-        return order.items?.reduce((total, item) => {
-            const itemBasePrice = Number(item.price) * item.quantity;
-
-            const servicesTotal = item.services?.reduce((sTotal, service) => {
-                return sTotal + Number(service.pivot.price);
-            }, 0) || 0;
-
-            return total + itemBasePrice + servicesTotal;
-        }, 0);
-    };
     return (
         <>
             <Header><NavBar /></Header>
@@ -68,7 +60,7 @@ export default function Dashboard({ orders }) {
                                                 <ul className="text-xs text-gray-500 mt-1">
                                                     {item.services.map((service, idx) => (
                                                         <li key={idx}>
-                                                            + {service.name} ({Number(service.pivot.price).toLocaleString()} BYN)
+                                                            + {service.name} ({servicePrice(service).toLocaleString()} BYN)
                                                         </li>
                                                     ))}
                                                 </ul>
@@ -80,7 +72,7 @@ export default function Dashboard({ orders }) {
                                 <div className="mt-4 pt-2 border-t flex justify-between items-center font-bold text-lg">
                                     <span>Сумма заказа:</span>
                                     <span className="text-blue-600">
-                                        {Number(calculateOrderTotal(order)).toLocaleString('ru-RU', { minimumFractionDigits: 2 })} BYN
+                                        {Number(order.total).toLocaleString('ru-RU', { minimumFractionDigits: 2 })} BYN
                                     </span>
                                 </div>
                             </li>

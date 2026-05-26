@@ -2,58 +2,59 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\ExchangeRate;
-use App\Models\User;
+use App\Services\StatsService;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
 {
-    /**
-     * The root template that is loaded on the first page visit.
-     *
-     * @var string
-     */
     protected $rootView = 'app';
 
-    /**
-     * Determine the current asset version.
-     */
     public function version(Request $request): ?string
     {
         return parent::version($request);
     }
 
-    /**
-     * Define the props that are shared by default.
-     *
-     * @return array<string, mixed>
-     */
     public function share(Request $request): array
     {
-        /** @var User|null $user */
-        $currencyId = session('currency_id', 1); 
-        $currentCurrency = ExchangeRate::find($currencyId);
+        // Получаем сервис один раз
+        $statsService = app(StatsService::class);
 
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $request->user()
-                    ? [
-                        'id' => $request->user()->id,
-                        'name' => $request->user()->name,
-                        'email' => $request->user()->email,
-                        'role' => $request->user()->role,
-                        'basket' => $request->user()->baskets()->with('product')->get(),
-                        'basket_count' => $request->user()->baskets()->count(),
-                    ]
-                    : null,
-                'currency' => $currentCurrency,
+                'user' => fn () => $this->getSharedUser($request),
+                // ✅ Используем защищенный метод сервиса (нужно добавить его в StatsService)
+                'currency' => fn () => $statsService->getCurrentCurrency(),
             ],
+            // ✅ Список всех валют
+            'currencies' => fn () => $statsService->getAllCurrencies(),
+
             'flash' => [
-                'success' => $request->session()->get('success'),
-                'error' => $request->session()->get('error'),
+                'success' => fn () => $request->session()->get('success'),
+                'error' => fn () => $request->session()->get('error'),
             ],
+        ];
+    }
+
+    private function getSharedUser(Request $request): ?array
+    {
+        $user = $request->user();
+        if (! $user) {
+            return null;
+        }
+
+        // Загружаем корзину один раз
+        $basket = $user->baskets()->with('product')->get();
+
+        return [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => $user->role,
+            'basket' => $basket,
+            // ✅ Считаем количество элементов в коллекции, а не в базе
+            'basket_count' => $basket->count(),
         ];
     }
 }

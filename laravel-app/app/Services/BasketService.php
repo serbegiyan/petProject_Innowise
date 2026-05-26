@@ -43,7 +43,9 @@ class BasketService
     public function getCheckoutDetails(): array
     {
         $items = $this->getUserBasketItems()->map(function ($item) {
-            $servicesPrice = $item['selected_services']->sum('price');
+            $servicesPrice = $item['selected_services']->sum(
+                fn (Service $service) => (float) $service->pivot->price
+            );
 
             return [
                 ...$item,

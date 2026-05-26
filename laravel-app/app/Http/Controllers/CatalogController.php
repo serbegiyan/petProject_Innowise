@@ -3,39 +3,39 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CatalogRequest;
-use App\Models\Category;
-use App\Models\ExchangeRate;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Services\ProductFilterService;
+use App\Services\StatsService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class CatalogController extends Controller
 {
-    protected $productFilterService;
-
-    public function __construct(ProductFilterService $productFilterService)
-    {
-        $this->productFilterService = $productFilterService;
-    }
+    public function __construct(
+        protected ProductFilterService $productFilterService,
+        protected StatsService $statsService) {}
 
     public function index(CatalogRequest $request)
     {
+        $products = $this->productFilterService->filter($request->validated());
+
         return Inertia::render('Catalog/Index', [
-            'products' => $this->productFilterService->filter($request->validated()),
-            'categories' => Category::all(),
-            'currencies' => ExchangeRate::all(),
+            'products' => ProductResource::collection($products),
+
+            'categories' => $this->statsService->getAllCategories(),
+
             'filters' => $request->only(['search', 'category', 'sort']),
         ]);
     }
 
     public function show(Product $product, Request $request)
     {
-        $product->load('services', 'categories');
+        $product->load(['services', 'categories']);
 
         return Inertia::render('Catalog/Show', [
-            'currencies' => ExchangeRate::all(),
-            'product' => $product,
+            'product' => new ProductResource($product),
+
             'filters' => [
                 'search' => $request->query('search', ''),
                 'category' => $request->query('category', ''),

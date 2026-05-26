@@ -4,6 +4,7 @@ namespace Tests\Unit\Services;
 
 use App\Models\Product;
 use App\Services\ProductImageService;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
@@ -21,7 +22,7 @@ class ProductImageServiceTest extends TestCase
 
         $path = $service->handle($request);
 
-        /** @var \Illuminate\Filesystem\FilesystemAdapter $storage */
+        /** @var FilesystemAdapter $storage */
         $storage = Storage::disk('public');
 
         $storage->assertExists($path);
@@ -44,7 +45,7 @@ class ProductImageServiceTest extends TestCase
 
         $path = $service->handle($request, $product);
 
-        /** @var \Illuminate\Filesystem\FilesystemAdapter $storage */
+        /** @var FilesystemAdapter $storage */
         $storage = Storage::disk('public');
         $storage->assertMissing('products/old.jpg');
         $storage->assertExists($path);

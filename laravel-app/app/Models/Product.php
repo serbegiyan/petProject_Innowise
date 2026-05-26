@@ -2,14 +2,11 @@
 
 namespace App\Models;
 
-use App\Services\CurrencyService;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Storage;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -21,9 +18,15 @@ class Product extends Model
 
     protected $table = 'products';
 
-    protected $appends = ['image_url', 'formatted_price'];
-
     protected $fillable = ['name', 'price', 'brand', 'description', 'image', 'release_date', 'slug'];
+
+    protected function casts(): array
+    {
+        return [
+            'release_date' => 'date',
+            'price' => 'float',
+        ];
+    }
 
     // Фильтрация
 
@@ -50,8 +53,8 @@ class Product extends Model
         };
     }
 
-    //Настройки генерации слага
-     
+    // Настройки генерации слага
+
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()->generateSlugsFrom('name')->saveSlugsTo('slug')->doNotGenerateSlugsOnUpdate();
@@ -70,27 +73,5 @@ class Product extends Model
     public function services(): BelongsToMany
     {
         return $this->belongsToMany(Service::class)->withPivot('price', 'term');
-    }
-
-    protected static function booted()
-    {
-        static::deleting(function ($product): void {
-            $product->categories()->detach();
-            $product->services()->detach();
-            if ($product->image) {
-                Storage::disk('public')->delete($product->image);
-            }
-        });
-    }
-
-    public function getImageUrlAttribute(): string
-    {
-        return $this->image ? Storage::url($this->image) : asset('images/product-image.png');
-    }
-
-    // Привязка к сервису CurrencyService
-    protected function formattedPrice(): Attribute
-    {
-        return Attribute::make(get: fn () => app(CurrencyService::class)->convert($this->price));
     }
 }

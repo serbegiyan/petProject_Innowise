@@ -5,6 +5,7 @@ namespace Tests\Unit\Services;
 use App\Models\Category;
 use App\Models\Service;
 use App\Services\ProductService;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -55,7 +56,7 @@ class ProductServiceTest extends TestCase
             'price' => 50,
             'term' => '2 дня',
         ]);
-        /** @var \Illuminate\Filesystem\FilesystemAdapter $storage */
+        /** @var FilesystemAdapter $storage */
         $storage = Storage::disk('public');
         $storage->assertExists($product->image);
     }

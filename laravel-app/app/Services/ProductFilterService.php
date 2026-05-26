@@ -12,11 +12,11 @@ class ProductFilterService
     public function filter(array $params): LengthAwarePaginator
     {
         return Product::query()
-            ->with('categories')
+            ->with('categories', 'services')
             ->search($params['search'] ?? null)
             ->byCategory($params['category'] ?? null)
             ->applySort($params['sort'] ?? null)
             ->paginate(self::PER_PAGE)
-            ->withQueryString(); 
+            ->withQueryString();
     }
 }

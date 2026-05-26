@@ -4,6 +4,7 @@ namespace Tests\Feature\Services;
 
 use App\Models\Basket;
 use App\Models\Product;
+use App\Models\Service;
 use App\Models\User;
 use App\Services\BasketService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -24,8 +25,7 @@ class BasketServiceTest extends TestCase
         $this->user = User::factory()->create();
     }
 
-    /** @test */
-    public function it_can_add_product_to_basket_for_authenticated_user()
+    public function test_it_can_add_product_to_basket_for_authenticated_user()
     {
         // 1. Авторизуем пользователя (чтобы сработал хук $this->userId)
         $this->actingAs($this->user);
@@ -47,8 +47,7 @@ class BasketServiceTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function it_throws_exception_if_user_is_not_authenticated()
+    public function test_it_throws_exception_if_user_is_not_authenticated()
     {
         // НЕ вызываем actingAs() — хук должен выбросить Exception
         $product = Product::factory()->create();
@@ -59,8 +58,7 @@ class BasketServiceTest extends TestCase
         $this->service->addToBasket(['product_id' => $product->id]);
     }
 
-    /** @test */
-    public function it_increments_quantity_if_product_and_services_are_same()
+    public function test_it_increments_quantity_if_product_and_services_are_same()
     {
         $this->actingAs($this->user);
         $product = Product::factory()->create();
@@ -79,5 +77,26 @@ class BasketServiceTest extends TestCase
         // Проверяем, что количество стало 2, а не создалась новая запись
         $this->assertEquals(2, Basket::where('user_id', $this->user->id)->first()->quantity);
         $this->assertEquals(1, Basket::count());
+    }
+
+    public function test_checkout_total_includes_service_pivot_prices(): void
+    {
+        $this->actingAs($this->user);
+
+        $product = Product::factory()->create(['price' => 100]);
+        $service = Service::factory()->create();
+        $product->services()->attach($service->id, ['price' => 50, 'term' => '7 days']);
+
+        Basket::create([
+            'user_id' => $this->user->id,
+            'product_id' => $product->id,
+            'quantity' => 1,
+            'services' => [['id' => $service->id, 'name' => $service->name, 'price' => 50]],
+        ]);
+
+        $details = $this->service->getCheckoutDetails();
+
+        $this->assertEquals(150.0, $details['totalAmount']);
+        $this->assertEquals(150.0, $details['items']->first()['item_total']);
     }
 }

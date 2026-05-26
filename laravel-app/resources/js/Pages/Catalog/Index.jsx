@@ -172,7 +172,7 @@ export default function Index({ products, filters, categories, currencies }) {
             }
 
             <div className="p-4">
-                <Pagination links={products.links} />
+                <Pagination links={products.data.links} />
             </div>
         </>
     );

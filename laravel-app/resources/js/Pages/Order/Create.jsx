@@ -14,7 +14,7 @@ export default function Create({ items, totalAmount, currencies }) {
         customer_email: auth.user?.email || '',
         customer_phone: '',
         customer_address: '',
-        customer_comment: '',
+        comment: '',
     });
 
     const submit = (e) => {
@@ -126,7 +126,7 @@ export default function Create({ items, totalAmount, currencies }) {
                     <textarea
                         className="w-full border rounded-lg p-2"
                         rows="2"
-                        onChange={e => setData('customer_comment', e.target.value)}
+                        onChange={e => setData('comment', e.target.value)}
                         placeholder="Комментарий"></textarea>
                 </form>
             </div>

@@ -115,4 +115,6 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    'catalog_export_recipient' => env('CATALOG_EXPORT_RECIPIENT', 'admin@admin.com'),
+
 ];

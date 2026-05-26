@@ -36,4 +36,7 @@ return [
         ],
     ],
 
+    'bank' => [
+        'url' => env('BANK_EXCHANGE_URL', 'https://bankdabrabyt.by/export_courses.php'),
+    ],
 ];

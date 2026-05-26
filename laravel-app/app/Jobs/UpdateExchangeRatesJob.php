@@ -9,7 +9,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -19,26 +18,49 @@ class UpdateExchangeRatesJob implements ShouldQueue
 
     public function handle(): void
     {
+        $url = config('services.bank.url');
+
+        if (! $url) {
+            Log::error('URL банка не настроен в конфигурации.');
+
+            return;
+        }
+
         Log::info('Начинаю обновление курсов...');
 
-        DB::table('exchange_rates')->updateOrInsert(
+        ExchangeRate::updateOrCreate(
             ['id' => 1],
-            ['name' => 'BYN', 'rate' => 1.0, 'scale' => 1, 'updated_at' => now()]
+            ['name' => 'BYN', 'rate' => 1.0, 'scale' => 1]
         );
 
-        $response = Http::withoutVerifying()->get('https://bankdabrabyt.by/export_courses.php');
+        try {
+            $response = Http::timeout(10)
+                ->retry(3, 500)
+                ->get($url);
 
-        if (! $response->successful()) {
-            Log::error('Ошибка загрузки курсов: '.$response->status());
+            if (! $response->successful()) {
+                throw new \Exception('Ошибка HTTP: '.$response->status());
+            }
 
-            return;
+            $xml = simplexml_load_string($response->body());
+            if (! $xml) {
+                throw new \Exception('Не удалось прочитать XML банка');
+            }
+
+            $this->parseAndSaveRates($xml);
+
+        } catch (\Exception $e) {
+            Log::warning("Не удалось обновить курсы из банка: {$e->getMessage()}. Использую дефолтные значения.");
+
+            $this->setFallbackRates();
         }
 
-        $xml = simplexml_load_string($response->body());
-        if (! $xml) {
-            return;
-        }
+        Cache::forget('exchange_rates');
+        Log::info('Курсы обновлены и кэш очищен.');
+    }
 
+    protected function parseAndSaveRates($xml): void
+    {
         $targetIso = ['USD', 'EUR', 'RUB'];
 
         foreach ($xml->xpath('//value') as $item) {
@@ -55,9 +77,18 @@ class UpdateExchangeRatesJob implements ShouldQueue
                 );
             }
         }
+    }
 
-        Cache::forget('exchange_rates');
+    protected function setFallbackRates(): void
+    {
+        $defaults = [
+            ['name' => 'USD', 'rate' => 2.8267, 'scale' => 1],
+            ['name' => 'EUR', 'rate' => 3.3061, 'scale' => 1],
+            ['name' => 'RUB', 'rate' => 0.0377, 'scale' => 1],
+        ];
 
-        Log::info('Курсы обновлены и кэш очищен.');
+        foreach ($defaults as $rateData) {
+            ExchangeRate::updateOrCreate(['name' => $rateData['name']], $rateData);
+        }
     }
 }

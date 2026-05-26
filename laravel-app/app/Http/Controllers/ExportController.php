@@ -51,7 +51,7 @@ class ExportController extends Controller
         $data = Product::all()->toArray();
 
         // Передаем ID воркеру
-        
+
         ExportCatalogJob::dispatch($exportRecord->id, $data);
 
         return back()->with('success', 'Экспорт поставлен в очередь. Вы получите уведомление на почту.');

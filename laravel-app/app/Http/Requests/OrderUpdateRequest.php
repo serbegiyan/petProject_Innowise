@@ -15,6 +15,7 @@ class OrderUpdateRequest extends BaseRequest
             'customer_email' => ['required', 'email', 'max:255'],
             'customer_phone' => ['required', 'string', 'min:10'],
             'customer_address' => ['required', 'string', 'min:10'],
+            'comment' => ['nullable', 'string', 'max:1000'],
         ];
     }
 }

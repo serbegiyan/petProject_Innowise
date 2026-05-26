@@ -9,7 +9,7 @@
             changeCurrency: "{{ route('currency.change') }}"
         };
     </script>
-    @vite(['resources/css/app.css', 'resources/js/alert.js', 'resources/js/app.js'])
+    @vite(['resources/js/admin.js'])
     <title>@yield('title')</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
