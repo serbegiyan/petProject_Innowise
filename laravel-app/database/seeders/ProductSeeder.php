@@ -6,12 +6,17 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Service;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ProductSeeder extends Seeder
 {
+    private const DEFAULT_IMAGE = 'product-image.png';
+
     public function run(): void
     {
+        $this->ensureDefaultProductImage();
+
         $services = Service::all();
 
         $data = [
@@ -34,7 +39,7 @@ class ProductSeeder extends Seeder
                     'description' => "Отличный представитель категории {$categoryName} от бренда {$item[1]}.",
                     'price' => $item[2],
                     'release_date' => now()->subMonths(rand(1, 12)),
-                    'image' => 'product-image.png',
+                    'image' => self::DEFAULT_IMAGE,
                 ]);
 
                 $product->categories()->attach($category->id);
@@ -49,5 +54,20 @@ class ProductSeeder extends Seeder
                 }
             }
         }
+    }
+
+    private function ensureDefaultProductImage(): void
+    {
+        if (Storage::disk('public')->exists(self::DEFAULT_IMAGE)) {
+            return;
+        }
+
+        $source = database_path('seeders/assets/'.self::DEFAULT_IMAGE);
+
+        if (! file_exists($source)) {
+            return;
+        }
+
+        Storage::disk('public')->put(self::DEFAULT_IMAGE, file_get_contents($source));
     }
 }

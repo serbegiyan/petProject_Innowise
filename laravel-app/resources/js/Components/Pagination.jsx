@@ -1,7 +1,7 @@
 import { Link } from '@inertiajs/react';
 
 export default function Pagination({ links }) {
-    if (!links || links.length <= 3) return null;
+    if (!Array.isArray(links) || links.length <= 3) return null;
 
     return (
         <div className="flex flex-row justify-center my-5">

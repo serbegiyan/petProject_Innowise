@@ -29,12 +29,14 @@ export default function Show({ product, preSelectedIds, edit_cart_id, filters, c
         });
     }, [product.id, selectedServices, auth.user]);
 
+    const productServices = product.services ?? [];
+
     const totalPrice = useMemo(() => {
-        const servicesSum = product.services
+        const servicesSum = productServices
             .filter(s => selectedServices.includes(s.id))
             .reduce((sum, s) => sum + parseFloat(s.pivot.price), 0);
         return Number(product.price) + servicesSum;
-    }, [selectedServices, product]);
+    }, [selectedServices, product, productServices]);
 
     function handleServiceChange(serviceId) {
         setSelectedServices(prev =>
@@ -46,7 +48,7 @@ export default function Show({ product, preSelectedIds, edit_cart_id, filters, c
 
     function handleBasket() {
         // Формируем массив объектов услуг на основе выбранных ID
-        const formattedServices = product.services
+        const formattedServices = productServices
             .filter(service => selectedServices.includes(service.id))
             .map(service => ({
                 id: service.id,
@@ -86,8 +88,8 @@ export default function Show({ product, preSelectedIds, edit_cart_id, filters, c
                     <p>
                         <span className='font-semibold'>
                             Категория товара:
-                        </span>{product.categories.map((category) => (
-                            <span key={product.id}>
+                        </span>{(product.categories ?? []).map((category) => (
+                            <span key={category.id}>
                                 {` ${category.name}`}
                             </span>
                         ))}</p>
@@ -95,7 +97,7 @@ export default function Show({ product, preSelectedIds, edit_cart_id, filters, c
                     <p><span className='font-semibold'>Дата выпуска: </span>{product.release_date}</p>
                     <p><span className='font-semibold'>Описание: </span>{product.description}</p>
                     <h3 className='text-xl text-center font-semibold my-3'>Доступные услуги для этого товара</h3>
-                    {product.services.map((service) => (
+                    {productServices.map((service) => (
                         <div key={service.id} className='even:bg-stone-100 p-2'>
                             <div className='flex flex-col'>
                                 <div className='flex flex-row items-center'>

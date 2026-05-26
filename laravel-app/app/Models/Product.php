@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -19,6 +21,8 @@ class Product extends Model
     protected $table = 'products';
 
     protected $fillable = ['name', 'price', 'brand', 'description', 'image', 'release_date', 'slug'];
+
+    protected $appends = ['image_url'];
 
     protected function casts(): array
     {
@@ -63,6 +67,29 @@ class Product extends Model
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    protected function imageUrl(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $placeholder = asset('images/product-image.svg');
+
+                if (! $this->image) {
+                    return $placeholder;
+                }
+
+                if (filter_var($this->image, FILTER_VALIDATE_URL)) {
+                    return $placeholder;
+                }
+
+                if (Storage::disk('public')->exists($this->image)) {
+                    return Storage::disk('public')->url($this->image);
+                }
+
+                return $placeholder;
+            },
+        );
     }
 
     public function categories(): BelongsToMany
