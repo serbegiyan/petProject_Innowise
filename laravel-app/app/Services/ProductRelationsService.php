@@ -3,23 +3,22 @@
 namespace App\Services;
 
 use App\Models\Product;
-use Illuminate\Http\Request;
 
 class ProductRelationsService
 {
-    public function syncCategories(Product $product, Request $request): void
+    public function syncCategories(Product $product, array|int $categoryIds): void
     {
-        $product->categories()->sync($request->category_id);
+        $product->categories()->sync((array) $categoryIds);
     }
 
-    public function syncServices(Product $product, Request $request): void
+    public function syncServices(Product $product, array $services, array $prices, array $terms): void
     {
         $servicesData = [];
 
-        foreach ($request->services ?? [] as $serviceId) {
+        foreach ($services as $serviceId) {
             $servicesData[$serviceId] = [
-                'price' => $request->service_prices[$serviceId] ?? 0,
-                'term' => $request->service_terms[$serviceId] ?? 'не указан',
+                'price' => $prices[$serviceId] ?? 0,
+                'term' => $terms[$serviceId] ?? 'не указан',
             ];
         }
 

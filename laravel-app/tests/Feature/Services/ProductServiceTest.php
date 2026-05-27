@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services;
+namespace Tests\Feature\Services;
 
 use App\Models\Category;
 use App\Models\Service;
@@ -15,40 +15,43 @@ class ProductServiceTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_it_creates_product_with_relations_and_image()
+    protected ProductService $productService;
+
+    protected function setUp(): void
     {
+        parent::setUp();
+
         Storage::fake('public');
 
+        $this->productService = $this->app->make(ProductService::class);
+    }
+
+    public function test_it_creates_product_with_relations_and_image(): void
+    {
         $category = Category::factory()->create();
         $service = Service::factory()->create();
 
         $data = [
             'name' => 'Test Product',
             'price' => 100,
-            'description' => 'Some text',
         ];
 
-        $request = request()->merge([
-            'category_id' => [$category->id],
+        $relationData = [
+            'category_ids' => [$category->id],
             'services' => [$service->id],
             'service_prices' => [$service->id => 50],
             'service_terms' => [$service->id => '2 дня'],
-        ]);
+        ];
 
-        $request->files->set('image', UploadedFile::fake()->image('test.jpg'));
+        $product = $this->productService->create(
+            $data,
+            UploadedFile::fake()->image('test.jpg'),
+            $relationData
+        );
 
-        $serviceLayer = app(ProductService::class);
-        $product = $serviceLayer->create($data, $request);
-
-        $this->assertDatabaseHas('products', [
-            'id' => $product->id,
-            'name' => 'Test Product',
-        ]);
-
-        $this->assertDatabaseHas('category_product', [
-            'product_id' => $product->id,
-            'category_id' => $category->id,
-        ]);
+        $this->assertModelExists($product);
+        $this->assertEquals('Test Product', $product->name);
+        $this->assertTrue($product->categories->contains($category));
 
         $this->assertDatabaseHas('product_service', [
             'product_id' => $product->id,
@@ -56,6 +59,7 @@ class ProductServiceTest extends TestCase
             'price' => 50,
             'term' => '2 дня',
         ]);
+
         /** @var FilesystemAdapter $storage */
         $storage = Storage::disk('public');
         $storage->assertExists($product->image);

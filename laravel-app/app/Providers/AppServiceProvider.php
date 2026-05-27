@@ -14,11 +14,12 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(StatsService::class);
-        Product::observe(ProductObserver::class);
     }
 
     public function boot(): void
     {
+        Product::observe(ProductObserver::class);
+
         Vite::prefetch(concurrency: 3);
 
         View::composer('*', function ($view) {

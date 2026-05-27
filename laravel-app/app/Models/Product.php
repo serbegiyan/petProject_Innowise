@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Enums\ProductSort;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
@@ -48,12 +50,14 @@ class Product extends Model
 
     public function scopeApplySort(Builder $query, ?string $sort): Builder
     {
-        return match ($sort) {
-            'price_asc' => $query->orderBy('price', 'asc'),
-            'price_desc' => $query->orderBy('price', 'desc'),
-            'release_asc' => $query->orderBy('release_date', 'asc'),
-            'release_desc' => $query->orderBy('release_date', 'desc'),
-            default => $query->latest(),
+        $sortEnum = ProductSort::tryFrom($sort) ?? ProductSort::DEFAULT;
+
+        return match ($sortEnum) {
+            ProductSort::PRICE_ASC => $query->orderBy('price', 'asc'),
+            ProductSort::PRICE_DESC => $query->orderBy('price', 'desc'),
+            ProductSort::RELEASE_ASC => $query->orderBy('release_date', 'asc'),
+            ProductSort::RELEASE_DESC => $query->orderBy('release_date', 'desc'),
+            ProductSort::DEFAULT => $query->latest(),
         };
     }
 
@@ -73,21 +77,23 @@ class Product extends Model
     {
         return Attribute::make(
             get: function () {
-                $placeholder = asset('images/product-image.svg');
-
                 if (! $this->image) {
-                    return $placeholder;
+                    return asset('images/product-image.png');
                 }
 
+                // Если используете фабрики с внешними URL (Faker)
                 if (filter_var($this->image, FILTER_VALIDATE_URL)) {
-                    return $placeholder;
+                    return $this->image;
                 }
 
-                if (Storage::disk('public')->exists($this->image)) {
-                    return Storage::disk('public')->url($this->image);
+                /** @var FilesystemAdapter $disk */
+                $disk = Storage::disk('public');
+
+                if ($disk->exists($this->image)) {
+                    return $disk->url($this->image);
                 }
 
-                return $placeholder;
+                return asset('images/product-image.png');
             },
         );
     }

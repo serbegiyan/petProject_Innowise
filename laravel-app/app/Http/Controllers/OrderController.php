@@ -30,13 +30,13 @@ class OrderController extends Controller
                 ->map(fn ($order) => [
                     'id' => $order->id,
                     'total' => $order->total_price,
-                    // Передаем всё необходимое из Enum
-                    'status' => $order->status->value,       // код (напр. 'pending')
-                    'status_label' => $order->status->label(), // текст (напр. 'Ожидает оплаты')
-                    'status_css' => $order->status->cssClass(), // класс (напр. 'text-yellow-500')
+                    'customer_name' => $order->customer_name,
+                    'status' => $order->status->value,
+                    'status_label' => $order->status->label(),
+                    'status_css' => $order->status->cssClass(),
 
                     'items' => $order->items,
-                    'created_at' => $order->created_at->format('d.m.Y H:i'),
+                    'created_at_display' => $order->created_at->format('d.m.Y H:i'),
                 ]),
         ]);
     }

@@ -41,48 +41,60 @@ Route::middleware(['auth', 'admin'])
     ->group(function (): void {
         Route::get('/', [MainController::class, 'main'])->name('admin.main');
 
-        Route::get('/users', [UserController::class, 'index'])->name('user.index');
-        Route::get('/users/create', [UserController::class, 'create'])->name('user.create');
-        Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
-        Route::get('/users/{user}', [UserController::class, 'show'])->name('user.show');
-        Route::patch('/users/{user}', [UserController::class, 'update'])->name('user.update');
-        Route::post('/users/store', [UserController::class, 'store'])->name('user.store');
-        Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('user.destroy');
+        Route::prefix('users')->group(function () {
+            Route::get('/', [UserController::class, 'index'])->middleware('can:viewAny,App\Models\User')->name('user.index');
+            Route::get('/create', [UserController::class, 'create'])->middleware('can:create,App\Models\User')->name('user.create');
+            Route::post('/store', [UserController::class, 'store'])->middleware('can:create,App\Models\User')->name('user.store');
+            Route::get('/{user}/edit', [UserController::class, 'edit'])->middleware('can:update,user')->name('user.edit');
+            Route::get('/{user}', [UserController::class, 'show'])->middleware('can:view,user')->name('user.show');
+            Route::patch('/{user}', [UserController::class, 'update'])->middleware('can:update,user')->name('user.update');
+            Route::delete('/{user}', [UserController::class, 'destroy'])->middleware('can:delete,user')->name('user.destroy');
+        });
 
-        Route::get('/categories', [CategoryController::class, 'index'])->name('category.index');
-        Route::get('/categories/create', [CategoryController::class, 'create'])->name('category.create');
-        Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('category.edit');
-        Route::patch('/categories/{category}', [CategoryController::class, 'update'])->name('category.update');
-        Route::post('/categories/store', [CategoryController::class, 'store'])->name('category.store');
-        Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('category.destroy');
+        Route::prefix('categories')->group(function () {
+            Route::get('/', [CategoryController::class, 'index'])->name('category.index');
+            Route::get('/create', [CategoryController::class, 'create'])->middleware('can:create,App\Models\Category')->name('category.create');
+            Route::post('/store', [CategoryController::class, 'store'])->middleware('can:create,App\Models\Category')->name('category.store');
+            Route::get('/{category}/edit', [CategoryController::class, 'edit'])->middleware('can:update,category')->name('category.edit');
+            Route::patch('/{category}', [CategoryController::class, 'update'])->middleware('can:update,category')->name('category.update');
+            Route::delete('/{category}', [CategoryController::class, 'destroy'])->middleware('can:delete,category')->name('category.destroy');
+        });
 
-        Route::get('/services', [ServiceController::class, 'index'])->name('service.index');
-        Route::get('/services/create', [ServiceController::class, 'create'])->name('service.create');
-        Route::get('/services/{service}/edit', [ServiceController::class, 'edit'])->name('service.edit');
-        Route::get('/services/{service}', [ServiceController::class, 'show'])->name('service.show');
-        Route::patch('/services/{service}', [ServiceController::class, 'update'])->name('service.update');
-        Route::post('/services/store', [ServiceController::class, 'store'])->name('service.store');
-        Route::delete('/services/{service}', [ServiceController::class, 'destroy'])->name('service.destroy');
+        Route::prefix('services')->group(function () {
+            Route::get('/', [ServiceController::class, 'index'])->name('service.index');
+            Route::get('/create', [ServiceController::class, 'create'])->middleware('can:create,App\Models\Service')->name('service.create');
+            Route::post('/store', [ServiceController::class, 'store'])->middleware('can:create,App\Models\Service')->name('service.store');
+            Route::get('/{service}/edit', [ServiceController::class, 'edit'])->middleware('can:update,service')->name('service.edit');
+            Route::get('/{service}', [ServiceController::class, 'show'])->middleware('can:view,service')->name('service.show');
+            Route::patch('/{service}', [ServiceController::class, 'update'])->middleware('can:update,service')->name('service.update');
+            Route::delete('/{service}', [ServiceController::class, 'destroy'])->middleware('can:delete,service')->name('service.destroy');
+        });
 
-        Route::get('/products', [ProductController::class, 'index'])->name('product.index');
-        Route::get('/products/create', [ProductController::class, 'create'])->name('product.create');
-        Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('product.edit');
-        Route::get('/products/{product}', [ProductController::class, 'show'])->name('product.show');
-        Route::patch('/products/{product}', [ProductController::class, 'update'])->name('product.update');
-        Route::post('/products/store', [ProductController::class, 'store'])->name('product.store');
-        Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('product.destroy');
+        Route::prefix('products')->group(function () {
+            Route::get('/', [ProductController::class, 'index'])->name('product.index');
+            Route::get('/create', [ProductController::class, 'create'])->middleware('can:create,App\Models\Product')->name('product.create');
+            Route::post('/store', [ProductController::class, 'store'])->middleware('can:create,App\Models\Product')->name('product.store');
+            Route::get('/{product}/edit', [ProductController::class, 'edit'])->middleware('can:update,product')->name('product.edit');
+            Route::get('/{product}', [ProductController::class, 'show'])->middleware('can:view,product')->name('product.show');
+            Route::patch('/{product}', [ProductController::class, 'update'])->middleware('can:update,product')->name('product.update');
+            Route::delete('/{product}', [ProductController::class, 'destroy'])->middleware('can:delete,product')->name('product.destroy');
+        });
 
-        Route::get('/export/index', [ExportController::class, 'index'])->name('export.index');
-        Route::post('/export/run', [ExportController::class, 'export'])->name('export.run');
-        Route::delete('/exports/{id}', [ExportController::class, 'destroy'])->name('export.destroy');
+        Route::prefix('export')->group(function () {
+            Route::get('/index', [ExportController::class, 'index'])->middleware('can:viewAny,App\Models\Export')->name('export.index');
+            Route::post('/run', [ExportController::class, 'export'])->middleware('can:create,App\Models\Export')->name('export.run');
+            Route::delete('/{id}', [ExportController::class, 'destroy'])->middleware('can:create,App\Models\Export')->name('export.destroy');
+        });
 
-        Route::get('/orders', [OrderAdminController::class, 'index'])->name('admin.order.index');
-        Route::get('/orders/create', [OrderAdminController::class, 'create'])->name('admin.order.create');
-        Route::get('/orders/{order}/edit', [OrderAdminController::class, 'edit'])->name('admin.order.edit');
-        Route::get('/orders/{order}', [OrderAdminController::class, 'show'])->name('admin.order.show');
-        Route::patch('/orders/{order}', [OrderAdminController::class, 'update'])->name('admin.order.update');
-        Route::post('/orders/store', [OrderAdminController::class, 'store'])->name('admin.order.store');
-        Route::delete('/orders/{order}', [OrderAdminController::class, 'destroy'])->name('admin.order.destroy');
+        Route::prefix('orders')->group(function () {
+            Route::get('/', [OrderAdminController::class, 'index'])->middleware('can:viewAny,App\Models\Order')->name('admin.order.index');
+            Route::get('/create', [OrderAdminController::class, 'create'])->middleware('can:create,App\Models\Order')->name('admin.order.create');
+            Route::post('/store', [OrderAdminController::class, 'store'])->middleware('can:create,App\Models\Order')->name('admin.order.store');
+            Route::get('/{order}/edit', [OrderAdminController::class, 'edit'])->middleware('can:update,order')->name('admin.order.edit');
+            Route::get('/{order}', [OrderAdminController::class, 'show'])->middleware('can:view,order')->name('admin.order.show');
+            Route::patch('/{order}', [OrderAdminController::class, 'update'])->middleware('can:update,order')->name('admin.order.update');
+            Route::delete('/{order}', [OrderAdminController::class, 'destroy'])->middleware('can:delete,order')->name('admin.order.destroy');
+        });
     });
 
 require __DIR__.'/auth.php';

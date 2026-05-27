@@ -27,15 +27,7 @@ export default function Dashboard({ orders }) {
                                     Заказ на имя: </span>{order.customer_name}</p>
                                 <p className='pt-2'><span className='font-bold'>
                                     Дата заказа:&nbsp;
-                                </span>{
-                                        new Date(order.created_at).toLocaleString('ru-RU', {
-                                            day: '2-digit',
-                                            month: '2-digit',
-                                            year: 'numeric',
-                                            hour: '2-digit',
-                                            minute: '2-digit'
-                                        })
-                                    }</p>
+                                </span>{order.created_at_display}</p>
                                 <p className='pt-2'>
                                     <span className='font-bold'>
                                         Статус:&nbsp;

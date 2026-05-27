@@ -21,6 +21,9 @@
 </head>
 
 <body class="bg-stone-100 min-h-screen">
+
+    {{-- верхнее меню --}}
+
     <header class="w-full bg-stone-300 h-14.5 flex flex-row justify-between">
         <img src="/images/logo.jpg" className="w-10 rounded-full" />
         <div class=" p-4 ">Вы вошли как {{ auth()->user()->name }}</div>
@@ -69,6 +72,8 @@
             </nav>
         @endif
     </header>
+
+    {{-- боковое меню --}}
     <div class="container flex flex-row min-h-screen">
         <div class="w-1/6 p-4 bg-stone-200">
             <ul class="flex flex-col gap-2 ">

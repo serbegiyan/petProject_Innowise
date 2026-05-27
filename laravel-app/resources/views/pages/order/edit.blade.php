@@ -51,10 +51,9 @@
                 <x-input readonly
                     value="{{ old('total_price', Number::format($order->total_price, precision: 2, locale: 'ru')) }} BYN" />
 
-                <x-label class="mt-3 " for="status_label">Статус заказа</x-label>
-                <x-select name="status" :options="\App\Models\Order::getStatusOptions()" :selected="old('status_label', $order->status_label ?? null)">
-                    {{ $order->status_label }}
-                </x-select>
+                <x-label class="mt-3 " for="status">Статус заказа</x-label>
+                <x-select name="status" :options="\App\Models\Order::getStatusOptions()" :selected="old('status', $order->status->value ?? $order->status)" />
+
             </div>
         </div>
         <x-button-success class="self-end">Сохранить</x-button-success>
@@ -73,7 +72,7 @@
                             @foreach ($item->services as $service)
                                 <li class="p-2 pl-5 list-disc list-inside">
                                     {{ $service['name'] }} —
-                                    <strong>{{ Number::format($service['pivot']['price'], precision: 2, locale: 'ru') }}
+                                    <strong>{{ Number::format($service['price'], precision: 2, locale: 'ru') }}
                                         BYN</strong>
 
                                 </li>

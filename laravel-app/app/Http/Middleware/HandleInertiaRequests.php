@@ -17,17 +17,14 @@ class HandleInertiaRequests extends Middleware
 
     public function share(Request $request): array
     {
-        // Получаем сервис один раз
         $statsService = app(StatsService::class);
 
         return [
             ...parent::share($request),
             'auth' => [
                 'user' => fn () => $this->getSharedUser($request),
-                // ✅ Используем защищенный метод сервиса (нужно добавить его в StatsService)
                 'currency' => fn () => $statsService->getCurrentCurrency(),
             ],
-            // ✅ Список всех валют
             'currencies' => fn () => $statsService->getAllCurrencies(),
 
             'flash' => [
@@ -44,17 +41,12 @@ class HandleInertiaRequests extends Middleware
             return null;
         }
 
-        // Загружаем корзину один раз
-        $basket = $user->baskets()->with('product')->get();
-
         return [
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
             'role' => $user->role,
-            'basket' => $basket,
-            // ✅ Считаем количество элементов в коллекции, а не в базе
-            'basket_count' => $basket->count(),
+            'basket_count' => fn () => $user->baskets()->count(),
         ];
     }
 }

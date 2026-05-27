@@ -1,10 +1,11 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Basket;
 
 use App\Models\ExchangeRate;
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
@@ -29,7 +30,9 @@ class BasketPageTest extends TestCase
             'services' => [],
         ]);
 
-        $expectedUrl = Storage::disk('public')->url('products/photo.jpg');
+        /** @var FilesystemAdapter $disk */
+        $disk = Storage::disk('public');
+        $expectedUrl = $disk->url('products/photo.jpg');
 
         $this->actingAs($user)
             ->get(route('basket.index'))

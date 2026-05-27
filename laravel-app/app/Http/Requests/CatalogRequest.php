@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\ProductSort;
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Validation\Rule;
 
 class CatalogRequest extends BaseRequest
 {
@@ -16,7 +18,9 @@ class CatalogRequest extends BaseRequest
         return [
             'search' => ['nullable', 'string', 'max:255'],
             'category' => ['nullable', 'integer', 'exists:categories,id'],
-            'sort' => ['nullable', 'string', 'in:price_asc,price_desc,release_asc,release_desc'],
+
+            // Используем автоматическую валидацию по Enum вместо хардкода строки 'in:...'
+            'sort' => ['nullable', Rule::enum(ProductSort::class)],
         ];
     }
 }

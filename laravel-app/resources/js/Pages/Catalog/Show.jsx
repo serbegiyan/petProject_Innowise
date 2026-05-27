@@ -6,7 +6,7 @@ import FlashMessage from '@/Components/FlashMessage';
 import { usePage, Link, } from '@inertiajs/react';
 import { useCurrency } from '@/Hooks/useCurrency';
 
-export default function Show({ product, preSelectedIds, edit_cart_id, filters, currencies }) {
+export default function Show({ product, preSelectedIds, edit_cart_id, filters, currencies, cartItemsForProduct = [] }) {
     const { auth } = usePage().props;
     const [selectedServices, setSelectedServices] = useState(
         preSelectedIds ? preSelectedIds.map(id => Number(id)) : []
@@ -15,19 +15,17 @@ export default function Show({ product, preSelectedIds, edit_cart_id, filters, c
     const { selectedCurrency, setCurrency, convert } = useCurrency(currencies);
 
     const isInCart = useMemo(() => {
-        if (!auth.user || !auth.user.basket) return false;
+        if (!auth.user || !cartItemsForProduct.length) return false;
 
-        return auth.user.basket.some(item => {
+        return cartItemsForProduct.some(item => {
             if (item.product_id !== product.id) return false;
 
-            // 2. Сравниваем наборы услуг
             const basketServiceIds = item.services.map(s => Number(s.id)).sort();
             const currentServiceIds = selectedServices.map(id => Number(id)).sort();
 
-            // Сравниваем массивы (превращаем в строку для быстрого сравнения)
             return JSON.stringify(basketServiceIds) === JSON.stringify(currentServiceIds);
         });
-    }, [product.id, selectedServices, auth.user]);
+    }, [product.id, selectedServices, auth.user, cartItemsForProduct]);
 
     const productServices = product.services ?? [];
 
@@ -58,7 +56,7 @@ export default function Show({ product, preSelectedIds, edit_cart_id, filters, c
 
         router.post(route('basket.store'), {
             product_id: product.id,
-            services: formattedServices, // Отправляем готовые объекты
+            services: formattedServices,
             quantity: 1,
             edit_cart_id: edit_cart_id
         }, {

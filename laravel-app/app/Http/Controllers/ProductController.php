@@ -59,16 +59,43 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request, ProductService $service)
     {
-        $product = $service->create($request->validated(), $request);
+        $validated = $request->validated();
+
+        $relationData = [
+            'category_ids' => $validated['category_id'] ?? [],
+            'services' => $validated['services'] ?? [],
+            'service_prices' => $validated['service_prices'] ?? [],
+            'service_terms' => $validated['service_terms'] ?? [],
+        ];
+
+        $service->create(
+            $validated,
+            $request->file('image'),
+            $relationData
+        );
 
         return redirect()
             ->route('product.index')
-            ->with('success', "Товар {$product->name} успешно создан!");
+            ->with('success', "Товар {$validated['name']} успешно создан!");
     }
 
     public function update(ProductRequest $request, Product $product, ProductService $service)
     {
-        $service->update($product, $request->validated(), $request);
+        $validated = $request->validated();
+
+        $relationData = [
+            'category_ids' => $validated['category_id'] ?? [],
+            'services' => $validated['services'] ?? [],
+            'service_prices' => $validated['service_prices'] ?? [],
+            'service_terms' => $validated['service_terms'] ?? [],
+        ];
+
+        $service->update(
+            $product,
+            $validated,
+            $request->file('image'),
+            $relationData
+        );
 
         return redirect()
             ->route('product.index')

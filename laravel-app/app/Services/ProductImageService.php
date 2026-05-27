@@ -3,21 +3,24 @@
 namespace App\Services;
 
 use App\Models\Product;
-use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 class ProductImageService
 {
-    public function handle(Request $request, ?Product $product = null): ?string
+    public function handle(?UploadedFile $image, ?Product $product = null): ?string
     {
-        if (! $request->hasFile('image')) {
+        // Если новый файл не загружен, сохраняем старую картинку
+        if (! $image) {
             return $product?->image;
         }
 
+        // Если есть старая картинка, удаляем её перед записью новой
         if ($product && $product->image) {
             Storage::disk('public')->delete($product->image);
         }
 
-        return $request->file('image')->store('products', 'public');
+        // Сохраняем файл на диск public в папку products
+        return $image->store('products', 'public');
     }
 }

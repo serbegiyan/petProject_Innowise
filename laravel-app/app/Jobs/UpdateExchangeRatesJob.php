@@ -61,7 +61,7 @@ class UpdateExchangeRatesJob implements ShouldQueue
 
     protected function parseAndSaveRates($xml): void
     {
-        $targetIso = ['USD', 'EUR', 'RUB'];
+        $targetIso = config('services.target_currencies', ['USD', 'EUR', 'RUB']);
 
         foreach ($xml->xpath('//value') as $item) {
             $attributes = $item->attributes();
@@ -81,14 +81,25 @@ class UpdateExchangeRatesJob implements ShouldQueue
 
     protected function setFallbackRates(): void
     {
-        $defaults = [
-            ['name' => 'USD', 'rate' => 2.8267, 'scale' => 1],
-            ['name' => 'EUR', 'rate' => 3.3061, 'scale' => 1],
-            ['name' => 'RUB', 'rate' => 0.0377, 'scale' => 1],
+        // Базовая карта дефолтных значений для финансовой безопасности приложения
+        $fallbackMap = [
+            'USD' => 2.8267,
+            'EUR' => 3.3061,
+            'RUB' => 0.0377,
         ];
 
-        foreach ($defaults as $rateData) {
-            ExchangeRate::updateOrCreate(['name' => $rateData['name']], $rateData);
+        // Получаем активные валюты из конфига
+        $targetIso = config('services.target_currencies', ['USD', 'EUR', 'RUB']);
+
+        foreach ($targetIso as $code) {
+            ExchangeRate::updateOrCreate(
+                ['name' => $code],
+                [
+                    'scale' => 1,
+                    // Берем значение из карты, либо ставим 1.0 как безопасный резерв
+                    'rate' => $fallbackMap[$code] ?? 1.0,
+                ]
+            );
         }
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Requests\BasketStoreRequest;
 use App\Http\Requests\BasketUpdateRequest;
 use App\Models\ExchangeRate;
 use App\Services\BasketService;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class BasketController extends Controller
@@ -27,14 +28,18 @@ class BasketController extends Controller
 
     public function update(BasketUpdateRequest $request, int $id, BasketService $basketService)
     {
-        $basketService->updateQuantity($id, $request->integer('quantity'));
+        $basketItem = $request->user()->baskets()->findOrFail($id);
+
+        $basketService->updateQuantity($basketItem->id, $request->integer('quantity'));
 
         return redirect()->back();
     }
 
-    public function destroy(int $id, BasketService $basketService)
+    public function destroy(Request $request, int $id, BasketService $basketService)
     {
-        $basketService->removeItem($id);
+        $basketItem = $request->user()->baskets()->findOrFail($id);
+
+        $basketService->removeItem($basketItem->id);
 
         return redirect()->back()->with('error', 'Товар удален из корзины');
     }

@@ -4,7 +4,7 @@ services:
     container_name: redis_petProject
     restart: always
     ports:
-      - "6379:6379"
+      - "127.0.0.1:6379:6379"
     volumes:
       - redis_data:/data
 
@@ -12,7 +12,7 @@ services:
     image: localstack/localstack:3.0.2
     container_name: localstack_s3
     ports:
-      - "4566:4566"
+      - "127.0.0.1:4566:4566"
     environment:
       - SERVICES=s3,ses,sqs
       - DEFAULT_REGION=us-east-1
@@ -23,8 +23,8 @@ services:
     image: rabbitmq:3-management
     container_name: rabbitmq
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - "127.0.0.1:5672:5672"
+      - "127.0.0.1:15672:15672"
 
   mysql_db:
     image: mysql:8.0
@@ -36,7 +36,7 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: password
     ports:
-      - "3306:3306"
+      - "127.0.0.1:3306:3306"
     volumes:
       - mysql_db_petProject:/var/lib/mysql
 
@@ -92,7 +92,7 @@ services:
     volumes:
       - ./laravel-app:/var/www/html
     ports:
-      - "5173:5173"
+      - "127.0.0.1:5173:5173"
     command: tail -f /dev/null
 
   jenkins:
@@ -104,7 +104,7 @@ services:
     restart: always
     user: "jenkins:984"
     ports:
-      - "8081:8080"
+      - "127.0.0.1:8081:8080"
     volumes:
       - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock

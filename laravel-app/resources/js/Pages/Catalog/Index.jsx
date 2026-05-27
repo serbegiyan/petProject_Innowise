@@ -8,7 +8,7 @@ import Search from '@/Components/Search';
 import Pagination from '@/Components/Pagination';
 import { useCurrency } from '@/Hooks/useCurrency';
 
-export default function Index({ products, filters, categories, currencies }) {
+export default function Index({ products, filters, categories, currencies, sortOptions = [] }) {
     const { selectedCurrency, setCurrency, convert } = useCurrency(currencies);
 
     const [values, setValues] = useState({
@@ -65,6 +65,8 @@ export default function Index({ products, filters, categories, currencies }) {
 
     const getCategoryName = (id) => categories.find(c => c.id == id)?.name;
 
+    const getSortLabel = (value) => sortOptions.find(o => o.value === value)?.label || value;
+
     return (
         <>
             <Head title="Каталог" />
@@ -89,21 +91,16 @@ export default function Index({ products, filters, categories, currencies }) {
             />
 
             {/* Фильтры */}
-            < div className="flex flex-row justify-between p-4 border-b" >
+            <div className="flex flex-row justify-between p-4 border-b">
                 <select
                     className="border rounded-lg py-2 w-fit"
                     name="category"
-                    // Гарантируем, что это всегда строка, даже если там null/undefined
                     value={String(values.category || '')}
                     onChange={handleChange}
                 >
                     <option value="">Все категории</option>
                     {categories.map(cat => (
-                        <option
-                            key={cat.id}
-                            // КРИТИЧНО: приводим ID категории к строке здесь тоже
-                            value={String(cat.id)}
-                        >
+                        <option key={cat.id} value={String(cat.id)}>
                             {cat.name}
                         </option>
                     ))}
@@ -111,17 +108,11 @@ export default function Index({ products, filters, categories, currencies }) {
 
                 <div className='flex flex-row gap-2'>
                     {Object.entries(filters).map(([key, value]) => {
-                        // Пропускаем валюту и пустые значения
                         if (!value) return null;
 
                         let label = value;
                         if (key === 'category') label = `Категория: ${getCategoryName(value)}`;
-                        if (key === 'sort' && value.startsWith('price_')) {
-                            label = value === 'price_asc' ? 'Сначала дешевые' : 'Сначала дорогие';
-                        }
-                        if (key === 'sort' && value.startsWith('release_')) {
-                            label = value === 'release_asc' ? 'Сначала новые' : 'Сначала старые';
-                        }
+                        if (key === 'sort') label = `Сортировка: ${getSortLabel(value)}`;
                         if (key === 'search') label = `Поиск: ${value}`;
 
                         return (
@@ -132,24 +123,26 @@ export default function Index({ products, filters, categories, currencies }) {
                         );
                     })}
 
-                    {/* Проверяем наличие активных фильтров, исключая валюту */}
                     {Object.entries(filters).some(([k, v]) => v && k !== 'currency') && (
                         <button onClick={resetAll} className="text-sm text-gray-500 underline ml-2">
                             Сбросить всё
                         </button>
                     )}
                 </div>
-                <select className="border rounded-lg py-2 w-fit"
+
+                <select
+                    className="border rounded-lg py-2 w-fit"
                     name="sort"
                     value={String(values.sort || '')}
-                    onChange={handleChange}>
-                    <option value="">Все товары</option>
-                    <option value="price_asc">Сначала дешевые</option>
-                    <option value="price_desc">Сначала дорогие</option>
-                    <option value="release_desc">Санчала новые</option>
-                    <option value="release_asc">Сначала старые</option>
+                    onChange={handleChange}
+                >
+                    {sortOptions.map(option => (
+                        <option key={option.value} value={option.value}>
+                            {option.label}
+                        </option>
+                    ))}
                 </select>
-            </div >
+            </div>
 
             {/* Сетка товаров */}
             {
@@ -159,7 +152,7 @@ export default function Index({ products, filters, categories, currencies }) {
                             <Link key={product.id} href={route('catalog.show', { product: product.slug, ...filters })}
                                 className="hover:scale-105 transition">
                                 <div className='p-4 bg-gray-300 h-full'>
-                                    <img src={product.image_url} alt={product.name} className="w-full aspect-square object-cover" />
+                                    <img src={product.image_url} alt={product.name} className="w-full aspect-square object-contain" />
                                     <p className="mt-2 font-semibold text-center truncate">{product.name}</p>
                                     <p className='text-center'>
                                         {convert(product.price)}

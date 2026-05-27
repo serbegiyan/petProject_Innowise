@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Enums\UserRole;
 use Database\Factories\UserFactory;
 use Illuminate\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -19,15 +21,45 @@ class User extends Authenticatable
     use Notifiable;
     use SoftDeletes;
 
-    const ROLE_ADMIN = 'admin';
-
-    const ROLE_USER = 'user';
+    // Старые константы ROLE_ADMIN и ROLE_USER удаляем
 
     protected $appends = ['role_class', 'role_label'];
 
+    /**
+     * Включаем автоматическое приведение поля role к объекту Enum
+     */
+    protected function casts(): array
+    {
+        return [
+            'role' => UserRole::class, // Поле 'role' теперь возвращает Enum
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
+    }
+
+    /**
+     * Проверка на админа стала строгой и типизированной.
+     */
     public function isAdmin(): bool
     {
-        return $this->role === self::ROLE_ADMIN;
+        return $this->role === UserRole::ADMIN;
+    }
+
+    /**
+     * Используем новые стрелочные геттеры (Attribute) вместо старых get...Attribute
+     */
+    protected function roleClass(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->role?->cssClass() ?? UserRole::USER->cssClass()
+        );
+    }
+
+    protected function roleLabel(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->role?->label() ?? UserRole::USER->label()
+        );
     }
 
     /**
@@ -49,14 +81,6 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
-
     public function baskets(): HasMany
     {
         return $this->hasMany(Basket::class);
@@ -65,21 +89,5 @@ class User extends Authenticatable
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
-    }
-
-    public function getRoleClassAttribute()
-    {
-        return [
-            'admin' => 'bg-green-100 text-green-800 border-green-200',
-            'user' => 'bg-gray-100 text-gray-800',
-        ][$this->role] ?? 'bg-gray-100 text-gray-800';
-    }
-
-    public function getRoleLabelAttribute()
-    {
-        return [
-            'admin' => 'Администратор',
-            'user' => 'Пользователь',
-        ][$this->role] ?? 'Пользователь';
     }
 }

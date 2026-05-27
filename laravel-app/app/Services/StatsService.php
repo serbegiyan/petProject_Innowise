@@ -22,20 +22,18 @@ class StatsService
 
     public function getSidebarStats(): array
     {
-        return $this->cache->remember('sidebar_stats', 600, function () {
-            try {
-                return [
-                    'products_count' => Product::count(),
-                    'categories_count' => Category::count(),
-                    'services_count' => Service::count(),
-                    'users_count' => User::count(),
-                    'orders_count' => Order::count(),
-                    'exports_count' => $this->getS3ExportsCount(),
-                ];
-            } catch (\Exception $e) {
-                return [];
-            }
-        });
+        try {
+            return [
+                'products_count' => Product::count(),
+                'categories_count' => Category::count(),
+                'services_count' => Service::count(),
+                'users_count' => User::count(),
+                'orders_count' => Order::count(),
+                'exports_count' => $this->getS3ExportsCount(),
+            ];
+        } catch (\Exception $e) {
+            return [];
+        }
     }
 
     public function getNavCategories()
