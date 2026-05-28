@@ -25,6 +25,8 @@ class AdminMiddleware
             }
         }
 
-        return redirect('/catalog')->with('error', 'У вас нет прав доступа к этой странице.');
+        return redirect()
+            ->route('catalog.index')
+            ->with('error', 'У вас нет прав доступа к этой странице.');
     }
 }

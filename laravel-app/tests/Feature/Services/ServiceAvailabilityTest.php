@@ -29,7 +29,7 @@ class ServiceAvailabilityTest extends TestCase
         $this->withoutExceptionHandling();
         Schema::dropIfExists('exchange_rates');
 
-        $response = $this->get('/catalog');
+        $response = $this->get(route('catalog.index'));
 
         $response->assertStatus(200);
     }

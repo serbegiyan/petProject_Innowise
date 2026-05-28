@@ -89,11 +89,13 @@ services:
     image: node:20
     container_name: node_petProject
     working_dir: /var/www/html
+    restart: unless-stopped
     volumes:
       - ./laravel-app:/var/www/html
+      - ./docker/node/entrypoint.sh:/entrypoint.sh:ro
     ports:
       - "127.0.0.1:5173:5173"
-    command: tail -f /dev/null
+    entrypoint: ["/bin/sh", "/entrypoint.sh"]
 
   jenkins:
     build:

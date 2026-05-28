@@ -17,7 +17,7 @@ class CatalogIndexTest extends TestCase
         Product::factory()->create(['name' => 'Samsung Galaxy']);
 
         // Делаем запрос с фильтром
-        $response = $this->get('/catalog?search=iphone');
+        $response = $this->get(route('catalog.index', ['search' => 'iphone']));
 
         // Проверяем ответ
         $response->assertStatus(200);
@@ -42,7 +42,7 @@ class CatalogIndexTest extends TestCase
                 ->has('products.data', 12)
                 ->has('products.meta.links', 4)
                 ->has('products.links')
-                ->where('products.meta.links.1.url', fn (string $url) => str_contains($url, '/catalog'))
+                ->where('products.meta.links.1.url', fn (string $url) => str_contains($url, route('catalog.index', absolute: false)))
             );
     }
 }

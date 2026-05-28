@@ -28,9 +28,19 @@ docker exec php_fpm_petProject composer test
 docker exec php_fpm_petProject composer lint
 docker exec php_fpm_petProject composer format
 docker exec php_fpm_petProject composer analyse</code></pre>
-<p>Стиль кода: <strong>Laravel Pint</strong> (<code>composer lint</code> / <code>composer format</code>). Статический анализ: <code>composer analyse</code> (PHPStan level 3, в Jenkins после Pint).</p>
+<p>Окружение: скопируйте <code>laravel-app/.env.example</code> в <code>.env</code> — в нём хосты Docker (MySQL, Redis, RabbitMQ, LocalStack/S3).</p>
+<p>Стиль кода: <strong>Laravel Pint</strong> (<code>composer lint</code> / <code>composer format</code>). Статический анализ: <code>composer analyse</code> (PHPStan level 4, в Jenkins после Pint).</p>
 <p>Удобные алиасы (опционально, в <code>~/.bashrc</code>):</p>
 <pre><code>alias art='docker exec php_fpm_petProject php artisan'
 alias comp='docker exec php_fpm_petProject composer'</code></pre>
+
+<h3>Docker и фронтенд (Vite)</h3>
+<p>Из корня репозитория:</p>
+<pre><code>docker compose up -d</code></pre>
+<p>Сервис <code>node</code> автоматически выполняет <code>npm ci</code> (при необходимости) и <code>npm run dev</code> — HMR на <a href="http://localhost:5173">http://localhost:5173</a>. Приложение: <a href="http://localhost:8080/catalog">http://localhost:8080/catalog</a> (nginx).</p>
+<pre><code>docker compose logs -f node          # лог Vite
+docker compose restart node        # перезапуск dev-сервера
+docker exec node_petProject npm run build   # production-сборка</code></pre>
+<p>Без контейнера <code>node</code> (только собранные ассеты): <code>docker exec node_petProject npm run build</code> или <code>npm run build</code> в <code>laravel-app/</code>.</p>
 
 <p>Точка входа: <a href="http://localhost:8080/catalog">http://localhost:8080/catalog</a></p>
