@@ -16,29 +16,36 @@ class BasketService
         }
     }
 
-        /**
-         * @return Collection<int, array{
-         *     cart_id: int,
-         *     product: Product,
-         *     quantity: int,
-         *     selected_services: \Illuminate\Database\Eloquent\Collection<int, Service>
-         * }>
-         */
-        public function getUserBasketItems(): Collection
-        {
-            return Basket::where('user_id', $this->userId)
-                ->with('product.services')
-                ->get()
-                ->map(fn (Basket $item) => [
+    /**
+     * @return Collection<int, array{
+     *     cart_id: int,
+     *     product: Product,
+     *     quantity: int,
+     *     selected_services: \Illuminate\Database\Eloquent\Collection<int, Service>
+     * }>
+     */
+    public function getUserBasketItems(): Collection
+    {
+        return Basket::where('user_id', $this->userId)
+            ->with('product.services')
+            ->get()
+            ->map(function (Basket $item) {
+                $product = $item->product;
+                if (! $product instanceof Product) {
+                    throw new \RuntimeException("Basket item {$item->id} has no product.");
+                }
+
+                return [
                     'cart_id' => $item->id,
-                    'product' => $item->product,
+                    'product' => $product,
                     'quantity' => $item->quantity,
-                    'selected_services' => $item->product->services->whereIn(
+                    'selected_services' => $product->services->whereIn(
                         'id',
                         collect($item->services)->pluck('id')->toArray()
                     )->values(),
-                ]);
-        }
+                ];
+            });
+    }
 
     public function getCheckoutDetails(): array
     {
@@ -71,7 +78,7 @@ class BasketService
         $basketItem = Basket::where('user_id', $this->userId)
             ->where('product_id', $data['product_id'])
             ->get()
-            ->first(fn ($item) => $item->services === $services);
+            ->first(fn (Basket $item) => ($item->services ?? []) === $services);
 
         if ($basketItem) {
             $basketItem->increment('quantity');

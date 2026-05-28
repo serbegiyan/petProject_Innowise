@@ -20,23 +20,13 @@ pipeline {
 
         stage('Check Style') {
             steps {
-                sh 'docker exec php_fpm_petProject vendor/bin/pint --test'
+                sh 'docker exec php_fpm_petProject composer lint'
             }
         }
         
         stage('PHPStan') {
             steps {
-                sh '''
-                    # 1. Очищаем кэш PHPStan, чтобы он не подтягивал старые ошибки
-                    docker exec php_fpm_petProject vendor/bin/phpstan clear-result-cache
-                    
-                    # 2. Генерируем хелперы прямо в контейнере (на случай, если база нужна для анализа)
-                    docker exec php_fpm_petProject php artisan ide-helper:generate
-                    docker exec php_fpm_petProject php artisan ide-helper:models --nowrite
-                    
-                    # 3. Запускаем анализ
-                    docker exec php_fpm_petProject vendor/bin/phpstan analyse --memory-limit=1G
-                '''
+                sh 'docker exec php_fpm_petProject composer analyse'
             }
         }
 

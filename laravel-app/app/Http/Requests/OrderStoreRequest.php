@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-class OrderStoreRequest extends BaseRequest
+class OrderStoreRequest extends AuthenticatedRequest
 {
     public function rules(): array
     {

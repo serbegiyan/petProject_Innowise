@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Enums\ExportStatus;
 use App\Jobs\ExportCatalogJob;
 use App\Models\Export;
-use App\Models\Product;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Storage;
@@ -39,28 +38,18 @@ class ExportController extends Controller
 
     public function export()
     {
-        $fileName = 'catalog_export_'.now()->format('Ymd_His').'.csv';
-        $path = 'exports/'.$fileName;
-
         $exportRecord = Export::create([
             'status' => ExportStatus::PENDING,
-            'file_name' => $fileName,
-            'file_path' => $path,
+            ...Export::newStoragePaths(),
         ]);
 
-        $data = Product::all()->toArray();
-
-        // Передаем ID воркеру
-
-        ExportCatalogJob::dispatch($exportRecord->id, $data);
+        ExportCatalogJob::dispatch($exportRecord->id);
 
         return back()->with('success', 'Экспорт поставлен в очередь. Вы получите уведомление на почту.');
     }
 
-    public function destroy($id)
+    public function destroy(Export $export)
     {
-        $export = Export::findOrFail($id);
-
         try {
             if (Storage::disk('s3')->exists($export->file_path)) {
                 Storage::disk('s3')->delete($export->file_path);

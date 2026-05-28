@@ -21,16 +21,6 @@ class OrderAdminController extends Controller
         return view('pages.order.show', ['order' => $order]);
     }
 
-    public function create()
-    {
-        //
-    }
-
-    public function store()
-    {
-        //
-    }
-
     public function edit(Order $order)
     {
         $order->load(['items', 'user']);

@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Validation\Rule;
 
-class ProductRequest extends BaseRequest
+class ProductRequest extends AdminRequest
 {
     /**
      * Get the validation rules that apply to the request.

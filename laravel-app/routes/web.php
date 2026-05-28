@@ -52,7 +52,7 @@ Route::middleware(['auth', 'admin'])
         });
 
         Route::prefix('categories')->group(function () {
-            Route::get('/', [CategoryController::class, 'index'])->name('category.index');
+            Route::get('/', [CategoryController::class, 'index'])->middleware('can:viewAny,App\Models\Category')->name('category.index');
             Route::get('/create', [CategoryController::class, 'create'])->middleware('can:create,App\Models\Category')->name('category.create');
             Route::post('/store', [CategoryController::class, 'store'])->middleware('can:create,App\Models\Category')->name('category.store');
             Route::get('/{category}/edit', [CategoryController::class, 'edit'])->middleware('can:update,category')->name('category.edit');
@@ -61,7 +61,7 @@ Route::middleware(['auth', 'admin'])
         });
 
         Route::prefix('services')->group(function () {
-            Route::get('/', [ServiceController::class, 'index'])->name('service.index');
+            Route::get('/', [ServiceController::class, 'index'])->middleware('can:viewAny,App\Models\Service')->name('service.index');
             Route::get('/create', [ServiceController::class, 'create'])->middleware('can:create,App\Models\Service')->name('service.create');
             Route::post('/store', [ServiceController::class, 'store'])->middleware('can:create,App\Models\Service')->name('service.store');
             Route::get('/{service}/edit', [ServiceController::class, 'edit'])->middleware('can:update,service')->name('service.edit');
@@ -71,7 +71,7 @@ Route::middleware(['auth', 'admin'])
         });
 
         Route::prefix('products')->group(function () {
-            Route::get('/', [ProductController::class, 'index'])->name('product.index');
+            Route::get('/', [ProductController::class, 'index'])->middleware('can:viewAny,App\Models\Product')->name('product.index');
             Route::get('/create', [ProductController::class, 'create'])->middleware('can:create,App\Models\Product')->name('product.create');
             Route::post('/store', [ProductController::class, 'store'])->middleware('can:create,App\Models\Product')->name('product.store');
             Route::get('/{product}/edit', [ProductController::class, 'edit'])->middleware('can:update,product')->name('product.edit');
@@ -83,13 +83,11 @@ Route::middleware(['auth', 'admin'])
         Route::prefix('export')->group(function () {
             Route::get('/index', [ExportController::class, 'index'])->middleware('can:viewAny,App\Models\Export')->name('export.index');
             Route::post('/run', [ExportController::class, 'export'])->middleware('can:create,App\Models\Export')->name('export.run');
-            Route::delete('/{id}', [ExportController::class, 'destroy'])->middleware('can:create,App\Models\Export')->name('export.destroy');
+            Route::delete('/{export}', [ExportController::class, 'destroy'])->middleware('can:delete,export')->name('export.destroy');
         });
 
         Route::prefix('orders')->group(function () {
             Route::get('/', [OrderAdminController::class, 'index'])->middleware('can:viewAny,App\Models\Order')->name('admin.order.index');
-            Route::get('/create', [OrderAdminController::class, 'create'])->middleware('can:create,App\Models\Order')->name('admin.order.create');
-            Route::post('/store', [OrderAdminController::class, 'store'])->middleware('can:create,App\Models\Order')->name('admin.order.store');
             Route::get('/{order}/edit', [OrderAdminController::class, 'edit'])->middleware('can:update,order')->name('admin.order.edit');
             Route::get('/{order}', [OrderAdminController::class, 'show'])->middleware('can:view,order')->name('admin.order.show');
             Route::patch('/{order}', [OrderAdminController::class, 'update'])->middleware('can:update,order')->name('admin.order.update');

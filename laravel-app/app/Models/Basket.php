@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property array<mixed>|null $services
+ */
 class Basket extends Model
 {
     protected $table = 'baskets';
@@ -16,6 +19,7 @@ class Basket extends Model
         return $this->belongsTo(User::class);
     }
 
+    /** @return BelongsTo<Product, $this> */
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);

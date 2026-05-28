@@ -17,14 +17,24 @@ class ExchangeRate extends Model
         get => $this->rate / $this->scale;
     }
 
-    public function getPriceIn(string $currency): float
+    /**
+     * Конвертирует сумму из валюты этой записи ($this->name) в целевую валюту.
+     * Курс хранится как BYN за 1 единицу валюты
+     */
+    public function convertAmountTo(string $targetCurrency, float $amount): float
     {
-        $rate = ExchangeRate::where('char_code', $currency)->first();
+        if (strcasecmp($this->name, $targetCurrency) === 0) {
+            return round($amount, 2);
+        }
 
-        if (! $rate) {
+        $target = static::query()->where('name', $targetCurrency)->first();
+
+        if ($target === null || $this->unit_rate <= 0 || $target->unit_rate <= 0) {
             return 0.0;
         }
 
-        return round($this->price / $rate->unit_rate, 2);
+        $inByn = $amount * $this->unit_rate;
+
+        return round($inByn / $target->unit_rate, 2);
     }
 }

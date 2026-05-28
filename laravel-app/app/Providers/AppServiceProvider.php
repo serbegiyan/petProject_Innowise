@@ -2,8 +2,14 @@
 
 namespace App\Providers;
 
+use App\Models\Category;
+use App\Models\Export;
+use App\Models\Order;
 use App\Models\Product;
+use App\Models\Service;
+use App\Models\User;
 use App\Observers\ProductObserver;
+use App\Observers\SidebarStatsCacheObserver;
 use App\Services\StatsService;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
@@ -20,16 +26,21 @@ class AppServiceProvider extends ServiceProvider
     {
         Product::observe(ProductObserver::class);
 
-        Vite::prefetch(concurrency: 3);
+        $sidebarStatsObserver = SidebarStatsCacheObserver::class;
+        Product::observe($sidebarStatsObserver);
+        Category::observe($sidebarStatsObserver);
+        Service::observe($sidebarStatsObserver);
+        User::observe($sidebarStatsObserver);
+        Order::observe($sidebarStatsObserver);
+        Export::observe($sidebarStatsObserver);
 
-        View::composer('*', function ($view) {
-            $statsService = $this->app->make(StatsService::class);
-            $view->with('rates', $statsService->getExchangeRates());
-        });
+        Vite::prefetch(concurrency: 3);
 
         View::composer('layouts/main', function ($view) {
             $statsService = $this->app->make(StatsService::class);
+
             $view->with([
+                'rates' => $statsService->getExchangeRates(),
                 'sidebar_stats' => $statsService->getSidebarStats(),
                 'navCategories' => $statsService->getNavCategories(),
             ]);

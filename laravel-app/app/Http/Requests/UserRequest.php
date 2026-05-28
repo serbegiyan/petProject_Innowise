@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class UserRequest extends BaseRequest
+class UserRequest extends AdminRequest
 {
     /**
      * Get the validation rules that apply to the request.

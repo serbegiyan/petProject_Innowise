@@ -6,12 +6,23 @@ use App\Enums\UserRole;
 use Database\Factories\UserFactory;
 use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * @property UserRole|null $role
+ * @property-read string $role_class
+ * @property-read string $role_label
+ * @property-read Collection<int, Basket> $baskets
+ * @property-read Collection<int, Order> $orders
+ *
+ * @method HasMany<Basket, $this> baskets()
+ * @method HasMany<Order, $this> orders()
+ */
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
@@ -51,14 +62,14 @@ class User extends Authenticatable
     protected function roleClass(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->role?->cssClass() ?? UserRole::USER->cssClass()
+            get: fn () => ($this->role ?? UserRole::USER)->cssClass()
         );
     }
 
     protected function roleLabel(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->role?->label() ?? UserRole::USER->label()
+            get: fn () => ($this->role ?? UserRole::USER)->label()
         );
     }
 
@@ -76,16 +87,13 @@ class User extends Authenticatable
      */
     protected $hidden = ['password', 'remember_token'];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+    /** @return HasMany<Basket, $this> */
     public function baskets(): HasMany
     {
         return $this->hasMany(Basket::class);
     }
 
+    /** @return HasMany<Order, $this> */
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);

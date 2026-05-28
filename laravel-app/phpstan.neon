@@ -2,21 +2,11 @@ includes:
     - vendor/larastan/larastan/extension.neon
 
 parameters:
-    level: 3
+    level: 4
     
     paths:
         - app
         - routes
-
-    ignoreErrors:
-        - '#Call to an undefined method App\\Models\\User::hasVerifiedEmail\(\)#'
-        - '#Call to an undefined method App\\Models\\User::sendEmailVerificationNotification\(\)#'
-        - '#Call to an undefined method App\\Models\\User::markEmailAsVerified\(\)#'
-        - '#Call to an undefined method App\\Models\\User::(orders|baskets)\(\)#'
-        - '#Relation .* is not found in .* model#'
-
-    scanFiles:
-        - _ide_helper_models.php
 
     excludePaths:
         - database

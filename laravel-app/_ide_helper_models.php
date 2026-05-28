@@ -13,11 +13,11 @@
 
 namespace App\Models{
 /**
+ * @property array<mixed>|null $services
  * @property int $id
  * @property int $user_id
  * @property int $product_id
  * @property int $quantity
- * @property array<array-key, mixed>|null $services
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Product|null $product
@@ -66,6 +66,7 @@ namespace App\Models{
  * @property numeric $rate
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Database\Factories\ExchangeRateFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ExchangeRate newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ExchangeRate newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ExchangeRate query()
@@ -82,23 +83,48 @@ namespace App\Models{
 namespace App\Models{
 /**
  * @property int $id
+ * @property string|null $file_name
+ * @property string|null $file_path
+ * @property \App\Enums\ExportStatus $status
+ * @property string|null $error_message
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $size
+ * @method static \Database\Factories\ExportFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Export newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Export newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Export query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Export whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Export whereErrorMessage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Export whereFileName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Export whereFilePath($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Export whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Export whereSize($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Export whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Export whereUpdatedAt($value)
+ */
+	class Export extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * @property OrderStatus $status
+ * @property float $total_price
+ * @property string $customer_name
+ * @property Carbon $created_at
+ * @property-read Collection<int, OrderItem> $items
+ * @property int $id
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property int $user_id
- * @property string $status
  * @property string|null $payment_method
  * @property string|null $comment
- * @property numeric $total_price
- * @property string|null $customer_name
  * @property string|null $customer_phone
  * @property string|null $customer_email
  * @property string|null $customer_address
- * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read mixed $status_class
- * @property-read mixed $status_label
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\OrderItem> $items
  * @property-read int|null $items_count
  * @property-read \App\Models\User|null $user
+ * @method static \Database\Factories\OrderFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Order newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Order newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Order onlyTrashed()
@@ -153,22 +179,21 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * @property-read string $image_url
+ * @property Carbon|null $release_date
+ * @property-read Collection<int, Category> $categories
+ * @property-read Collection<int, Service> $services
  * @property int $id
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property string $name
  * @property string|null $description
  * @property string|null $brand
- * @property numeric $price
+ * @property float $price
  * @property string|null $image
  * @property string $slug
- * @property string|null $release_date
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $categories
  * @property-read int|null $categories_count
- * @property-read mixed $formatted_price
- * @property-read string $image_url
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Service> $services
  * @property-read int|null $services_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Product applySort(?string $sort)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Product byCategory(?int $categoryId)
@@ -197,6 +222,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * @property-read object{price: float|int|string|null, term: mixed}|null $pivot
  * @property int $id
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property string $name
@@ -204,7 +230,6 @@ namespace App\Models{
  * @property string $slug
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read mixed $formatted_price
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Product> $products
  * @property-read int|null $products_count
  * @method static \Database\Factories\ServiceFactory factory($count = null, $state = [])
@@ -227,23 +252,25 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * @property UserRole|null $role
+ * @property-read string $role_class
+ * @property-read string $role_label
+ * @property-read Collection<int, Basket> $baskets
+ * @property-read Collection<int, Order> $orders
+ * @method HasMany<Basket, $this> baskets()
+ * @method HasMany<Order, $this> orders()
  * @property int $id
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property string $name
  * @property string $email
- * @property string $role
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $password
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Basket> $baskets
  * @property-read int|null $baskets_count
- * @property-read mixed $role_class
- * @property-read mixed $role_label
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Order> $orders
  * @property-read int|null $orders_count
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User newModelQuery()
@@ -264,24 +291,5 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutTrashed()
  */
 	class User extends \Eloquent {}
-}
-
-namespace App\Models{
-/**
- * @property int $id
- * @property int $user_id
- * @property int $product_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Wishes newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Wishes newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Wishes query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Wishes whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Wishes whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Wishes whereProductId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Wishes whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Wishes whereUserId($value)
- */
-	class Wishes extends \Eloquent {}
 }
 

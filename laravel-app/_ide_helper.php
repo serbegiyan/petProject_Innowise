@@ -5267,7 +5267,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function lock($name, $seconds = 0, $owner = null)
         {
-            /** @var \Illuminate\Cache\DatabaseStore $instance */
+            /** @var \Illuminate\Cache\RedisStore $instance */
             return $instance->lock($name, $seconds, $owner);
         }
 
@@ -5281,21 +5281,8 @@ namespace Illuminate\Support\Facades {
          */
         public static function restoreLock($name, $owner)
         {
-            /** @var \Illuminate\Cache\DatabaseStore $instance */
+            /** @var \Illuminate\Cache\RedisStore $instance */
             return $instance->restoreLock($name, $owner);
-        }
-
-        /**
-         * Remove an item from the cache if it is expired.
-         *
-         * @param string $key
-         * @return bool
-         * @static
-         */
-        public static function forgetIfExpired($key)
-        {
-            /** @var \Illuminate\Cache\DatabaseStore $instance */
-            return $instance->forgetIfExpired($key);
         }
 
         /**
@@ -5306,58 +5293,82 @@ namespace Illuminate\Support\Facades {
          */
         public static function flush()
         {
-            /** @var \Illuminate\Cache\DatabaseStore $instance */
+            /** @var \Illuminate\Cache\RedisStore $instance */
             return $instance->flush();
         }
 
         /**
-         * Get the underlying database connection.
+         * Remove all expired tag set entries.
          *
-         * @return \Illuminate\Database\MySqlConnection
+         * @return void
          * @static
          */
-        public static function getConnection()
+        public static function flushStaleTags()
         {
-            /** @var \Illuminate\Cache\DatabaseStore $instance */
-            return $instance->getConnection();
+            /** @var \Illuminate\Cache\RedisStore $instance */
+            $instance->flushStaleTags();
         }
 
         /**
-         * Set the underlying database connection.
+         * Get the Redis connection instance.
          *
-         * @param \Illuminate\Database\ConnectionInterface $connection
-         * @return \Illuminate\Cache\DatabaseStore
+         * @return \Illuminate\Redis\Connections\Connection
+         * @static
+         */
+        public static function connection()
+        {
+            /** @var \Illuminate\Cache\RedisStore $instance */
+            return $instance->connection();
+        }
+
+        /**
+         * Get the Redis connection instance that should be used to manage locks.
+         *
+         * @return \Illuminate\Redis\Connections\Connection
+         * @static
+         */
+        public static function lockConnection()
+        {
+            /** @var \Illuminate\Cache\RedisStore $instance */
+            return $instance->lockConnection();
+        }
+
+        /**
+         * Specify the name of the connection that should be used to store data.
+         *
+         * @param string $connection
+         * @return void
          * @static
          */
         public static function setConnection($connection)
         {
-            /** @var \Illuminate\Cache\DatabaseStore $instance */
-            return $instance->setConnection($connection);
+            /** @var \Illuminate\Cache\RedisStore $instance */
+            $instance->setConnection($connection);
         }
 
         /**
-         * Get the connection used to manage locks.
+         * Specify the name of the connection that should be used to manage locks.
          *
-         * @return \Illuminate\Database\MySqlConnection
-         * @static
-         */
-        public static function getLockConnection()
-        {
-            /** @var \Illuminate\Cache\DatabaseStore $instance */
-            return $instance->getLockConnection();
-        }
-
-        /**
-         * Specify the connection that should be used to manage locks.
-         *
-         * @param \Illuminate\Database\ConnectionInterface $connection
-         * @return \Illuminate\Cache\DatabaseStore
+         * @param string $connection
+         * @return \Illuminate\Cache\RedisStore
          * @static
          */
         public static function setLockConnection($connection)
         {
-            /** @var \Illuminate\Cache\DatabaseStore $instance */
+            /** @var \Illuminate\Cache\RedisStore $instance */
             return $instance->setLockConnection($connection);
+        }
+
+        /**
+         * Get the Redis database instance.
+         *
+         * @return \Illuminate\Contracts\Redis\Factory
+         * @static
+         */
+        public static function getRedis()
+        {
+            /** @var \Illuminate\Cache\RedisStore $instance */
+            return $instance->getRedis();
         }
 
         /**
@@ -5368,7 +5379,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function getPrefix()
         {
-            /** @var \Illuminate\Cache\DatabaseStore $instance */
+            /** @var \Illuminate\Cache\RedisStore $instance */
             return $instance->getPrefix();
         }
 
@@ -5381,7 +5392,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function setPrefix($prefix)
         {
-            /** @var \Illuminate\Cache\DatabaseStore $instance */
+            /** @var \Illuminate\Cache\RedisStore $instance */
             $instance->setPrefix($prefix);
         }
 
@@ -13483,86 +13494,204 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
-         * Release a reserved job back onto the queue after (n) seconds.
-         *
-         * @param string $queue
-         * @param \Illuminate\Queue\Jobs\DatabaseJobRecord $job
-         * @param int $delay
-         * @return mixed
+         * @throws AMQPProtocolChannelException
          * @static
          */
-        public static function release($queue, $job, $delay)
+        public static function laterRaw($delay, $payload, $queue = null, $attempts = 0)
         {
-            /** @var \Illuminate\Queue\DatabaseQueue $instance */
-            return $instance->release($queue, $job, $delay);
+            /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+            return $instance->laterRaw($delay, $payload, $queue, $attempts);
         }
 
         /**
-         * Delete a reserved job from the queue.
-         *
-         * @param string $queue
-         * @param string $id
-         * @return void
-         * @throws \Throwable
+         * @throws AMQPProtocolChannelException
          * @static
          */
-        public static function deleteReserved($queue, $id)
+        public static function bulkRaw($payload, $queue = null, $options = [])
         {
-            /** @var \Illuminate\Queue\DatabaseQueue $instance */
-            $instance->deleteReserved($queue, $id);
+            /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+            return $instance->bulkRaw($payload, $queue, $options);
         }
 
         /**
-         * Delete a reserved job from the reserved queue and release it.
-         *
-         * @param string $queue
-         * @param \Illuminate\Queue\Jobs\DatabaseJob $job
-         * @param int $delay
-         * @return void
+         * @throws RuntimeException
          * @static
          */
-        public static function deleteAndRelease($queue, $job, $delay)
+        public static function getConnection()
         {
-            /** @var \Illuminate\Queue\DatabaseQueue $instance */
-            $instance->deleteAndRelease($queue, $job, $delay);
+            /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+            return $instance->getConnection();
         }
 
         /**
-         * Delete all of the jobs from the queue.
-         *
-         * @param string $queue
-         * @return int
          * @static
          */
-        public static function clear($queue)
+        public static function setConnection($connection)
         {
-            /** @var \Illuminate\Queue\DatabaseQueue $instance */
-            return $instance->clear($queue);
+            /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+            return $instance->setConnection($connection);
         }
 
         /**
-         * Get the queue or return the default.
+         * Job class to use.
          *
-         * @param string|null $queue
-         * @return string
+         * @throws Throwable
          * @static
          */
-        public static function getQueue($queue)
+        public static function getJobClass()
         {
-            /** @var \Illuminate\Queue\DatabaseQueue $instance */
+            /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+            return $instance->getJobClass();
+        }
+
+        /**
+         * Gets a queue/destination, by default the queue option set on the connection.
+         *
+         * @static
+         */
+        public static function getQueue($queue = null)
+        {
+            /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
             return $instance->getQueue($queue);
         }
 
         /**
-         * Get the underlying database instance.
+         * Checks if the given exchange already present/defined in RabbitMQ.
          *
-         * @return \Illuminate\Database\Connection
+         * Returns false when the exchange is missing.
+         *
+         * @throws AMQPProtocolChannelException
          * @static
          */
-        public static function getDatabase()
+        public static function isExchangeExists($exchange)
         {
-            /** @var \Illuminate\Queue\DatabaseQueue $instance */
-            return $instance->getDatabase();
+            /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+            return $instance->isExchangeExists($exchange);
+        }
+
+        /**
+         * Declare an exchange in rabbitMQ, when not already declared.
+         *
+         * @static
+         */
+        public static function declareExchange($name, $type = 'direct', $durable = true, $autoDelete = false, $arguments = [])
+        {
+            /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+            return $instance->declareExchange($name, $type, $durable, $autoDelete, $arguments);
+        }
+
+        /**
+         * Delete an exchange from rabbitMQ, only when present in RabbitMQ.
+         *
+         * @throws AMQPProtocolChannelException
+         * @static
+         */
+        public static function deleteExchange($name, $unused = false)
+        {
+            /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+            return $instance->deleteExchange($name, $unused);
+        }
+
+        /**
+         * Checks if the given queue already present/defined in RabbitMQ.
+         *
+         * Returns false when the queue is missing.
+         *
+         * @throws AMQPProtocolChannelException
+         * @static
+         */
+        public static function isQueueExists($name = null)
+        {
+            /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+            return $instance->isQueueExists($name);
+        }
+
+        /**
+         * Declare a queue in rabbitMQ, when not already declared.
+         *
+         * @static
+         */
+        public static function declareQueue($name, $durable = true, $autoDelete = false, $arguments = [])
+        {
+            /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+            return $instance->declareQueue($name, $durable, $autoDelete, $arguments);
+        }
+
+        /**
+         * Delete a queue from rabbitMQ, only when present in RabbitMQ.
+         *
+         * @throws AMQPProtocolChannelException
+         * @static
+         */
+        public static function deleteQueue($name, $if_unused = false, $if_empty = false)
+        {
+            /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+            return $instance->deleteQueue($name, $if_unused, $if_empty);
+        }
+
+        /**
+         * Bind a queue to an exchange.
+         *
+         * @static
+         */
+        public static function bindQueue($queue, $exchange, $routingKey = '')
+        {
+            /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+            return $instance->bindQueue($queue, $exchange, $routingKey);
+        }
+
+        /**
+         * Purge the queue of messages.
+         *
+         * @static
+         */
+        public static function purge($queue = null)
+        {
+            /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+            return $instance->purge($queue);
+        }
+
+        /**
+         * Acknowledge the message.
+         *
+         * @static
+         */
+        public static function ack($job)
+        {
+            /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+            return $instance->ack($job);
+        }
+
+        /**
+         * Reject the message.
+         *
+         * @static
+         */
+        public static function reject($job, $requeue = false)
+        {
+            /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+            return $instance->reject($job, $requeue);
+        }
+
+        /**
+         * Close the connection to RabbitMQ.
+         *
+         * @throws Exception
+         * @static
+         */
+        public static function close()
+        {
+            /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+            return $instance->close();
+        }
+
+        /**
+         * @static
+         */
+        public static function getChannel($forceNew = false)
+        {
+            /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
+            return $instance->getChannel($forceNew);
         }
 
         /**
@@ -13575,7 +13704,7 @@ namespace Illuminate\Support\Facades {
         public static function getJobTries($job)
         {
             //Method inherited from \Illuminate\Queue\Queue 
-            /** @var \Illuminate\Queue\DatabaseQueue $instance */
+            /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
             return $instance->getJobTries($job);
         }
 
@@ -13589,7 +13718,7 @@ namespace Illuminate\Support\Facades {
         public static function getJobBackoff($job)
         {
             //Method inherited from \Illuminate\Queue\Queue 
-            /** @var \Illuminate\Queue\DatabaseQueue $instance */
+            /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
             return $instance->getJobBackoff($job);
         }
 
@@ -13603,7 +13732,7 @@ namespace Illuminate\Support\Facades {
         public static function getJobExpiration($job)
         {
             //Method inherited from \Illuminate\Queue\Queue 
-            /** @var \Illuminate\Queue\DatabaseQueue $instance */
+            /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
             return $instance->getJobExpiration($job);
         }
 
@@ -13617,7 +13746,7 @@ namespace Illuminate\Support\Facades {
         public static function createPayloadUsing($callback)
         {
             //Method inherited from \Illuminate\Queue\Queue 
-            \Illuminate\Queue\DatabaseQueue::createPayloadUsing($callback);
+            \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue::createPayloadUsing($callback);
         }
 
         /**
@@ -13629,7 +13758,7 @@ namespace Illuminate\Support\Facades {
         public static function getConfig()
         {
             //Method inherited from \Illuminate\Queue\Queue 
-            /** @var \Illuminate\Queue\DatabaseQueue $instance */
+            /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
             return $instance->getConfig();
         }
 
@@ -13637,13 +13766,13 @@ namespace Illuminate\Support\Facades {
          * Set the queue configuration array.
          *
          * @param array $config
-         * @return \Illuminate\Queue\DatabaseQueue
+         * @return \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue
          * @static
          */
         public static function setConfig($config)
         {
             //Method inherited from \Illuminate\Queue\Queue 
-            /** @var \Illuminate\Queue\DatabaseQueue $instance */
+            /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
             return $instance->setConfig($config);
         }
 
@@ -13656,7 +13785,7 @@ namespace Illuminate\Support\Facades {
         public static function getContainer()
         {
             //Method inherited from \Illuminate\Queue\Queue 
-            /** @var \Illuminate\Queue\DatabaseQueue $instance */
+            /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
             return $instance->getContainer();
         }
 
@@ -13670,7 +13799,7 @@ namespace Illuminate\Support\Facades {
         public static function setContainer($container)
         {
             //Method inherited from \Illuminate\Queue\Queue 
-            /** @var \Illuminate\Queue\DatabaseQueue $instance */
+            /** @var \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue $instance */
             $instance->setContainer($container);
         }
 
@@ -16031,10 +16160,6 @@ namespace Illuminate\Support\Facades {
          * header value is a comma+space separated list of IP addresses, the left-most
          * being the original client, and each successive proxy that passed the request
          * adding the IP address where it received the request from.
-         *
-         * If your reverse proxy uses a different header name than "X-Forwarded-For",
-         * ("Client-Ip" for instance), configure it via the $trustedHeaderSet
-         * argument of the Request::setTrustedProxies() method instead.
          *
          * @see getClientIps()
          * @see https://wikipedia.org/wiki/X-Forwarded-For

@@ -1,7 +1,11 @@
 <?xml version="1.0"?>
+<!--
+    Не используется в CI. Единый стандарт стиля — Laravel Pint:
+    composer format (исправить) / composer lint (проверка, как в Jenkins).
+-->
 <ruleset name="Laravel Project Standards">
 
-    <description>PHPCS rules for Laravel project</description>
+    <description>Legacy PHPCS rules (optional, local IDE only)</description>
 
     <rule ref="PSR12">
         <exclude name="PSR12.Properties.ConstantVisibility"/>

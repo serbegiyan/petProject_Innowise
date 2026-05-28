@@ -9,35 +9,31 @@ class CategoryPolicy
 {
     public function before(User $user, string $ability): ?bool
     {
-        if ($user->isAdmin()) {
-            return true;
-        }
-
-        return null;
+        return $user->isAdmin() ? true : null;
     }
 
     public function viewAny(?User $user): bool
     {
-        return true;
+        return false;
     }
 
     public function view(?User $user, Category $category): bool
     {
-        return true;
+        return false;
     }
 
     public function create(User $user): bool
     {
-        return $user->isAdmin();
+        return false;
     }
 
     public function update(User $user, Category $category): bool
     {
-        return $user->isAdmin();
+        return false;
     }
 
     public function delete(User $user, Category $category): bool
     {
-        return $user->isAdmin();
+        return false;
     }
 }

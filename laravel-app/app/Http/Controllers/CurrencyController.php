@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\CurrencyChangeRequest;
 
 class CurrencyController extends Controller
 {
-    public function change(Request $request)
+    public function change(CurrencyChangeRequest $request)
     {
         session(['currency_id' => $request->id]);
 

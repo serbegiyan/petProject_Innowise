@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Enums\OrderStatus;
 use Illuminate\Validation\Rules\Enum;
 
-class OrderUpdateRequest extends BaseRequest
+class OrderUpdateRequest extends AdminRequest
 {
     public function rules(): array
     {

@@ -41,12 +41,14 @@ class HandleInertiaRequests extends Middleware
             return null;
         }
 
+        $user->loadCount('baskets');
+
         return [
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
             'role' => $user->role,
-            'basket_count' => fn () => $user->baskets()->count(),
+            'basket_count' => (int) $user->baskets_count,
         ];
     }
 }

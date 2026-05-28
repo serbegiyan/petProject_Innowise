@@ -8,36 +8,31 @@ use App\Models\User;
 class OrderPolicy
 {
     /**
-     * Админ видит все заказы, пользователь — только те, где user_id совпадает.
+     * Заказы в админке — только для администратора.
+     * Список своих заказов на /dashboard — через $user->orders() в контроллере, без policy.
      */
+    public function before(User $user, string $ability): ?bool
+    {
+        return $user->isAdmin() ? true : null;
+    }
+
     public function viewAny(User $user): bool
     {
-        return true;
+        return false;
     }
 
-    /**
-     * Просмотр конкретного заказа.
-     */
     public function view(User $user, Order $order): bool
     {
-        if ($user->isAdmin()) {
-            return true;
-        }
-
-        // Обычный пользователь видит ТОЛЬКО свой заказ
-        return $user->id === $order->user_id;
+        return false;
     }
 
-    /**
-     * Редактировать или обновлять статус заказа может только админ.
-     */
     public function update(User $user, Order $order): bool
     {
-        return $user->isAdmin();
+        return false;
     }
 
     public function delete(User $user, Order $order): bool
     {
-        return $user->isAdmin();
+        return false;
     }
 }

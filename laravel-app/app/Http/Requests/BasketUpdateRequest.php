@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class BasketUpdateRequest extends BaseRequest
+class BasketUpdateRequest extends AuthenticatedRequest
 {
     /**
      * Get the validation rules that apply to the request.

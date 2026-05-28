@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
+/**
+ * @property-read object{price: float|int|string|null, term: mixed}|null $pivot
+ */
 class Service extends Model
 {
     use HasFactory;

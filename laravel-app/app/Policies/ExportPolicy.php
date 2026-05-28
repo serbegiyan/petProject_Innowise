@@ -2,32 +2,38 @@
 
 namespace App\Policies;
 
+use App\Models\Export;
 use App\Models\User;
 
 class ExportPolicy
 {
-    public function viewAny(User $user): bool
+    public function before(User $user, string $ability): ?bool
     {
-        return $user->isAdmin();
+        return $user->isAdmin() ? true : null;
     }
 
-    public function view(User $user, User $model): bool
+    public function viewAny(User $user): bool
     {
-        return $user->isAdmin();
+        return false;
+    }
+
+    public function view(User $user, Export $export): bool
+    {
+        return false;
     }
 
     public function create(User $user): bool
     {
-        return $user->isAdmin();
+        return false;
     }
 
-    public function update(User $user, User $model): bool
+    public function update(User $user, Export $export): bool
     {
-        return $user->isAdmin();
+        return false;
     }
 
-    public function delete(User $user, User $model): bool
+    public function delete(User $user, Export $export): bool
     {
-        return $user->isAdmin();
+        return false;
     }
 }

@@ -2,24 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use App\Models\Order;
-use App\Models\Product;
-use App\Models\Service;
-use App\Models\User;
-use Illuminate\Support\Facades\Storage;
+use App\Services\StatsService;
 
 class MainController extends Controller
 {
+    public function __construct(protected StatsService $statsService) {}
+
     public function main()
     {
-        $products = Product::count();
-        $categories = Category::count();
-        $services = Service::count();
-        $users = User::count();
-        $orders = Order::count();
-        $exports = count(Storage::disk('s3')->files('exports'));
+        $stats = $this->statsService->getSidebarStats();
 
-        return view('pages.home', ['products' => $products, 'categories' => $categories, 'services' => $services, 'users' => $users, 'orders' => $orders, 'exports' => $exports]);
+        return view('pages.home', [
+            'products' => $stats['products_count'],
+            'categories' => $stats['categories_count'],
+            'services' => $stats['services_count'],
+            'users' => $stats['users_count'],
+            'orders' => $stats['orders_count'],
+            'exports' => $stats['exports_count'],
+        ]);
     }
 }

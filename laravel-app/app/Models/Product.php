@@ -5,15 +5,23 @@ namespace App\Models;
 use App\Enums\ProductSort;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Filesystem\FilesystemAdapter;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
+/**
+ * @property-read string $image_url
+ * @property Carbon|null $release_date
+ * @property-read Collection<int, Category> $categories
+ * @property-read Collection<int, Service> $services
+ */
 class Product extends Model
 {
     use HasFactory;

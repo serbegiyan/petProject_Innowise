@@ -20,4 +20,17 @@ class Export extends Model
             'status' => ExportStatus::class,
         ];
     }
+
+    /**
+     * @return array{file_name: string, file_path: string}
+     */
+    public static function newStoragePaths(): array
+    {
+        $fileName = 'catalog_export_'.now()->format('Ymd_His').'.csv';
+
+        return [
+            'file_name' => $fileName,
+            'file_path' => 'exports/'.$fileName,
+        ];
+    }
 }
