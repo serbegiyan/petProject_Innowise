@@ -1,0 +1,8 @@
+# IDE (PhpStorm / IntelliJ) — конфиг локальный, не в репозитории
+.idea/
+
+# Прочие редакторы / ОС
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
