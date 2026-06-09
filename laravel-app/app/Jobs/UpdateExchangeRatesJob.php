@@ -30,7 +30,7 @@ class UpdateExchangeRatesJob implements ShouldQueue
 
         ExchangeRate::updateOrCreate(
             ['id' => 1],
-            ['name' => 'BYN', 'rate' => 1.0, 'scale' => 1]
+            ['name' => 'BYN', 'rate' => '1.0000', 'scale' => 1]
         );
 
         try {
@@ -42,9 +42,16 @@ class UpdateExchangeRatesJob implements ShouldQueue
                 throw new \Exception('Ошибка HTTP: '.$response->status());
             }
 
-            $xml = simplexml_load_string($response->body());
+            // В PHP 8.4+ внешние сущности отключены по умолчанию.
+            // Флаг LIBXML_NONET блокирует любые сетевые запросы во время парсинга (Hardening).
+            $xml = simplexml_load_string(
+                $response->body(),
+                'SimpleXMLElement',
+                LIBXML_NONET
+            );
+
             if (! $xml) {
-                throw new \Exception('Не удалось прочитать XML банка');
+                throw new \Exception('Не удалось прочитать XML банка или XML поврежден');
             }
 
             $this->parseAndSaveRates($xml);
@@ -68,11 +75,15 @@ class UpdateExchangeRatesJob implements ShouldQueue
             $iso = (string) $attributes['iso'];
 
             if (in_array($iso, $targetIso)) {
+                // Пытаемся получить реальный масштаб из XML (например, атрибут scale или quantity)
+                // Если в вашем XML его нет, уточните, где банк передает кратность (например, за 100 рублей)
+                $scale = isset($attributes['scale']) ? (int) $attributes['scale'] : 1;
+
                 ExchangeRate::updateOrCreate(
                     ['name' => $iso],
                     [
-                        'scale' => 1,
-                        'rate' => (float) $attributes['buy'],
+                        'scale' => $scale,
+                        'rate' => (string) $attributes['buy'], // Сохраняем как string для точности decimal
                     ]
                 );
             }
@@ -81,23 +92,22 @@ class UpdateExchangeRatesJob implements ShouldQueue
 
     protected function setFallbackRates(): void
     {
-        // Базовая карта дефолтных значений для финансовой безопасности приложения
         $fallbackMap = [
-            'USD' => 2.8267,
-            'EUR' => 3.3061,
-            'RUB' => 0.0377,
+            'USD' => ['rate' => '2.8267', 'scale' => 1],
+            'EUR' => ['rate' => '3.3061', 'scale' => 1],
+            'RUB' => ['rate' => '0.0377', 'scale' => 1],
         ];
 
-        // Получаем активные валюты из конфига
         $targetIso = config('services.target_currencies', ['USD', 'EUR', 'RUB']);
 
         foreach ($targetIso as $code) {
+            $fallbackData = $fallbackMap[$code] ?? ['rate' => '1.0000', 'scale' => 1];
+
             ExchangeRate::updateOrCreate(
                 ['name' => $code],
                 [
-                    'scale' => 1,
-                    // Берем значение из карты, либо ставим 1.0 как безопасный резерв
-                    'rate' => $fallbackMap[$code] ?? 1.0,
+                    'scale' => $fallbackData['scale'],
+                    'rate' => $fallbackData['rate'],
                 ]
             );
         }

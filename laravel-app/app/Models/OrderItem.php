@@ -5,6 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int $id
+ * @property int $product_id
+ * @property string $product_name
+ * @property int $quantity
+ * @property string $price
+ * @property array<int, array{id: int, name: string, price: string}>|null $services
+ * @property-read Product|null $product
+ */
 class OrderItem extends Model
 {
     protected $table = 'order_items';
@@ -24,6 +33,7 @@ class OrderItem extends Model
     protected function casts(): array
     {
         return [
+            'price' => 'decimal:2',
             'services' => 'array',
         ];
     }

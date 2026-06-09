@@ -7,6 +7,7 @@ use App\Enums\OrderStatus;
 use App\Models\Order;
 use App\Models\Service;
 use App\Models\User;
+use App\Support\Money;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -18,16 +19,16 @@ class OrderService
 
     public function createFromBasket(User $user, OrderData $data): Order
     {
-        $checkoutData = $this->basketService->getCheckoutDetails();
-
-        if ($checkoutData['items']->isEmpty()) {
-            throw ValidationException::withMessages([
-                'basket' => 'Корзина пуста.',
-            ]);
-        }
-
         try {
-            return DB::transaction(function () use ($user, $data, $checkoutData) {
+            return DB::transaction(function () use ($user, $data) {
+                $checkoutData = $this->basketService->getCheckoutDetails(lock: true);
+
+                if ($checkoutData['items']->isEmpty()) {
+                    throw ValidationException::withMessages([
+                        'basket' => 'Корзина пуста.',
+                    ]);
+                }
+
                 $order = $user->orders()->create([
                     'total_price' => $checkoutData['totalAmount'],
                     'customer_name' => $data->name,
@@ -41,12 +42,14 @@ class OrderService
 
                 $this->createOrderItems($order, $checkoutData['items']);
 
-                $user->baskets()->delete();
+                $this->basketService->clear();
 
                 return $order;
             });
         } catch (\Exception $e) {
-            Log::error("Ошибка создания заказа для юзера {$user->id}: ".$e->getMessage());
+            if (! $e instanceof ValidationException) {
+                Log::error("Ошибка создания заказа для юзера {$user->id}: ".$e->getMessage());
+            }
             throw $e;
         }
     }
@@ -60,8 +63,7 @@ class OrderService
             $order->items()->create([
                 'product_id' => $product->id,
                 'product_name' => $product->name,
-                // Цена за единицу: товар + услуги (как в корзине)
-                'price' => round($item['item_total'] / $quantity, 2),
+                'price' => $item['single_price'],
                 'quantity' => $quantity,
                 'services' => $this->snapshotServices($item['selected_services']),
             ]);
@@ -70,14 +72,14 @@ class OrderService
 
     /**
      * @param  Collection<int, Service>  $services
-     * @return list<array{id: int, name: string, price: float}>
+     * @return list<array{id: int, name: string, price: string}>
      */
     private function snapshotServices(Collection $services): array
     {
         return $services->map(fn (Service $service) => [
             'id' => $service->id,
             'name' => $service->name,
-            'price' => (float) $service->pivot->price,
+            'price' => Money::round($service->pivot->price),
         ])->values()->all();
     }
 }

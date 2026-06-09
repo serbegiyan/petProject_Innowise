@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DTO\OrderData;
 use App\Http\Requests\OrderStoreRequest;
+use App\Http\Resources\OrderResource;
 use App\Models\User;
 use App\Services\BasketService;
 use App\Services\OrderService;
@@ -22,22 +23,13 @@ class OrderController extends Controller
         /** @var User $user */
         $user = Auth::user();
 
-        return Inertia::render('Dashboard', [
-            'orders' => $user->orders()
-                ->with('items')
-                ->latest()
-                ->get()
-                ->map(fn ($order) => [
-                    'id' => $order->id,
-                    'total' => $order->total_price,
-                    'customer_name' => $order->customer_name,
-                    'status' => $order->status->value,
-                    'status_label' => $order->status->label(),
-                    'status_css' => $order->status->cssClass(),
+        $orders = $user->orders()
+            ->with('items')
+            ->latest()
+            ->get();
 
-                    'items' => $order->items,
-                    'created_at_display' => $order->created_at->format('d.m.Y H:i'),
-                ]),
+        return Inertia::render('Dashboard', [
+            'orders' => OrderResource::collection($orders)->response()->getData(true)['data'] ?? [],
         ]);
     }
 

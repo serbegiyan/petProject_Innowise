@@ -15,8 +15,14 @@ class ProductService
 
     public function create(array $data, ?UploadedFile $image, array $relationData): Product
     {
-        return DB::transaction(function () use ($data, $image, $relationData) {
-            $data['image'] = $this->imageService->handle($image);
+        $imagePath = $this->imageService->handle($image);
+
+        if ($image && $imagePath) {
+            DB::afterRollback(fn () => $this->imageService->deleteIfExists($imagePath));
+        }
+
+        return DB::transaction(function () use ($data, $imagePath, $relationData) {
+            $data['image'] = $imagePath;
 
             $product = Product::create($data);
 
@@ -35,8 +41,17 @@ class ProductService
 
     public function update(Product $product, array $data, ?UploadedFile $image, array $relationData): Product
     {
-        return DB::transaction(function () use ($product, $data, $image, $relationData) {
-            $data['image'] = $this->imageService->handle($image, $product);
+        $oldImage = $product->image;
+        $imagePath = $this->imageService->handle($image, $product);
+
+        if ($image && $imagePath) {
+            DB::afterRollback(fn () => $this->imageService->deleteIfExists($imagePath));
+        }
+
+        $product = DB::transaction(function () use ($product, $data, $image, $imagePath, $relationData) {
+            if ($image) {
+                $data['image'] = $imagePath;
+            }
 
             $product->update($data);
 
@@ -52,7 +67,13 @@ class ProductService
                 $relationData['service_terms'] ?? []
             );
 
-            return $product;
+            return $product->fresh();
         });
+
+        if ($image && $imagePath && $oldImage && $oldImage !== $imagePath) {
+            $this->imageService->deleteIfExists($oldImage);
+        }
+
+        return $product;
     }
 }

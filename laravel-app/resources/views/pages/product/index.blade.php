@@ -17,7 +17,7 @@
         @foreach ($products as $product)
             <li class="flex hover:bg-stone-300 flex-row p-2 justify-between items-center even:bg-stone-200">
                 <p class="w-1/3"><a href="{{ route('product.show', $product) }}">{{ $product->name }}</a></p>
-                <p class="w-1/3">{{ $product->formatted_price }}</p>
+                <p class="w-1/3">{{ app(\App\Services\CurrencyService::class)->convert($product->price) }}</p>
                 <p class="w-1/3">{{ $product->slug }}</p>
                 <p class="w-1/3">{{ Str::limit($product->description, 30, '...') }}</p>
                 <div class="flex flex-row">

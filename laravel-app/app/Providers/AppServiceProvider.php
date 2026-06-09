@@ -10,6 +10,7 @@ use App\Models\Service;
 use App\Models\User;
 use App\Observers\ProductObserver;
 use App\Observers\SidebarStatsCacheObserver;
+use App\Services\CurrencyService;
 use App\Services\StatsService;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
@@ -20,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(StatsService::class);
+        $this->app->singleton(CurrencyService::class);
     }
 
     public function boot(): void

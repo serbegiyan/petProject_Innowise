@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BasketStoreRequest;
 use App\Http\Requests\BasketUpdateRequest;
-use App\Models\ExchangeRate;
 use App\Services\BasketService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -15,7 +14,6 @@ class BasketController extends Controller
     {
         return Inertia::render('Basket/Index', [
             'items' => $basketService->getUserBasketItems(),
-            'currencies' => ExchangeRate::all(),
         ]);
     }
 

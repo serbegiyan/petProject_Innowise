@@ -17,7 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/catalog/{product:slug}', [CatalogController::class, 'show'])->name('catalog.show');
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
 
-Route::post('/currency/change', [CurrencyController::class, 'change'])->name('currency.change');
+Route::post('/currency/change', [CurrencyController::class, 'change'])
+    ->middleware(['web', 'throttle:5,1'])
+    ->name('currency.change');
 
 Route::get('/dashboard', [OrderController::class, 'index'])
     ->middleware(['auth', 'verified'])

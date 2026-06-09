@@ -11,9 +11,6 @@ use Tests\TestCase;
 
 class ProductImageServiceTest extends TestCase
 {
-    /**
-     * Тест загрузки нового изображения, когда старого нет.
-     */
     public function test_it_uploads_new_image(): void
     {
         Storage::fake('public');
@@ -26,13 +23,11 @@ class ProductImageServiceTest extends TestCase
         /** @var FilesystemAdapter $storage */
         $storage = Storage::disk('public');
 
+        $this->assertNotNull($path);
         $storage->assertExists($path);
     }
 
-    /**
-     * Тест автоматической замены старого изображения новым с удалением из хранилища.
-     */
-    public function test_it_replaces_old_image(): void
+    public function test_it_stores_new_image_without_deleting_old_in_handle(): void
     {
         Storage::fake('public');
 
@@ -49,7 +44,21 @@ class ProductImageServiceTest extends TestCase
         $service = new ProductImageService;
         $path = $service->handle($newImageFile, $product);
 
-        $storage->assertMissing('products/old.jpg');
+        $storage->assertExists('products/old.jpg');
         $storage->assertExists($path);
+    }
+
+    public function test_it_deletes_image_when_exists(): void
+    {
+        Storage::fake('public');
+
+        /** @var FilesystemAdapter $storage */
+        $storage = Storage::disk('public');
+        $storage->put('products/old.jpg', 'old content');
+
+        $service = new ProductImageService;
+        $service->deleteIfExists('products/old.jpg');
+
+        $storage->assertMissing('products/old.jpg');
     }
 }

@@ -3,31 +3,57 @@
 namespace App\Services;
 
 use App\Models\ExchangeRate;
-use Illuminate\Support\Facades\Session;
 
 class CurrencyService
 {
-    protected $currentCurrency;
+    private ?ExchangeRate $current;
 
-    public function __construct()
+    private ?ExchangeRate $byn;
+
+    public function __construct(StatsService $stats)
     {
-        $currencyId = Session::get('currency_id', 1);
-        $this->currentCurrency = ExchangeRate::find($currencyId);
+        $this->current = $stats->getCurrentCurrency();
+        $this->byn = $this->resolveByn();
     }
 
-    public function convert(float $amount): string
+    public function convertAmount(float|string $amountByn): float
     {
-        if (! $this->currentCurrency) {
-            return number_format($amount, 2).' BYN';
+        $amount = (float) $amountByn;
+        $target = $this->current ?? $this->byn;
+        $base = $this->byn;
+
+        if ($target === null || $base === null) {
+            return round($amount, 2);
         }
 
-        $converted = $amount / $this->currentCurrency->rate;
-
-        return number_format($converted, 2).' '.$this->currentCurrency->name;
+        return $base->convertAmountTo($target->name, $amount);
     }
 
-    public function getCurrentCurrency()
+    public function format(float|string $amountByn): string
     {
-        return $this->currentCurrency;
+        $target = $this->current ?? $this->byn;
+        $converted = $this->convertAmount($amountByn);
+
+        $currencyName = $target !== null ? $target->name : 'BYN';
+
+        return number_format($converted, 2, '.', ' ').' '.$currencyName;
+    }
+
+    public function convert(float|string $amountByn): string
+    {
+        return $this->format($amountByn);
+    }
+
+    public function getCurrentCurrency(): ?ExchangeRate
+    {
+        return $this->current;
+    }
+
+    private function resolveByn(): ?ExchangeRate
+    {
+        return ExchangeRate::query()
+            ->where('name', 'BYN')
+            ->first()
+            ?? ExchangeRate::query()->find(1);
     }
 }

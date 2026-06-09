@@ -8,8 +8,8 @@ import Search from '@/Components/Search';
 import Pagination from '@/Components/Pagination';
 import { useCurrency } from '@/Hooks/useCurrency';
 
-export default function Index({ products, filters, categories, currencies, sortOptions = [] }) {
-    const { selectedCurrency, setCurrency, convert } = useCurrency(currencies);
+export default function Index({ products, filters, categories, sortOptions = [] }) {
+    const { selectedCurrency, setCurrency, convert, currencies } = useCurrency();
 
     const [values, setValues] = useState({
         search: filters?.search ?? '',

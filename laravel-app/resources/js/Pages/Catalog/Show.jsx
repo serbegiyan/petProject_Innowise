@@ -6,13 +6,13 @@ import FlashMessage from '@/Components/FlashMessage';
 import { usePage, Link, } from '@inertiajs/react';
 import { useCurrency } from '@/Hooks/useCurrency';
 
-export default function Show({ product, preSelectedIds, edit_cart_id, filters, currencies, cartItemsForProduct = [] }) {
+export default function Show({ product, preSelectedIds, edit_cart_id, filters, cartItemsForProduct = [] }) {
     const { auth } = usePage().props;
     const [selectedServices, setSelectedServices] = useState(
         preSelectedIds ? preSelectedIds.map(id => Number(id)) : []
     );
 
-    const { selectedCurrency, setCurrency, convert } = useCurrency(currencies);
+    const { selectedCurrency, setCurrency, convert, currencies } = useCurrency();
 
     const isInCart = useMemo(() => {
         if (!auth.user || !cartItemsForProduct.length) return false;

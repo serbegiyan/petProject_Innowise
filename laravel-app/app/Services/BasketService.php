@@ -5,8 +5,10 @@ namespace App\Services;
 use App\Models\Basket;
 use App\Models\Product;
 use App\Models\Service;
+use App\Support\Money;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class BasketService
 {
@@ -24,78 +26,95 @@ class BasketService
      *     selected_services: \Illuminate\Database\Eloquent\Collection<int, Service>
      * }>
      */
-    public function getUserBasketItems(): Collection
+    public function getUserBasketItems(bool $lock = false): Collection
     {
-        return Basket::where('user_id', $this->userId)
-            ->with('product.services')
-            ->get()
-            ->map(function (Basket $item) {
-                $product = $item->product;
-                if (! $product instanceof Product) {
-                    throw new \RuntimeException("Basket item {$item->id} has no product.");
-                }
+        $query = Basket::where('user_id', $this->userId)
+            ->with('product.services');
 
-                return [
-                    'cart_id' => $item->id,
-                    'product' => $product,
-                    'quantity' => $item->quantity,
-                    'selected_services' => $product->services->whereIn(
-                        'id',
-                        collect($item->services)->pluck('id')->toArray()
-                    )->values(),
-                ];
-            });
+        if ($lock) {
+            $query->lockForUpdate();
+        }
+
+        return $query->get()->map(function (Basket $item) {
+            $product = $item->product;
+            if (! $product instanceof Product) {
+                throw new \RuntimeException("Basket item {$item->id} has no product.");
+            }
+
+            $selectedIds = Basket::normalizeServiceIds($item->services);
+
+            return [
+                'cart_id' => $item->id,
+                'product' => $product,
+                'quantity' => $item->quantity,
+                'selected_services' => $product->services->whereIn('id', $selectedIds)->values(),
+            ];
+        });
     }
 
-    public function getCheckoutDetails(): array
+    public function getCheckoutDetails(bool $lock = false): array
     {
-        $items = $this->getUserBasketItems()->map(function ($item) {
-            $servicesPrice = $item['selected_services']->sum(
-                fn (Service $service) => (float) $service->pivot->price
+        $items = $this->getUserBasketItems(lock: $lock)->map(function ($item) {
+            $servicesPrice = Money::sum(
+                $item['selected_services']->map(fn (Service $service) => $service->pivot->price)
             );
+
+            $singlePrice = Money::add($item['product']->price, $servicesPrice);
 
             return [
                 ...$item,
-                'services' => $item['selected_services']->toArray(),
-                'item_total' => ($item['product']->price + $servicesPrice) * $item['quantity'],
+                'single_price' => $singlePrice,
+                'item_total' => Money::mul($singlePrice, $item['quantity']),
             ];
         });
 
         return [
             'items' => $items,
-            'totalAmount' => round($items->sum('item_total'), 2),
+            'totalAmount' => Money::sum($items->pluck('item_total')),
         ];
     }
 
     public function addToBasket(array $data, ?int $editCartId = null): void
     {
-        if ($editCartId) {
-            Basket::where('id', $editCartId)->where('user_id', $this->userId)->delete();
-        }
+        $serviceIds = Basket::normalizeServiceIds($data['services'] ?? []);
+        $servicesKey = Basket::servicesKey($serviceIds);
 
-        $services = collect($data['services'] ?? [])->sortBy('id')->values()->toArray();
+        DB::transaction(function () use ($data, $serviceIds, $servicesKey, $editCartId): void {
+            Basket::where('user_id', $this->userId)->lockForUpdate()->get();
 
-        $basketItem = Basket::where('user_id', $this->userId)
-            ->where('product_id', $data['product_id'])
-            ->get()
-            ->first(fn (Basket $item) => ($item->services ?? []) === $services);
+            if ($editCartId) {
+                $this->removeItem($editCartId);
+            }
 
-        if ($basketItem) {
-            $basketItem->increment('quantity');
+            $basketItem = Basket::where('user_id', $this->userId)
+                ->where('product_id', $data['product_id'])
+                ->where('services_key', $servicesKey)
+                ->first();
 
-            return;
-        }
+            if ($basketItem) {
+                $basketItem->increment('quantity');
 
-        Basket::create([
-            'user_id' => $this->userId,
-            'product_id' => $data['product_id'],
-            'services' => $services,
-            'quantity' => 1,
-        ]);
+                return;
+            }
+
+            Basket::create([
+                'user_id' => $this->userId,
+                'product_id' => $data['product_id'],
+                'services' => $serviceIds,
+                'services_key' => $servicesKey,
+                'quantity' => 1,
+            ]);
+        });
     }
 
     public function updateQuantity(int $itemId, int $quantity): void
     {
+        if ($quantity < 1) {
+            $this->removeItem($itemId);
+
+            return;
+        }
+
         Basket::where('id', $itemId)
             ->where('user_id', $this->userId)
             ->update(['quantity' => $quantity]);
@@ -106,5 +125,10 @@ class BasketService
         Basket::where('id', $itemId)
             ->where('user_id', $this->userId)
             ->delete();
+    }
+
+    public function clear(): void
+    {
+        Basket::where('user_id', $this->userId)->delete();
     }
 }
