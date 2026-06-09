@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Enums\ExportStatus;
 use App\Jobs\ExportCatalogJob;
 use App\Models\Export;
+use Exception;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Filesystem\FilesystemAdapter;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class ExportController extends Controller
@@ -25,7 +28,6 @@ class ExportController extends Controller
                 'status' => $export->status,
                 'url' => $export->file_path ? $disk->url($export->file_path) : null,
                 'date' => $export->created_at->format('d.m.Y H:i'),
-                // Размер файла в БД берется из S3 только для готовых
                 'size' => ($export->file_path && $disk->exists($export->file_path))
                             ? round($disk->size($export->file_path) / 1024, 2).' KB'
                             : '—',
@@ -50,17 +52,36 @@ class ExportController extends Controller
 
     public function destroy(Export $export)
     {
+        $filePath = $export->file_path;
+
         try {
-            if (Storage::disk('s3')->exists($export->file_path)) {
-                Storage::disk('s3')->delete($export->file_path);
-            }
+            DB::transaction(function () use ($export): void {
+                $export->delete();
+            });
+        } catch (Exception $e) {
+            Log::error('Ошибка при удалении записи экспорта', [
+                'export_id' => $export->id,
+                'file_path' => $filePath,
+                'error_message' => $e->getMessage(),
+            ]);
 
-            $export->delete();
-
-            return back()->with('success', 'Экспорт успешно удален.');
-
-        } catch (\Exception $e) {
-            return back()->with('error', 'Ошибка при удалении: '.$e->getMessage());
+            return redirect()
+                ->back()
+                ->with('error', 'Не удалось удалить экспорт. Пожалуйста, попробуйте позже или обратитесь в поддержку.');
         }
+
+        try {
+            if ($filePath && Storage::disk('s3')->exists($filePath)) {
+                Storage::disk('s3')->delete($filePath);
+            }
+        } catch (Exception $e) {
+            Log::warning('Запись экспорта удалена, но файл не удалён из S3', [
+                'export_id' => $export->id,
+                'file_path' => $filePath,
+                'error_message' => $e->getMessage(),
+            ]);
+        }
+
+        return back()->with('success', 'Экспорт успешно удален.');
     }
 }

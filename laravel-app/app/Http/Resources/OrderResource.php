@@ -11,19 +11,18 @@ class OrderResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        /** @var Order $order */
-        $order = $this->resource;
-
         return [
-            'id' => $order->id,
-            'total' => $order->total_price,
+            'id' => $this->id,
+            'total' => $this->total_price,
+            'customer_name' => $this->customer_name,
+            'status' => $this->status->value,
+            'status_label' => $this->status->label(),
+            'status_css' => $this->status->cssClass(),
 
-            'status' => $order->status->value,
-            'status_label' => $order->status->label(),
-            'status_css' => $order->status->cssClass(),
-
-            'items' => $order->items,
-            'created_at' => $order->created_at->format('d.m.Y H:i'),
+            'items' => $this->whenLoaded('items', function () {
+                return OrderItemResource::collection($this->items->values());
+            }),
+            'created_at_display' => $this->created_at->format('d.m.Y H:i'),
         ];
     }
 }

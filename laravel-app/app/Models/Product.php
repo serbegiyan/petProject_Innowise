@@ -38,7 +38,7 @@ class Product extends Model
     {
         return [
             'release_date' => 'date',
-            'price' => 'float',
+            'price' => 'decimal:2',
         ];
     }
 

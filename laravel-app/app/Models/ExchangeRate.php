@@ -18,6 +18,18 @@ class ExchangeRate extends Model
     }
 
     /**
+     * @return array{id: int, name: string, unit_rate: float}
+     */
+    public function toCurrencyDto(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'unit_rate' => $this->unit_rate,
+        ];
+    }
+
+    /**
      * Конвертирует сумму из валюты этой записи ($this->name) в целевую валюту.
      * Курс хранится как BYN за 1 единицу валюты
      */

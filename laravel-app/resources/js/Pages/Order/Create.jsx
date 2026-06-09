@@ -5,9 +5,9 @@ import InputLabel from "@/Components/InputLabel";
 import { usePage, useForm, Link } from '@inertiajs/react';
 import { useCurrency } from '@/Hooks/useCurrency';
 
-export default function Create({ items, totalAmount, currencies }) {
+export default function Create({ items, totalAmount }) {
     const { auth } = usePage().props;
-    const { selectedCurrency, setCurrency, convert } = useCurrency(currencies);
+    const { selectedCurrency, setCurrency, convert, currencies, isByn } = useCurrency();
 
     const { data, setData, post, errors, processing } = useForm({
         customer_name: auth.user?.name || '',
@@ -49,7 +49,7 @@ export default function Create({ items, totalAmount, currencies }) {
                 <ul className="list-decimal list-inside w-1/2">
                     {items.map(item => {
                         return (
-                            <li className="flex flex-row pl-5 p-3 even:bg-gray-100 odd:bg-white" key={item.product.id} >
+                            <li className="flex flex-row pl-5 p-3 even:bg-gray-100 odd:bg-white" key={item.cart_id} >
                                 <img src={item.product.image_url} alt={item.product.name} className="h-20 border" />
                                 <div className="ml-4">
                                     <p><span className="font-semibold">Название товара: </span>{item.product.name}</p>
@@ -58,20 +58,20 @@ export default function Create({ items, totalAmount, currencies }) {
                                             minimumFractionDigits: 2,
                                             maximumFractionDigits: 2
                                         })} BYN&nbsp;
-                                        {selectedCurrency?.id !== 1 && (
+                                        {!isByn && (
                                             <span className="text-sm text-gray-600">({convert(item.item_total)})</span>)}
                                     </p>
                                     <p><span className="font-semibold">Количество: </span>{item.quantity}</p>
 
-                                    {item.services.length > 0
+                                    {item.selected_services?.length > 0
                                         ?
                                         <> <h3 className="font-bold p-1">Выбранные услуги</h3>
                                             <ol className="pl-1 list-disc list-inside">
-                                                {item.services.map(service => (
+                                                {item.selected_services.map(service => (
                                                     <li key={service.id}>
                                                         <p className="inline"><span className="font-semibold">
                                                             {service.name}</span> - {service.pivot.price} BYN&nbsp;
-                                                            {selectedCurrency?.id !== 1 && (
+                                                            {!isByn && (
                                                                 <span className="text-sm text-gray-600">({convert(service.pivot.price)})</span>)}
                                                         </p>
                                                     </li>
@@ -136,7 +136,7 @@ export default function Create({ items, totalAmount, currencies }) {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2
                     })} BYN*&nbsp;
-                        {selectedCurrency?.id !== 1 && (
+                        {!isByn && (
                             <span className="text-2xl text-gray-600">({convert(totalAmount)})</span>)}
                     </p>
                     <p className="text-gray-700 text-sm">* Оплата производится в белорусских рублях по крусу НБРБ</p>

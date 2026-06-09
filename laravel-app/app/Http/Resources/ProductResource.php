@@ -48,7 +48,7 @@ class ProductResource extends JsonResource
                         'name' => $service->name,
                         'description' => $service->description,
                         'pivot' => [
-                            'price' => (float) $service->pivot->price,
+                            'price' => $service->pivot->price,
                             'term' => $service->pivot->term,
                         ],
                     ])

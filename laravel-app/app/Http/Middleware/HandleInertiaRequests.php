@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\ExchangeRate;
 use App\Services\StatsService;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -23,9 +24,12 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'auth' => [
                 'user' => fn () => $this->getSharedUser($request),
-                'currency' => fn () => $statsService->getCurrentCurrency(),
+                'currency' => fn () => $this->currencyDto($statsService->getCurrentCurrency()),
             ],
-            'currencies' => fn () => $statsService->getAllCurrencies(),
+            'currencies' => fn () => $statsService->getAllCurrencies()
+                ->map(fn (ExchangeRate $rate) => $rate->toCurrencyDto())
+                ->values()
+                ->all(),
 
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
@@ -47,8 +51,16 @@ class HandleInertiaRequests extends Middleware
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
-            'role' => $user->role,
+            'is_Admin' => $user->isAdmin(),
             'basket_count' => (int) $user->baskets_count,
         ];
+    }
+
+    /**
+     * @return array{id: int, name: string, unit_rate: float}|null
+     */
+    private function currencyDto(?ExchangeRate $rate): ?array
+    {
+        return $rate?->toCurrencyDto();
     }
 }

@@ -44,6 +44,7 @@ class BasketServiceTest extends TestCase
             'user_id' => $this->user->id,
             'product_id' => $product->id,
             'quantity' => 1,
+            'services_key' => '[]',
         ]);
     }
 
@@ -91,12 +92,113 @@ class BasketServiceTest extends TestCase
             'user_id' => $this->user->id,
             'product_id' => $product->id,
             'quantity' => 1,
+            'services' => [$service->id],
+        ]);
+
+        $details = $this->service->getCheckoutDetails();
+
+        $this->assertSame('150.00', $details['totalAmount']);
+        $this->assertSame('150.00', $details['items']->first()['item_total']);
+    }
+
+    public function test_checkout_total_supports_legacy_service_object_format(): void
+    {
+        $this->actingAs($this->user);
+
+        $product = Product::factory()->create(['price' => 100]);
+        $service = Service::factory()->create();
+        $product->services()->attach($service->id, ['price' => 50, 'term' => '7 days']);
+
+        Basket::create([
+            'user_id' => $this->user->id,
+            'product_id' => $product->id,
+            'quantity' => 1,
             'services' => [['id' => $service->id, 'name' => $service->name, 'price' => 50]],
         ]);
 
         $details = $this->service->getCheckoutDetails();
 
-        $this->assertEquals(150.0, $details['totalAmount']);
-        $this->assertEquals(150.0, $details['items']->first()['item_total']);
+        $this->assertSame('150.00', $details['totalAmount']);
+    }
+
+    public function test_checkout_total_avoids_float_rounding_errors(): void
+    {
+        $this->actingAs($this->user);
+
+        $product = Product::factory()->create(['price' => '99.99']);
+        $service = Service::factory()->create();
+        $product->services()->attach($service->id, ['price' => '0.01', 'term' => '7 days']);
+
+        Basket::create([
+            'user_id' => $this->user->id,
+            'product_id' => $product->id,
+            'quantity' => 1,
+            'services' => [$service->id],
+        ]);
+
+        $details = $this->service->getCheckoutDetails();
+
+        $this->assertSame('100.00', $details['totalAmount']);
+        $this->assertSame('100.00', $details['items']->first()['single_price']);
+    }
+
+    public function test_it_sets_services_key_when_adding_with_services(): void
+    {
+        $this->actingAs($this->user);
+
+        $product = Product::factory()->create();
+        $service = Service::factory()->create();
+        $product->services()->attach($service->id, ['price' => 10, 'term' => '7 days']);
+
+        $this->service->addToBasket([
+            'product_id' => $product->id,
+            'services' => [['id' => $service->id]],
+        ]);
+
+        $this->assertDatabaseHas('baskets', [
+            'user_id' => $this->user->id,
+            'product_id' => $product->id,
+            'services_key' => (string) $service->id,
+        ]);
+    }
+
+    public function test_update_quantity_removes_item_when_less_than_one(): void
+    {
+        $this->actingAs($this->user);
+
+        $product = Product::factory()->create();
+        $item = Basket::create([
+            'user_id' => $this->user->id,
+            'product_id' => $product->id,
+            'quantity' => 2,
+            'services' => [],
+        ]);
+
+        $this->service->updateQuantity($item->id, 0);
+
+        $this->assertDatabaseMissing('baskets', ['id' => $item->id]);
+    }
+
+    public function test_services_key_normalizes_legacy_object_format(): void
+    {
+        $this->actingAs($this->user);
+
+        $product = Product::factory()->create();
+        $service = Service::factory()->create();
+
+        Basket::create([
+            'user_id' => $this->user->id,
+            'product_id' => $product->id,
+            'quantity' => 1,
+            'services' => [['id' => $service->id, 'name' => $service->name, 'price' => 10]],
+        ]);
+
+        $this->service->addToBasket([
+            'product_id' => $product->id,
+            'services' => [['id' => $service->id]],
+        ]);
+
+        $this->assertEquals(1, Basket::where('user_id', $this->user->id)->count());
+        $this->assertEquals(2, Basket::where('user_id', $this->user->id)->first()->quantity);
     }
 }

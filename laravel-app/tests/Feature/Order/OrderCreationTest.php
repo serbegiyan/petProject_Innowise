@@ -47,7 +47,7 @@ class OrderCreationTest extends TestCase
             'customer_name' => 'Ivan Ivanov',
             'comment' => 'Позвоните мне за час до доставки',
             'user_id' => $user->id,
-            'total_price' => 100,
+            'total_price' => '100.00',
         ]);
     }
 
@@ -63,7 +63,7 @@ class OrderCreationTest extends TestCase
         $user->baskets()->create([
             'product_id' => $product->id,
             'quantity' => 2,
-            'services' => [['id' => $service->id, 'name' => $service->name, 'price' => 50]],
+            'services' => [$service->id],
         ]);
 
         $response = $this->actingAs($user)->post(route('order.store'), [
@@ -78,13 +78,13 @@ class OrderCreationTest extends TestCase
 
         $this->assertDatabaseHas('orders', [
             'user_id' => $user->id,
-            'total_price' => 300,
+            'total_price' => '300.00',
         ]);
 
         $orderItem = OrderItem::first();
-        $this->assertEquals(150.0, (float) $orderItem->price);
+        $this->assertSame('150.00', $orderItem->price);
         $this->assertEquals(2, $orderItem->quantity);
-        $this->assertEquals(50.0, $orderItem->services[0]['price']);
+        $this->assertSame('50.00', $orderItem->services[0]['price']);
     }
 
     public function test_it_rejects_order_when_basket_is_empty(): void

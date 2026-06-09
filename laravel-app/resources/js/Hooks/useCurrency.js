@@ -1,44 +1,46 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
+import { usePage, router } from '@inertiajs/react';
 
-export function useCurrency(currencies) {
-    // 1. Инициализация из localStorage или дефолт
-    const [selectedCurrency, setSelectedCurrency] = useState(() => {
-        const savedId = localStorage.getItem('user_currency_id');
-        return currencies?.find(c => String(c.id) === savedId) ||
-            currencies?.find(c => c.name === 'BYN') ||
-            currencies?.[0];
-    });
+export function useCurrency() {
+    const { auth, currencies } = usePage().props;
 
-    // 2. Функция смены валюты
+    const selectedCurrency = auth?.currency
+        ?? currencies?.find(c => c.name === 'BYN')
+        ?? currencies?.[0];
+
+    const isByn = selectedCurrency?.name === 'BYN';
+
     const setCurrency = useCallback((id) => {
-        const cur = currencies.find(c => String(c.id) === String(id));
-        if (cur) {
-            setSelectedCurrency(cur);
-            localStorage.setItem('user_currency_id', id);
-        }
-    }, [currencies]);
+        router.post(route('currency.change'), { id }, {
+            preserveScroll: true,
+            only: ['auth', 'currencies'],
+        });
+    }, []);
 
-    // 3. Универсальная функция конвертации
-    const convert = useCallback((price, showOnlyConverted = true) => {
-        const basePrice = Number(price || 0);
-        const rate = selectedCurrency?.rate || 1;
-        const converted = (basePrice / rate).toLocaleString('ru-RU', {
+    const convert = useCallback((amountByn, showOnlyConverted = true) => {
+        const unitRate = selectedCurrency?.unit_rate ?? 1;
+        const converted = (Number(amountByn || 0) / unitRate).toLocaleString('ru-RU', {
             minimumFractionDigits: 2,
-            maximumFractionDigits: 2
+            maximumFractionDigits: 2,
         });
 
-        if (showOnlyConverted || selectedCurrency?.name === 'BYN') {
-            return `${converted} ${selectedCurrency?.name || 'BYN'}`;
+        if (showOnlyConverted || isByn) {
+            return `${converted} ${selectedCurrency?.name ?? 'BYN'}`;
         }
 
-        // Формат для оформления заказа: 100 BYN (30 USD)
-        const baseFormatted = basePrice.toLocaleString('ru-RU', { minimumFractionDigits: 2 });
+        const baseFormatted = Number(amountByn || 0).toLocaleString('ru-RU', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        });
+
         return `${baseFormatted} BYN (${converted} ${selectedCurrency.name})`;
-    }, [selectedCurrency]);
+    }, [selectedCurrency, isByn]);
 
     return {
         selectedCurrency,
+        isByn,
         setCurrency,
-        convert
+        convert,
+        currencies,
     };
 }

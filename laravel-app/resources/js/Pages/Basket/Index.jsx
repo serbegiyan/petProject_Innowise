@@ -7,8 +7,8 @@ import FlashMessage from '@/Components/FlashMessage';
 import { useMemo } from 'react';
 import { useCurrency } from '@/Hooks/useCurrency';
 
-export default function Index({ items, currencies }) {
-    const { selectedCurrency, setCurrency, convert } = useCurrency(currencies);
+export default function Index({ items }) {
+    const { selectedCurrency, setCurrency, convert, currencies } = useCurrency();
 
     const grandTotal = useMemo(() => {
         const total = items.reduce((sum, item) => {

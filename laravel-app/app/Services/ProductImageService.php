@@ -10,17 +10,22 @@ class ProductImageService
 {
     public function handle(?UploadedFile $image, ?Product $product = null): ?string
     {
-        // Если новый файл не загружен, сохраняем старую картинку
         if (! $image) {
             return $product?->image;
         }
 
-        // Если есть старая картинка, удаляем её перед записью новой
-        if ($product && $product->image) {
-            Storage::disk('public')->delete($product->image);
-        }
+        return $this->store($image);
+    }
 
-        // Сохраняем файл на диск public в папку products
+    public function store(UploadedFile $image): string
+    {
         return $image->store('products', 'public');
+    }
+
+    public function deleteIfExists(?string $path): void
+    {
+        if ($path && Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
+        }
     }
 }

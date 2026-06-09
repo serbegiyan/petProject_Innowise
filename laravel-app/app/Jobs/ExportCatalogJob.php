@@ -64,10 +64,8 @@ class ExportCatalogJob implements ShouldQueue
                 });
 
             rewind($handle);
-            $csvContent = stream_get_contents($handle);
+            Storage::disk('s3')->writeStream($export->file_path, $handle);
             fclose($handle);
-
-            Storage::disk('s3')->put($export->file_path, $csvContent);
 
             $export->update([
                 'status' => ExportStatus::COMPLETED,

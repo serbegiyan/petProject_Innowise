@@ -17,6 +17,7 @@ services:
       - SERVICES=s3,ses,sqs
       - DEFAULT_REGION=us-east-1
     volumes:
+      - ./.localstack_data:/var/lib/localstack
       - ./init-s3.sh:/etc/localstack/init/ready.d/init-s3.sh
 
   rabbitmq:
@@ -95,7 +96,7 @@ services:
       - ./docker/node/entrypoint.sh:/entrypoint.sh:ro
     ports:
       - "127.0.0.1:5173:5173"
-    entrypoint: ["/bin/sh", "/entrypoint.sh"]
+    entrypoint: [ "/bin/sh", "/entrypoint.sh" ]
 
   jenkins:
     build:

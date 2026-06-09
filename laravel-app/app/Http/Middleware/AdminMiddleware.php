@@ -18,15 +18,10 @@ class AdminMiddleware
     {
         $user = $request->user();
 
-        if ($user instanceof User) {
-            // Проверка для PHPStan
-            if ($user->isAdmin()) {
-                return $next($request);
-            }
+        if ($user instanceof User && $user->isAdmin()) {
+            return $next($request);
         }
 
-        return redirect()
-            ->route('catalog.index')
-            ->with('error', 'У вас нет прав доступа к этой странице.');
+        abort(403, 'У вас нет прав доступа к этой странице.');
     }
 }

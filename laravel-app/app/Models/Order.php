@@ -13,7 +13,7 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property OrderStatus $status
- * @property float $total_price
+ * @property string $total_price
  * @property string $customer_name
  * @property Carbon $created_at
  * @property-read Collection<int, OrderItem> $items
@@ -23,7 +23,7 @@ class Order extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'user_id', 'status', 'payment_method', 'comment',
+        'status', 'payment_method', 'comment',
         'total_price', 'customer_name', 'customer_phone',
         'customer_email', 'customer_address',
     ];
@@ -32,6 +32,7 @@ class Order extends Model
     {
         return [
             'status' => OrderStatus::class,
+            'total_price' => 'decimal:2',
         ];
     }
 

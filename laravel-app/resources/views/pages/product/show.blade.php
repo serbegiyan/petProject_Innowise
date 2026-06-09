@@ -11,7 +11,7 @@
     <p class="p-2"><span class="font-bold">Slug:</span> {{ $product->slug }}</p>
     <p class="p-2"><span class="font-bold">Описание продукта:</span> {{ $product->description }}</p>
     <p class="p-2"><span class="font-bold">Цена продукта:</span>
-        {{ $product->formatted_price }}
+        {{ app(\App\Services\CurrencyService::class)->convert($product->price) }}
     </p>
     <p class="p-2"><span class="font-bold">Дата выпуска:</span> {{ $product->release_date }}</p>
     <p class="p-2"><span class="font-bold">Категория продукта:</span>
