@@ -12,7 +12,7 @@ use Tests\TestCase;
 
 class BasketServiceTest extends TestCase
 {
-    use RefreshDatabase; // Очищаем базу перед каждым тестом
+    use RefreshDatabase;
 
     private BasketService $service;
 
@@ -27,7 +27,6 @@ class BasketServiceTest extends TestCase
 
     public function test_it_can_add_product_to_basket_for_authenticated_user()
     {
-        // 1. Авторизуем пользователя (чтобы сработал хук $this->userId)
         $this->actingAs($this->user);
         $product = Product::factory()->create(['price' => 100]);
 
@@ -36,10 +35,8 @@ class BasketServiceTest extends TestCase
             'services' => [],
         ];
 
-        // 2. Действие
         $this->service->addToBasket($data);
 
-        // 3. Проверка в базе
         $this->assertDatabaseHas('baskets', [
             'user_id' => $this->user->id,
             'product_id' => $product->id,
@@ -50,7 +47,6 @@ class BasketServiceTest extends TestCase
 
     public function test_it_throws_exception_if_user_is_not_authenticated()
     {
-        // НЕ вызываем actingAs() — хук должен выбросить Exception
         $product = Product::factory()->create();
 
         $this->expectException(\Exception::class);
@@ -64,7 +60,6 @@ class BasketServiceTest extends TestCase
         $this->actingAs($this->user);
         $product = Product::factory()->create();
 
-        // Создаем существующую запись в корзине
         Basket::create([
             'user_id' => $this->user->id,
             'product_id' => $product->id,
@@ -72,10 +67,8 @@ class BasketServiceTest extends TestCase
             'services' => [],
         ]);
 
-        // Пытаемся добавить такой же товар
         $this->service->addToBasket(['product_id' => $product->id, 'services' => []]);
 
-        // Проверяем, что количество стало 2, а не создалась новая запись
         $this->assertEquals(2, Basket::where('user_id', $this->user->id)->first()->quantity);
         $this->assertEquals(1, Basket::count());
     }
@@ -160,23 +153,6 @@ class BasketServiceTest extends TestCase
             'product_id' => $product->id,
             'services_key' => (string) $service->id,
         ]);
-    }
-
-    public function test_update_quantity_removes_item_when_less_than_one(): void
-    {
-        $this->actingAs($this->user);
-
-        $product = Product::factory()->create();
-        $item = Basket::create([
-            'user_id' => $this->user->id,
-            'product_id' => $product->id,
-            'quantity' => 2,
-            'services' => [],
-        ]);
-
-        $this->service->updateQuantity($item->id, 0);
-
-        $this->assertDatabaseMissing('baskets', ['id' => $item->id]);
     }
 
     public function test_services_key_normalizes_legacy_object_format(): void

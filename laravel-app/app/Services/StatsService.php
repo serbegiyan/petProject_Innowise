@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\Category;
-use App\Models\ExchangeRate;
 use App\Models\Export;
 use App\Models\Order;
 use App\Models\Product;
@@ -11,7 +10,6 @@ use App\Models\Service;
 use App\Models\User;
 use Illuminate\Contracts\Cache\Repository as CacheRepository;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Schema;
 
 class StatsService
 {
@@ -51,68 +49,5 @@ class StatsService
     public function forgetSidebarStats(): void
     {
         $this->cache->forget('sidebar_stats');
-    }
-
-    public function getNavCategories()
-    {
-        return $this->cache->remember('nav_categories', 600, function () {
-            try {
-                return Category::withCount('products')->get();
-            } catch (\Exception $e) {
-                return collect();
-            }
-        });
-    }
-
-    public function getExchangeRates()
-    {
-        if (! Schema::hasTable('exchange_rates')) {
-            return collect();
-        }
-
-        return $this->cache->rememberForever('exchange_rates', function () {
-            try {
-                return ExchangeRate::all();
-            } catch (\Exception $e) {
-                return collect();
-            }
-        });
-    }
-
-    public function clearCache(): void
-    {
-        $this->forgetSidebarStats();
-        $this->cache->forget('nav_categories');
-        $this->cache->forget('exchange_rates');
-    }
-
-    public function getAllCurrencies()
-    {
-        if (! Schema::hasTable('exchange_rates')) {
-            return collect();
-        }
-
-        return ExchangeRate::all();
-    }
-
-    public function getAllCategories()
-    {
-        if (! Schema::hasTable('categories')) {
-            return collect();
-        }
-
-        return Category::all();
-    }
-
-    public function getCurrentCurrency(): ?ExchangeRate
-    {
-        if (! Schema::hasTable('exchange_rates')) {
-            return null;
-        }
-
-        $currencyId = session('currency_id', 1);
-
-        // Можно добавить кеширование, если валют много
-        return ExchangeRate::find($currencyId);
     }
 }

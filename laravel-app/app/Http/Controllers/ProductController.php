@@ -6,29 +6,19 @@ use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Service;
+use App\Services\ProductFilterService;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    public function __construct(protected ProductFilterService $productFilterService) {}
+
     public function index(Request $request)
     {
-        $query = Product::query();
-
-        if ($request->has('search')) {
-            $query->where('name', 'like', '%'.$request->search.'%');
-        } else {
-            $query
-                ->when(
-                    $request->category_id,
-                    fn ($query, $categoryId) => $query->whereHas('categories', function ($q) use ($categoryId): void {
-                        $q->where('categories.id', $categoryId);
-                    }),
-                )
-                ->latest();
-        }
-
-        $products = $query->paginate(10);
+        $products = $this->productFilterService->filterForAdmin(
+            $request->only(['search', 'category_id']),
+        );
 
         return view('pages.product.index', ['products' => $products]);
     }
@@ -57,16 +47,21 @@ class ProductController extends Controller
         return view('pages.product.show', ['product' => $product]);
     }
 
-    public function store(ProductRequest $request, ProductService $service)
+    private function getRelationData(array $validated): array
     {
-        $validated = $request->validated();
-
-        $relationData = [
+        return [
             'category_ids' => $validated['category_id'] ?? [],
             'services' => $validated['services'] ?? [],
             'service_prices' => $validated['service_prices'] ?? [],
             'service_terms' => $validated['service_terms'] ?? [],
         ];
+    }
+
+    public function store(ProductRequest $request, ProductService $service)
+    {
+        $validated = $request->validated();
+
+        $relationData = $this->getRelationData($validated);
 
         $service->create(
             $validated,
@@ -83,12 +78,7 @@ class ProductController extends Controller
     {
         $validated = $request->validated();
 
-        $relationData = [
-            'category_ids' => $validated['category_id'] ?? [],
-            'services' => $validated['services'] ?? [],
-            'service_prices' => $validated['service_prices'] ?? [],
-            'service_terms' => $validated['service_terms'] ?? [],
-        ];
+        $relationData = $this->getRelationData($validated);
 
         $service->update(
             $product,

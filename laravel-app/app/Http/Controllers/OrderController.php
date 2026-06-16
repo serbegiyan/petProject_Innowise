@@ -8,16 +8,11 @@ use App\Http\Resources\OrderResource;
 use App\Models\User;
 use App\Services\BasketService;
 use App\Services\OrderService;
-use App\Services\StatsService;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class OrderController extends Controller
 {
-    public function __construct(
-        protected StatsService $statsService
-    ) {}
-
     public function index()
     {
         /** @var User $user */

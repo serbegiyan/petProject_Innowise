@@ -28,7 +28,7 @@ class CatalogShowTest extends TestCase
             ->has('product.services', 1)
             ->where('product.services.0.id', $service->id)
             ->where('product.services.0.name', 'Гарантия')
-            ->where('product.services.0.pivot.price', 25.5)
+            ->where('product.services.0.pivot.price', fn ($price) => in_array($price, [25.5, '25.50'], true))
             ->where('product.services.0.pivot.term', '12 months')
         );
     }

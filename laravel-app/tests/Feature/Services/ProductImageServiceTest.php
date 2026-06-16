@@ -5,12 +5,15 @@ namespace Tests\Feature\Services;
 use App\Models\Product;
 use App\Services\ProductImageService;
 use Illuminate\Filesystem\FilesystemAdapter;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ProductImageServiceTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_it_uploads_new_image(): void
     {
         Storage::fake('public');

@@ -7,8 +7,8 @@ use App\Http\Requests\CatalogRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Services\BasketService;
+use App\Services\CategoryService;
 use App\Services\ProductFilterService;
-use App\Services\StatsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -17,7 +17,7 @@ class CatalogController extends Controller
 {
     public function __construct(
         protected ProductFilterService $productFilterService,
-        protected StatsService $statsService) {}
+        protected CategoryService $categoryService) {}
 
     public function index(CatalogRequest $request)
     {
@@ -26,7 +26,7 @@ class CatalogController extends Controller
         return Inertia::render('Catalog/Index', [
             'products' => ProductResource::collection($products),
 
-            'categories' => $this->statsService->getAllCategories(),
+            'categories' => $this->categoryService->getAll(),
 
             'filters' => $request->only(['search', 'category', 'sort']),
 

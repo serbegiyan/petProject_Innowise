@@ -3,12 +3,12 @@
 namespace App\Jobs;
 
 use App\Models\ExchangeRate;
+use App\Services\CurrencyService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -16,7 +16,7 @@ class UpdateExchangeRatesJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function handle(): void
+    public function handle(CurrencyService $currencyService): void
     {
         $url = config('services.bank.url');
 
@@ -62,7 +62,7 @@ class UpdateExchangeRatesJob implements ShouldQueue
             $this->setFallbackRates();
         }
 
-        Cache::forget('exchange_rates');
+        $currencyService->forgetCache();
         Log::info('Курсы обновлены и кэш очищен.');
     }
 

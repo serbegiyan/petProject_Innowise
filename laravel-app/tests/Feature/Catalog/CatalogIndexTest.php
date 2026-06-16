@@ -1,9 +1,10 @@
 <?php
 
-namespace Tests\Feature\Catalog;
+namespace Tests\Feature\Order;
 
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class CatalogIndexTest extends TestCase
@@ -12,14 +13,13 @@ class CatalogIndexTest extends TestCase
 
     public function test_catalog_filters_products_by_search()
     {
-        // Создаём товары
         $iphone = Product::factory()->create(['name' => 'iPhone 15']);
         Product::factory()->create(['name' => 'Samsung Galaxy']);
 
-        // Делаем запрос с фильтром
+        DB::statement('OPTIMIZE TABLE products');
+
         $response = $this->get(route('catalog.index', ['search' => 'iphone']));
 
-        // Проверяем ответ
         $response->assertStatus(200);
 
         $response->assertInertia(fn ($page) => $page

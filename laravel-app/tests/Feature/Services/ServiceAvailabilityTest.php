@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Services;
 
-use App\Services\StatsService;
+use App\Services\CurrencyService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
@@ -17,8 +17,8 @@ class ServiceAvailabilityTest extends TestCase
         $this->withoutExceptionHandling();
         Schema::dropIfExists('exchange_rates');
 
-        $service = app(StatsService::class);
-        $rates = $service->getExchangeRates();
+        $service = app(CurrencyService::class);
+        $rates = $service->getCachedRates();
 
         $this->assertInstanceOf(Collection::class, $rates);
         $this->assertTrue($rates->isEmpty());

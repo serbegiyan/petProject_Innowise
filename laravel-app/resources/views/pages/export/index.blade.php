@@ -28,10 +28,12 @@
                         {{ $export['status']->label() }}
                 </p>
                 <div class="flex flex-row">
-                    <a title="Скачать" class="text-blue-600 hover:text-blue-800" href="{{ $export['url'] }}"
-                        target="_blank">
-                        <i class="fa-solid fa-download"></i>
-                    </a>
+                    @if ($export['url'])
+                        <a title="Скачать" class="text-blue-600 hover:text-blue-800" href="{{ $export['url'] }}"
+                            target="_blank">
+                            <i class="fa-solid fa-download"></i>
+                        </a>
+                    @endif
                     <form action="{{ route('export.destroy', $export['id']) }}" method="POST">
                         @csrf
                         @method('DELETE')

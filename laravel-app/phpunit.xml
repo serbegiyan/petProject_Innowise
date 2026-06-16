@@ -19,15 +19,20 @@
     </source>
     <php>
         <env name="FILESYSTEM_DISK" value="local"/>
-        <env name="APP_ENV" value="testing"/>
+        <env name="APP_ENV" value="testing" force="true"/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
         <env name="AWS_BUCKET" value="test-bucket"/>
         <env name="AWS_DEFAULT_REGION" value="us-east-1"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="BROADCAST_CONNECTION" value="null"/>
         <env name="CACHE_STORE" value="array"/>
-        <env name="DB_CONNECTION" value="sqlite"/>
-        <env name="DB_DATABASE" value=":memory:"/>
+
+        <env name="DB_CONNECTION" value="mysql"/>
+        <env name="DB_HOST" value="mysql_db"/>
+        <env name="DB_DATABASE" value="Laravel_petProject_test"/>
+        <env name="DB_USERNAME" value="user"/>
+        <env name="DB_PASSWORD" value="password"/>
+
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>

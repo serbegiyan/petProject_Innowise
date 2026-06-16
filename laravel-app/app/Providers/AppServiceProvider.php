@@ -10,6 +10,7 @@ use App\Models\Service;
 use App\Models\User;
 use App\Observers\ProductObserver;
 use App\Observers\SidebarStatsCacheObserver;
+use App\Services\CategoryService;
 use App\Services\CurrencyService;
 use App\Services\StatsService;
 use Illuminate\Support\Facades\View;
@@ -22,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(StatsService::class);
         $this->app->singleton(CurrencyService::class);
+        $this->app->singleton(CategoryService::class);
     }
 
     public function boot(): void
@@ -40,12 +42,21 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('layouts/main', function ($view) {
             $statsService = $this->app->make(StatsService::class);
+            $currencyService = $this->app->make(CurrencyService::class);
+            $categoryService = $this->app->make(CategoryService::class);
 
             $view->with([
-                'rates' => $statsService->getExchangeRates(),
+                'rates' => $currencyService->getCachedRates(),
                 'sidebar_stats' => $statsService->getSidebarStats(),
-                'navCategories' => $statsService->getNavCategories(),
+                'navCategories' => $categoryService->getForNavigation(),
             ]);
+        });
+
+        View::composer('pages.home', function ($view) {
+            $view->with(
+                'sidebar_stats',
+                $this->app->make(StatsService::class)->getSidebarStats(),
+            );
         });
     }
 }

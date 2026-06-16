@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Basket;
 
+use App\Models\Basket;
 use App\Models\ExchangeRate;
 use App\Models\Product;
 use App\Models\User;
@@ -24,10 +25,9 @@ class BasketPageTest extends TestCase
         $user = User::factory()->create();
         $product = Product::factory()->create(['image' => 'products/photo.jpg']);
 
-        $user->baskets()->create([
+        Basket::factory()->create([
+            'user_id' => $user->id,
             'product_id' => $product->id,
-            'quantity' => 1,
-            'services' => [],
         ]);
 
         /** @var FilesystemAdapter $disk */

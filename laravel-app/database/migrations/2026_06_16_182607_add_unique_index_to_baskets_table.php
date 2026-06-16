@@ -11,18 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('exports', function (Blueprint $table) {
-            $table->unsignedBigInteger('size')->nullable();
+        Schema::table('baskets', function (Blueprint $table) {
+            $table->unique(['user_id', 'product_id', 'services_key'], 'baskets_user_product_services_unique');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::table('exports', function (Blueprint $table) {
-            $table->dropColumn('size');
+        Schema::table('baskets', function (Blueprint $table) {
+            $table->dropUnique('baskets_user_product_services_unique');
         });
     }
 };

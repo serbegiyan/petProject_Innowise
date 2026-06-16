@@ -34,6 +34,14 @@ class Product extends Model
 
     protected $appends = ['image_url'];
 
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => (int) $this->id,
+            'name' => $this->name,
+        ];
+    }
+
     protected function casts(): array
     {
         return [
@@ -44,9 +52,18 @@ class Product extends Model
 
     // Фильтрация
 
-    public function scopeSearch(Builder $query, ?string $search): Builder
+    public function scopeSearch(Builder $query, ?string $search = null): Builder
     {
-        return $query->when($search, fn ($q) => $q->where('name', 'like', "%{$search}%"));
+        if (blank($search)) {
+            return $query;
+        }
+
+        $formattedSearch = collect(explode(' ', trim($search)))
+            ->filter()
+            ->map(fn ($word) => "{$word}*")
+            ->implode(' ');
+
+        return $query->whereFullText('name', $formattedSearch, ['mode' => 'boolean']);
     }
 
     public function scopeByCategory(Builder $query, ?int $categoryId): Builder

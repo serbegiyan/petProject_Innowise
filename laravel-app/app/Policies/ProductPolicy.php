@@ -9,6 +9,10 @@ class ProductPolicy
 {
     public function before(User $user, string $ability): ?bool
     {
+        if ($ability === 'forceDelete') {
+            return null;
+        }
+
         return $user->isAdmin() ? true : null;
     }
 
@@ -33,6 +37,11 @@ class ProductPolicy
     }
 
     public function delete(User $user, Product $product): bool
+    {
+        return false;
+    }
+
+    public function forceDelete(User $user, Product $product): bool
     {
         return false;
     }

@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\ExchangeRate;
-use App\Services\StatsService;
+use App\Services\CurrencyService;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -18,15 +18,15 @@ class HandleInertiaRequests extends Middleware
 
     public function share(Request $request): array
     {
-        $statsService = app(StatsService::class);
+        $currencyService = app(CurrencyService::class);
 
         return [
             ...parent::share($request),
             'auth' => [
                 'user' => fn () => $this->getSharedUser($request),
-                'currency' => fn () => $this->currencyDto($statsService->getCurrentCurrency()),
+                'currency' => fn () => $this->currencyDto($currencyService->getCurrentCurrency()),
             ],
-            'currencies' => fn () => $statsService->getAllCurrencies()
+            'currencies' => fn () => $currencyService->all()
                 ->map(fn (ExchangeRate $rate) => $rate->toCurrencyDto())
                 ->values()
                 ->all(),

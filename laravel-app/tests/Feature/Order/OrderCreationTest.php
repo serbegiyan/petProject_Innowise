@@ -2,7 +2,9 @@
 
 namespace Tests\Feature\Order;
 
+use App\Models\Basket;
 use App\Models\ExchangeRate;
+use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\Service;
@@ -16,17 +18,13 @@ class OrderCreationTest extends TestCase
 
     public function test_a_user_can_create_order_with_comment()
     {
-        // 1. Подготовка данных
         $user = User::factory()->create();
         $product = Product::factory()->create(['price' => 100]);
-        // Создаем валюту, так как она нужна для глобального Share
         ExchangeRate::factory()->create(['id' => 1]);
 
-        // Имитируем товар в корзине (BasketService берет данные отсюда)
-        $user->baskets()->create([
+        Basket::factory()->create([
+            'user_id' => $user->id,
             'product_id' => $product->id,
-            'quantity' => 1,
-            'services' => [],
         ]);
 
         $orderData = [
@@ -38,10 +36,8 @@ class OrderCreationTest extends TestCase
             'comment' => 'Позвоните мне за час до доставки', // Тот самый комментарий
         ];
 
-        // 2. Действие
         $response = $this->actingAs($user)->post(route('order.store'), $orderData);
 
-        // 3. Проверки
         $response->assertRedirect(route('dashboard'));
         $this->assertDatabaseHas('orders', [
             'customer_name' => 'Ivan Ivanov',
@@ -60,7 +56,8 @@ class OrderCreationTest extends TestCase
         $service = Service::factory()->create();
         $product->services()->attach($service->id, ['price' => 50, 'term' => '7 days']);
 
-        $user->baskets()->create([
+        Basket::factory()->create([
+            'user_id' => $user->id,
             'product_id' => $product->id,
             'quantity' => 2,
             'services' => [$service->id],
@@ -81,10 +78,29 @@ class OrderCreationTest extends TestCase
             'total_price' => '300.00',
         ]);
 
-        $orderItem = OrderItem::first();
+        $order = Order::where('user_id', $user->id)->first();
+
+        $this->assertDatabaseHas('order_items', [
+            'order_id' => $order->id,
+            'product_id' => $product->id,
+            'product_name' => $product->name,
+            'quantity' => 2,
+            'price' => '150.00',
+        ]);
+
+        $orderItem = OrderItem::where('order_id', $order->id)->first();
+
         $this->assertSame('150.00', $orderItem->price);
         $this->assertEquals(2, $orderItem->quantity);
-        $this->assertSame('50.00', $orderItem->services[0]['price']);
+
+        $savedServices = is_string($orderItem->services)
+            ? json_decode($orderItem->services, true)
+            : $orderItem->services;
+
+        $this->assertCount(1, $savedServices);
+        $this->assertEquals($service->id, $savedServices[0]['id']);
+        $this->assertEquals($service->name, $savedServices[0]['name']);
+        $this->assertEquals('50.00', $savedServices[0]['price']);
     }
 
     public function test_it_rejects_order_when_basket_is_empty(): void

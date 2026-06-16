@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('exports', function (Blueprint $table) {
-            $table->unsignedBigInteger('size')->nullable();
+        Schema::table('products', function (Blueprint $table) {
+            $table->fullText('name');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('exports', function (Blueprint $table) {
-            $table->dropColumn('size');
+        Schema::table('products', function (Blueprint $table) {
+            $table->dropFullText('name');
         });
     }
 };

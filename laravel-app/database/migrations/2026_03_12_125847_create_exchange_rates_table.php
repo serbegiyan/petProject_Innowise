@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('exchange_rates', function (Blueprint $table) {
             $table->id();
             $table->string('name', 3)->unique();
-            $table->integer('scale');
+            $table->integer('scale')->unsigned();
             $table->decimal('rate', 10, 4);
             $table->timestamps();
         });

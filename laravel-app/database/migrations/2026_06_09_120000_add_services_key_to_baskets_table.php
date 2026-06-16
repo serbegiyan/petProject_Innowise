@@ -25,8 +25,18 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('baskets', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+            $table->dropForeign(['product_id']);
+        });
+
+        Schema::table('baskets', function (Blueprint $table) {
             $table->dropUnique(['user_id', 'product_id', 'services_key']);
             $table->dropColumn('services_key');
+        });
+
+        Schema::table('baskets', function (Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreign('product_id')->references('id')->on('products')->cascadeOnDelete();
         });
     }
 };

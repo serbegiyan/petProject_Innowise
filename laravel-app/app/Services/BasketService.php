@@ -109,12 +109,6 @@ class BasketService
 
     public function updateQuantity(int $itemId, int $quantity): void
     {
-        if ($quantity < 1) {
-            $this->removeItem($itemId);
-
-            return;
-        }
-
         Basket::where('id', $itemId)
             ->where('user_id', $this->userId)
             ->update(['quantity' => $quantity]);
