@@ -14,10 +14,15 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Throwable;
 
 class ExportCatalogJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    public int $tries = 3;
+
+    public int $timeout = 300;
 
     public function __construct(protected int $exportId) {}
 
@@ -31,13 +36,18 @@ class ExportCatalogJob implements ShouldQueue
             return;
         }
 
-        if (! $export->file_path) {
-            Log::error("Export ID {$this->exportId} has no file_path");
+        $recipient = config('mail.catalog_export_recipient');
+        if (empty($recipient) || ! filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
+            $this->markAsFailed(
+                $export,
+                "Некорректный или пустой получатель экспорта в конфиге: '".($recipient ?? 'null')."'"
+            );
 
-            $export->update([
-                'status' => ExportStatus::FAILED,
-                'error_message' => 'Не задан путь для сохранения файла.',
-            ]);
+            return;
+        }
+
+        if (! $export->file_path) {
+            $this->markAsFailed($export, 'Не задан путь для сохранения файла.');
 
             return;
         }
@@ -45,8 +55,9 @@ class ExportCatalogJob implements ShouldQueue
         try {
             $export->update(['status' => ExportStatus::PROCESSING]);
 
+            $handle = tmpfile();
+
             $csvHeader = ['ID', 'Name', 'Price', 'Brand'];
-            $handle = fopen('php://temp', 'r+');
             fputcsv($handle, $csvHeader);
 
             Product::query()
@@ -64,24 +75,40 @@ class ExportCatalogJob implements ShouldQueue
                 });
 
             rewind($handle);
+
             Storage::disk('s3')->writeStream($export->file_path, $handle);
             fclose($handle);
+
+            Mail::to($recipient)
+                ->send(new CatalogExported($export->file_path));
 
             $export->update([
                 'status' => ExportStatus::COMPLETED,
             ]);
 
-            Mail::to(config('mail.catalog_export_recipient'))
-                ->send(new CatalogExported($export->file_path));
-
             Log::info("Export ID {$this->exportId} completed successfully.");
 
-        } catch (\Exception $e) {
-            $export->update([
-                'status' => ExportStatus::FAILED,
-                'error_message' => $e->getMessage(),
-            ]);
-            Log::error("Export ID {$this->exportId} failed: ".$e->getMessage());
+        } catch (Throwable $e) {
+            $this->markAsFailed($export, $e->getMessage());
+            throw $e;
         }
+    }
+
+    public function failed(Throwable $exception): void
+    {
+        $export = Export::find($this->exportId);
+        if ($export) {
+            $this->markAsFailed($export, $exception->getMessage());
+        }
+    }
+
+    protected function markAsFailed(Export $export, string $message): void
+    {
+        $export->update([
+            'status' => ExportStatus::FAILED,
+            'error_message' => mb_substr($message, 0, 255),
+        ]);
+
+        Log::error("Export ID {$export->id} failed: ".$message);
     }
 }

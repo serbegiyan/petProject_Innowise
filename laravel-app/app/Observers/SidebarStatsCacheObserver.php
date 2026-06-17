@@ -19,6 +19,11 @@ class SidebarStatsCacheObserver
         $this->forgetCaches($model);
     }
 
+    public function updated(object $model): void
+    {
+        $this->forgetCaches($model);
+    }
+
     public function deleted(object $model): void
     {
         $this->forgetCaches($model);

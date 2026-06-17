@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services;
+namespace Tests\Feature\Services;
 
 use App\Models\ExchangeRate;
 use App\Services\CurrencyService;
@@ -12,8 +12,7 @@ class CurrencyServiceTest extends TestCase
 {
     use RefreshDatabase;
 
-    #[Test]
-    public function it_converts_byn_amount_using_unit_rate(): void
+    public function test_it_converts_byn_amount_using_unit_rate(): void
     {
         ExchangeRate::factory()->byn()->create(['id' => 1]);
         ExchangeRate::factory()->create(['id' => 2, 'name' => 'USD', 'rate' => 3.0, 'scale' => 1]);
@@ -44,8 +43,7 @@ class CurrencyServiceTest extends TestCase
         $this->assertSame(2652.52, $service->convertAmount(100));
     }
 
-    #[Test]
-    public function it_returns_byn_formatted_amount_when_byn_selected(): void
+    public function test_it_returns_byn_formatted_amount_when_byn_selected(): void
     {
         ExchangeRate::factory()->byn()->create(['id' => 1]);
         ExchangeRate::factory()->create(['id' => 2, 'name' => 'USD', 'rate' => 3.0, 'scale' => 1]);
