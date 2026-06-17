@@ -8,30 +8,31 @@
     <form method="POST" action="{{ route('user.store') }}" class="flex flex-col gap-3">
         @csrf
         <x-label for="name">Имя пользователя</x-label>
-        <x-input placeholder="Введите имя пользователя" name="name" type="text" />
+        <x-input id="name" placeholder="Введите имя пользователя" name="name" type="text" autocomplete="off" />
         @error('name')
             <span class="text-red-500 text-sm italic">{{ $message }}</span>
         @enderror
 
         <x-label for="role">Выберите роль пользователя</x-label>
-        <x-select name="role" :options="$roles" :selected="old('role')">
+        <x-select id="role" name="role" :options="$roles" :selected="old('role')">
             Выберите роль...
         </x-select>
 
         <x-label for="email">Email</x-label>
-        <x-input placeholder="Email" name="email" type="email" />
+        <x-input id="email" placeholder="Email" name="email" type="email" autocomplete="off" />
         @error('email')
             <span class="text-red-500 text-sm italic">{{ $message }}</span>
         @enderror
 
         <x-label for="password">Пароль</x-label>
-        <x-input placeholder="Введите пароль" name="password" type="password" />
+        <x-input id="password" placeholder="Введите пароль" name="password" type="password" />
         @error('password')
             <span class="text-red-500 text-sm italic">{{ $message }}</span>
         @enderror
 
         <x-label for="password_confirmation">Подтверждение пароля</x-label>
-        <x-input placeholder="Введите подтверждение пароля" name="password_confirmation" type="password" />
+        <x-input id="password_confirmation" placeholder="Введите подтверждение пароля" name="password_confirmation"
+            type="password" />
         @error('password_confirmation')
             <span class="text-red-500 text-sm italic">{{ $message }}</span>
         @enderror

@@ -84,6 +84,7 @@ export default function Index({ products, filters, categories, sortOptions = [] 
                         value={selectedCurrency?.id}
                         onChange={(e) => setCurrency(e.target.value)}
                         className="w-24 bg-cyan-200 h-10 border rounded-lg"
+                        aria-label="Выбор валюты"
                     >
                         {currencies.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                     </select>
@@ -97,6 +98,7 @@ export default function Index({ products, filters, categories, sortOptions = [] 
                     name="category"
                     value={String(values.category || '')}
                     onChange={handleChange}
+                    aria-label="Выбор категории"
                 >
                     <option value="">Все категории</option>
                     {categories.map(cat => (
@@ -135,6 +137,7 @@ export default function Index({ products, filters, categories, sortOptions = [] 
                     name="sort"
                     value={String(values.sort || '')}
                     onChange={handleChange}
+                    aria-label="Выбор сортировки"
                 >
                     {sortOptions.map(option => (
                         <option key={option.value} value={option.value}>

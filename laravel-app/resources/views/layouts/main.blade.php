@@ -28,8 +28,8 @@
         <img src="/images/logo.jpg" className="w-10 rounded-full" />
         <div class=" p-4 ">Вы вошли как {{ auth()->user()->name }}</div>
         <x-search class="" />
-        <x-select class="bg-stone-300 w-max pl-5 pr-8 h-min my-auto rounded" name="rates" :options="$rates"
-            onchange="changeCurrency(this.value)" :selected="session('currency_id')">
+        <x-select aria-label="Выбор валюты" class="bg-stone-300 w-max pl-5 pr-8 h-min my-auto rounded" name="rates"
+            :options="$rates" onchange="changeCurrency(this.value)" :selected="session('currency_id')">
             Выберите валюту
         </x-select>
         @if (Route::has('login'))

@@ -10,13 +10,14 @@
         @csrf
         @method('PATCH')
         <x-label for="name">Название услуги</x-label>
-        <x-input placeholder="Введите название услуги" name="name" type="text" value="{{ $service->name }}" />
+        <x-input id="name" placeholder="Введите название услуги" name="name" type="text" value="{{ $service->name }}"
+            autocomplete="off" />
         @error('name')
             <span class="text-red-500 text-sm italic">{{ $message }}</span>
         @enderror
 
         <x-label for="description">Описание услуги</x-label>
-        <x-textarea placeholder="Введите описание услуги" name="description"
+        <x-textarea id="description" placeholder="Введите описание услуги" name="description"
             type="text">{{ old('description', $service->description) }}</x-textarea>
         <x-button-success>Сохранить</x-button-success>
     </form>

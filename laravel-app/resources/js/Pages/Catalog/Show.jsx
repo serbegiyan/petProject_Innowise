@@ -73,6 +73,7 @@ export default function Show({ product, preSelectedIds, edit_cart_id, filters, c
                         value={selectedCurrency?.id}
                         onChange={(e) => setCurrency(e.target.value)}
                         className="w-24 bg-cyan-200 h-10 border rounded-lg"
+                        aria-label="Выбор валюты"
                     >
                         {currencies.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                     </select>

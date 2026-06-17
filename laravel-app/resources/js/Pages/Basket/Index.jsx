@@ -1,6 +1,5 @@
 import Header from "@/Components/Header";
 import { Head } from '@inertiajs/react';
-import NavBar from "@/Components/NavBar";
 import { router } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
 import FlashMessage from '@/Components/FlashMessage';
@@ -35,6 +34,7 @@ export default function Index({ items }) {
                         value={selectedCurrency?.id}
                         onChange={(e) => setCurrency(e.target.value)}
                         className="w-24 bg-cyan-200 h-10 border rounded-lg"
+                        aria-label="Выбор валюты"
                     >
                         {currencies.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                     </select>
@@ -81,10 +81,20 @@ export default function Index({ items }) {
                                     <div className="flex flex-col items-center justify-center gap-3">
                                         <div className="flex flex-row items-center gap-4 mt-2">
                                             <button
-                                                onClick={() => router.post(route('basket.update', item.cart_id), {
-                                                    _method: 'patch',
-                                                    quantity: item.quantity - 1
-                                                }, { preserveScroll: true })}
+                                                onClick={() =>
+                                                    router.post(route('basket.update', item.cart_id),
+                                                        {
+                                                            _method: 'patch',
+                                                            quantity: item.quantity - 1
+                                                        },
+                                                        {
+                                                            preserveScroll: true,
+                                                            onError: (errors) => {
+                                                                const errorMessage = errors.quantity || errors.message || 'Ошибка при обновлении количества товара.';
+                                                                alert(errorMessage);
+                                                            }
+                                                        })
+                                                }
                                                 disabled={item.quantity <= 1}
                                                 className="border border-gray-200 rounded px-2 py-1"
                                             >

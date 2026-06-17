@@ -8,7 +8,7 @@
     <form method="POST" action="{{ route('category.store') }}" class="flex flex-col gap-3">
         @csrf
         <x-label for="name">Категория</x-label>
-        <x-input placeholder="Введите название категории" name="name" type="text" />
+        <x-input id="name" placeholder="Введите название категории" name="name" type="text" autocomplete="off" />
         @error('name')
             <span class="text-red-500 text-sm italic">Введите название категории</span>
         @enderror

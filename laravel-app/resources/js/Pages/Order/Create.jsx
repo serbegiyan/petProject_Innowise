@@ -30,6 +30,7 @@ export default function Create({ items, totalAmount }) {
                         value={selectedCurrency?.id}
                         onChange={(e) => setCurrency(e.target.value)}
                         className="w-24 bg-cyan-200 h-10 border rounded-lg"
+                        aria-label="Выбор валюты"
                     >
                         {currencies.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                     </select>
@@ -126,6 +127,7 @@ export default function Create({ items, totalAmount }) {
                     <textarea
                         className="w-full border rounded-lg p-2"
                         rows="2"
+                        value={data.comment}
                         onChange={e => setData('comment', e.target.value)}
                         placeholder="Комментарий"></textarea>
                 </form>
@@ -139,7 +141,7 @@ export default function Create({ items, totalAmount }) {
                         {!isByn && (
                             <span className="text-2xl text-gray-600">({convert(totalAmount)})</span>)}
                     </p>
-                    <p className="text-gray-700 text-sm">* Оплата производится в белорусских рублях по крусу НБРБ</p>
+                    <p className="text-gray-700 text-sm">* Оплата производится в белорусских рублях по курсу НБРБ</p>
                 </div>
                 <button
                     type="submit"

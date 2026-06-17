@@ -7,6 +7,11 @@ services:
       - "127.0.0.1:6379:6379"
     volumes:
       - redis_data:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
   localstack:
     image: localstack/localstack:3.0.2
@@ -19,6 +24,11 @@ services:
     volumes:
       - ./.localstack_data:/var/lib/localstack
       - ./init-s3.sh:/etc/localstack/init/ready.d/init-s3.sh
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://127.0.0.1:4566/_localstack/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -26,6 +36,11 @@ services:
     ports:
       - "127.0.0.1:5672:5672"
       - "127.0.0.1:15672:15672"
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "-q", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   mysql_db:
     image: mysql:8.0
@@ -40,6 +55,12 @@ services:
       - "127.0.0.1:3306:3306"
     volumes:
       - mysql_db_petProject:/var/lib/mysql
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   php:
     build:
@@ -52,10 +73,14 @@ services:
     volumes:
       - ./laravel-app:/var/www/html
     depends_on:
-      - mysql_db
-      - rabbitmq
-      - localstack
-      - redis
+      mysql_db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      localstack:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   worker:
     build:
@@ -68,11 +93,14 @@ services:
     user: laravel
     volumes:
       - ./laravel-app:/var/www/html
-    depends_on:
-      - php
-      - rabbitmq
-      - redis
     command: php artisan queue:work --verbose --tries=3
+    depends_on:
+      php:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   nginx:
     image: nginx:latest

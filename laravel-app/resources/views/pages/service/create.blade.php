@@ -8,14 +8,13 @@
     <form method="POST" action="{{ route('service.store') }}" class="flex flex-col gap-3">
         @csrf
         <x-label for="name">Название услуги</x-label>
-        <x-input placeholder="Введите название услуги" name="name" type="text" />
+        <x-input id="name" placeholder="Введите название услуги" name="name" type="text" autocomplete="off" />
         @error('name')
             <span class="text-red-500 text-sm italic">{{ $message }}</span>
         @enderror
 
         <x-label for="description">Описание услуги</x-label>
-        <x-textarea placeholder="Введите описание услуги" name="description" type="text" />
-
+        <x-textarea id="description" placeholder="Введите описание услуги" name="description" type="text" />
 
         <x-button-success>Сохранить</x-button-success>
     </form>

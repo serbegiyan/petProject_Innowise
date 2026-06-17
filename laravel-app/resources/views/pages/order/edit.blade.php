@@ -14,23 +14,23 @@
                 <h3 class="p-2 font-bold text-center text-lg">Данные покупателя</h3>
 
                 <x-label class="mt-3 " for="customer_name">Имя покупателя</x-label>
-                <x-input placeholder="Имя покупателя" name="customer_name" type="text"
+                <x-input id="customer_name" placeholder="Имя покупателя" name="customer_name" type="text"
                     value="{{ old('customer_name', $order->customer_name) }}" />
 
                 <x-label class="mt-3 " for="customer_phone">Телефон покупателя</x-label>
-                <x-input placeholder="Телефон покупателя" name="customer_phone" type="text"
+                <x-input id="customer_phone" placeholder="Телефон покупателя" name="customer_phone" type="text"
                     value="{{ old('customer_phone', $order->customer_phone) }}" />
 
                 <x-label class="mt-3 " for="customer_email">Email покупателя</x-label>
-                <x-input placeholder="Email покупателя" name="customer_email" type="text"
+                <x-input id="customer_email" placeholder="Email покупателя" name="customer_email" type="text"
                     value="{{ old('customer_email', $order->customer_email) }}" />
 
                 <x-label class="mt-3 " for="customer_address">Адрес доставки</x-label>
-                <x-input placeholder="Адрес доставки" name="customer_address" type="text"
+                <x-input id="customer_address" placeholder="Адрес доставки" name="customer_address" type="text"
                     value="{{ old('customer_address', $order->customer_address) }}" />
 
                 <x-label class="mt-3 " for="comment">Комментарий</x-label>
-                <x-textarea placeholder="Комментарий" name="comment" type="text">
+                <x-textarea id="comment" placeholder="Комментарий" name="comment" type="text">
                     {{ old('comment', $order->comment) }}
                 </x-textarea>
             </div>
@@ -39,20 +39,20 @@
                 <h3 class="p-2 font-bold text-center text-lg">Детали заказа</h3>
 
                 <x-label class="mt-3 " for="id">Номер заказа</x-label>
-                <x-input readonly placeholder="Номер заказа" name="id" type="text"
+                <x-input id="id" readonly placeholder="Номер заказа" name="id" type="text"
                     value="{{ old('id', $order->id) }}" />
 
 
                 <x-label class="mt-3 " for="created_at">Дата заказа</x-label>
-                <x-input readonly placeholder="Дата заказа" name="created_at" type="text"
+                <x-input id="created_at" readonly placeholder="Дата заказа" name="created_at" type="text"
                     value="{{ old('created_at', $order->created_at) }}" />
 
                 <x-label class="mt-3 " for="total_price">Общая сумма заказа</x-label>
-                <x-input readonly
+                <x-input readonly id="total_price"
                     value="{{ old('total_price', Number::format($order->total_price, precision: 2, locale: 'ru')) }} BYN" />
 
                 <x-label class="mt-3 " for="status">Статус заказа</x-label>
-                <x-select name="status" :options="\App\Models\Order::getStatusOptions()" :selected="old('status', $order->status->value ?? $order->status)" />
+                <x-select id="status" name="status" :options="\App\Models\Order::getStatusOptions()" :selected="old('status', $order->status->value ?? $order->status)" />
 
             </div>
         </div>
@@ -63,8 +63,9 @@
         @foreach ($order->items as $item)
             <li class="list-decimal list-inside even:bg-stone-200 p-2">
                 <span class="p-2"><span class="font-bold">Название продукта:</span> {{ $item->product_name }}</span>
-                <p class="p-2"><span class="font-bold">Цена товара:</span><strong>
-                        {{ Number::format($item->price, precision: 2, locale: 'ru') }} BYN</p></strong>
+                <p class="p-2 font-bold">
+                    Цена товара: {{ Number::format($item->price, precision: 2, locale: 'ru') }} BYN
+                </p>
                 @if (!empty($item->services) && count($item->services) > 0)
                     <div>
                         <p class="px-2 font-bold">Выбранные услуги:</p>
@@ -73,8 +74,8 @@
                                 <li class="p-2 pl-5 list-disc list-inside">
                                     {{ $service['name'] }} —
                                     <strong>{{ Number::format($service['price'], precision: 2, locale: 'ru') }}
-                                        BYN</strong>
-
+                                        BYN
+                                    </strong>
                                 </li>
                             @endforeach
                         </ul>

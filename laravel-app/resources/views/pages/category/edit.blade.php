@@ -10,7 +10,8 @@
         @csrf
         @method('PATCH')
         <x-label for="name">Категория</x-label>
-        <x-input placeholder="Введите название категории" name="name" type="text" value="{{ $category->name }}" />
+        <x-input id="name" placeholder="Введите название категории" name="name" type="text"
+            value="{{ $category->name }}" autocomplete="off" />
         @error('name')
             <span class="text-red-500 text-sm italic">Введите название категории</span>
         @enderror

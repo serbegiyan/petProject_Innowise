@@ -9,6 +9,7 @@ export default function Search({ onSubmit, onChange, value, ...props }) {
                     value={value || ''}
                     {...props}
                     placeholder="Поиск"
+                    aria-label="Поиск по каталогу товаров"
                 />
                 <button className="-ml-14 w-fit px-4 rounded" type="submit">
                     <i className="fa-solid fa-magnifying-glass"></i>
