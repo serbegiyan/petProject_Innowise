@@ -120,8 +120,7 @@ pipeline {
                     sh '''
                         set -e
                         docker exec ${PHP_CONTAINER} mkdir -p tests/_reports
-                        docker exec ${PHP_CONTAINER} composer test -- \
-                            --log-junit tests/_reports/junit.xml
+                        docker exec ${PHP_CONTAINER} composer test:ci
 
                         mkdir -p "${WORKSPACE}/ci-reports"
                         docker cp \
