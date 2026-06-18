@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ProductSort;
+use Database\Factories\ProductFactory;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -19,13 +20,17 @@ use Spatie\Sluggable\SlugOptions;
 
 /**
  * @property-read string $image_url
+ * @property int $id
+ * @property string $name
  * @property Carbon|null $release_date
  * @property-read Collection<int, Category> $categories
  * @property-read Collection<int, Service> $services
  */
 class Product extends Model
 {
+    /** @use HasFactory<ProductFactory> */
     use HasFactory;
+
     use HasSlug;
     use SoftDeletes;
 

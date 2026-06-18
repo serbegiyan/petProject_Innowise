@@ -6,6 +6,7 @@ use App\Enums\ExportStatus;
 use App\Models\Export;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/** @extends Factory<Export> */
 class ExportFactory extends Factory
 {
     protected $model = Export::class;

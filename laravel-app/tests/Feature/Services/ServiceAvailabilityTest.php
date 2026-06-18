@@ -4,7 +4,6 @@ namespace Tests\Feature\Services;
 
 use App\Services\CurrencyService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
@@ -20,8 +19,7 @@ class ServiceAvailabilityTest extends TestCase
         $service = app(CurrencyService::class);
         $rates = $service->getCachedRates();
 
-        $this->assertInstanceOf(Collection::class, $rates);
-        $this->assertTrue($rates->isEmpty());
+        $this->assertCount(0, $rates);
     }
 
     public function test_it_does_not_crash_app_initialization_without_database()

@@ -3,11 +3,18 @@
 namespace App\Models;
 
 use App\Enums\ExportStatus;
+use Database\Factories\ExportFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int $id
+ * @property string|null $file_name
+ * @property string|null $file_path
+ */
 class Export extends Model
 {
+    /** @use HasFactory<ExportFactory> */
     use HasFactory;
 
     protected $fillable = ['file_name', 'file_path', 'status', 'error_message', 'size'];

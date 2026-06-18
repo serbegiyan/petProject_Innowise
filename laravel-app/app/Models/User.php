@@ -4,7 +4,8 @@ namespace App\Models;
 
 use App\Enums\UserRole;
 use Database\Factories\UserFactory;
-use Illuminate\Auth\MustVerifyEmail;
+use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -23,12 +24,12 @@ use Illuminate\Notifications\Notifiable;
  * @method HasMany<Basket, $this> baskets()
  * @method HasMany<Order, $this> orders()
  */
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory;
 
-    use MustVerifyEmail;
+    use MustVerifyEmailTrait;
     use Notifiable;
     use SoftDeletes;
 

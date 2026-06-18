@@ -93,9 +93,7 @@ class OrderCreationTest extends TestCase
         $this->assertSame('150.00', $orderItem->price);
         $this->assertEquals(2, $orderItem->quantity);
 
-        $savedServices = is_string($orderItem->services)
-            ? json_decode($orderItem->services, true)
-            : $orderItem->services;
+        $savedServices = $orderItem->services;
 
         $this->assertCount(1, $savedServices);
         $this->assertEquals($service->id, $savedServices[0]['id']);

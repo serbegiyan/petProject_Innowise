@@ -3,13 +3,17 @@
 namespace Database\Factories;
 
 use App\Models\Category;
+use App\Models\Product;
 use App\Models\Service;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
+/** @extends Factory<Product> */
 class ProductFactory extends Factory
 {
-    public function definition()
+    protected $model = Product::class;
+
+    public function definition(): array
     {
         $name = $this->faker->words(2, true);
 
@@ -24,12 +28,12 @@ class ProductFactory extends Factory
         ];
     }
 
-    public function withCategories(int $count = 1)
+    public function withCategories(int $count = 1): static
     {
         return $this->hasAttached(Category::factory()->count($count));
     }
 
-    public function withServices(int $count = 1)
+    public function withServices(int $count = 1): static
     {
         return $this->hasAttached(Service::factory()->count($count), [
             'price' => $this->faker->numberBetween(10, 200),

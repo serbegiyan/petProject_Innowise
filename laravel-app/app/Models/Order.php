@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\OrderStatus;
+use Database\Factories\OrderFactory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
+ * @property int $id
  * @property OrderStatus $status
  * @property string $total_price
  * @property string $customer_name
@@ -20,6 +22,7 @@ use Illuminate\Support\Carbon;
  */
 class Order extends Model
 {
+    /** @use HasFactory<OrderFactory> */
     use HasFactory, SoftDeletes;
 
     protected $fillable = [

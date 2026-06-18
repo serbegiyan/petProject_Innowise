@@ -2,10 +2,14 @@
 
 namespace Database\Factories;
 
+use App\Models\ExchangeRate;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/** @extends Factory<ExchangeRate> */
 class ExchangeRateFactory extends Factory
 {
+    protected $model = ExchangeRate::class;
+
     public function definition(): array
     {
         return [
@@ -15,7 +19,7 @@ class ExchangeRateFactory extends Factory
         ];
     }
 
-    public function byn(): self
+    public function byn(): static
     {
         return $this->state(fn () => [
             'name' => 'BYN',

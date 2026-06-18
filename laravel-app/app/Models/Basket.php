@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\BasketFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Basket extends Model
 {
+    /** @use HasFactory<BasketFactory> */
     use HasFactory;
 
     protected $table = 'baskets';

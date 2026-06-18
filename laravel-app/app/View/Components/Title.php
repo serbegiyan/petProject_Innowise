@@ -21,6 +21,9 @@ class Title extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.title');
+        /** @var view-string $view */
+        $view = 'components.title';
+
+        return view($view);
     }
 }
