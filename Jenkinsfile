@@ -82,6 +82,7 @@ pipeline {
                             --prefer-dist \
                             --no-progress
                         docker exec ${PHP_CONTAINER} php artisan config:clear --ansi
+                        docker exec ${PHP_CONTAINER} php artisan route:clear --ansi
                     '''
                 }
             }

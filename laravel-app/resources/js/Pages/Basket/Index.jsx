@@ -2,7 +2,6 @@ import Header from "@/Components/Header";
 import { Head } from '@inertiajs/react';
 import { router } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
-import FlashMessage from '@/Components/FlashMessage';
 import { useMemo, useState } from 'react';
 import { useCurrency } from '@/Hooks/useCurrency';
 
@@ -60,8 +59,6 @@ export default function Index({ items }) {
                     </select>
                 }
             />
-            <FlashMessage />
-
             {items.length > 0 ?
                 <>
                     <h2 className="font-bold text-2xl text-center p-3">Ваши товары</h2>

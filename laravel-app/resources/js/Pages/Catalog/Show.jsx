@@ -2,7 +2,6 @@ import { Head } from '@inertiajs/react';
 import Header from '@/Components/Header';
 import { useState, useMemo } from 'react';
 import { router } from '@inertiajs/react';
-import FlashMessage from '@/Components/FlashMessage';
 import { usePage, Link, } from '@inertiajs/react';
 import { useCurrency } from '@/Hooks/useCurrency';
 
@@ -79,7 +78,6 @@ export default function Show({ product, preSelectedIds, edit_cart_id, filters, c
                     </select>
                 } />
 
-            <FlashMessage />
             <h1 className='text-2xl text-center font-bold my-3'>{product.name}</h1>
             <div className='flex flex-row justify-between mx-5'>
                 <img src={product.image_url} alt={product.name} className='w-1/3 border' />

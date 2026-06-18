@@ -3,7 +3,6 @@
 @section('title', 'Экспорты')
 
 @section('content')
-    <x-flash />
     <h2 class="text-xl font-bold mb-4">Экспорты</h2>
     <form class="text-lg font-bold mb-4 text-blue-600 hover:text-blue-800" action="{{ route('export.run') }}" method="POST">
         @csrf

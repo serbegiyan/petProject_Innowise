@@ -1,3 +1,1 @@
 import './alert';
-import './app';
-

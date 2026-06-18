@@ -1,7 +1,5 @@
 import { Head } from '@inertiajs/react';
 import Header from '@/Components/Header';
-import NavBar from '@/Components/NavBar';
-import FlashMessage from '@/Components/FlashMessage';
 
 const servicePrice = (service) =>
     Number(service.price ?? service.pivot?.price ?? 0);
@@ -9,9 +7,8 @@ const servicePrice = (service) =>
 export default function Dashboard({ orders }) {
     return (
         <>
-            <Header><NavBar /></Header>
+            <Header />
             <Head title="Dashboard" />
-            <FlashMessage />
 
             {orders.length === 0 && <div className="py-12">
                 <p className='text-center font-bold mb-3'>Вы успешно вошли в систему!</p>

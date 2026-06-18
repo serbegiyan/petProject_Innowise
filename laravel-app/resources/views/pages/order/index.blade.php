@@ -3,7 +3,6 @@
 @section('title', 'Заказы')
 
 @section('content')
-    <x-flash />
     <h2 class="text-xl font-bold mb-4">Заказы</h2>
     <ul>
         <li class="flex flex-row font-bold p-2">

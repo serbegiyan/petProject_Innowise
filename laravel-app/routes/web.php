@@ -22,7 +22,7 @@ Route::post('/currency/change', [CurrencyController::class, 'change'])
     ->name('currency.change');
 
 Route::get('/dashboard', [OrderController::class, 'index'])
-    ->middleware(['auth', 'verified'])
+    ->middleware('auth')
     ->name('dashboard');
 
 Route::middleware('auth')->group(function (): void {

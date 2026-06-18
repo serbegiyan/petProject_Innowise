@@ -17,11 +17,9 @@ class EmailVerificationNotificationController extends Controller
         /** @var User $user */
         $user = $request->user();
 
-        if ($user->hasVerifiedEmail()) {
-            return redirect()->intended(route('dashboard', absolute: false));
+        if ($user->email_verified_at !== null) {
+            return redirect()->route('dashboard');
         }
-
-        $user->sendEmailVerificationNotification();
 
         return back()->with('status', 'verification-link-sent');
     }

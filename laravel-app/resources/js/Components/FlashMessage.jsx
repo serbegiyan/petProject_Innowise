@@ -1,5 +1,6 @@
 import { usePage } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
+import { FLASH_DISMISS_MS } from '@/shared/flashDismiss';
 
 export default function FlashMessage() {
     const { flash } = usePage().props;
@@ -8,7 +9,7 @@ export default function FlashMessage() {
     useEffect(() => {
         if (flash.success || flash.error) {
             setVisible(true);
-            const timer = setTimeout(() => setVisible(false), 2000);
+            const timer = setTimeout(() => setVisible(false), FLASH_DISMISS_MS);
             return () => clearTimeout(timer);
         }
     }, [flash]);

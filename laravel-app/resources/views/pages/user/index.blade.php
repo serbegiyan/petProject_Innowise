@@ -3,7 +3,6 @@
 @section('title', 'Пользователи')
 
 @section('content')
-    <x-flash />
     <h2 class="text-xl font-bold mb-4">Пользователи</h2>
     <x-title-link href="{{ route('user.create') }}">Создать нового пользователя</x-title-link>
     <ul>

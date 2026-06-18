@@ -8,17 +8,16 @@ use Illuminate\View\Component;
 
 class Search extends Component
 {
-    /**
-     * Create a new component instance.
-     */
-    public function __construct()
-    {
-        //
+    public function __construct(
+        public ?string $action = null,
+        public ?string $value = null,
+        public string $placeholder = 'Поиск',
+        public string $ariaLabel = 'Поиск по товарам',
+    ) {
+        $this->action ??= route('product.index');
+        $this->value ??= (string) request('search', '');
     }
 
-    /**
-     * Get the view / contents that represent the component.
-     */
     public function render(): View|Closure|string
     {
         return view('components.search');

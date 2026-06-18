@@ -3,7 +3,6 @@
 @section('title', 'Услуги')
 
 @section('content')
-    <x-flash />
     <h2 class="text-xl font-bold mb-4">Услуги</h2>
     <x-title-link href="{{ route('service.create') }}">Создать новую услугу</x-title-link>
     <ul>

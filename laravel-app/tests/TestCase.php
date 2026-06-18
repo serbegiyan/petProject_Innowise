@@ -18,10 +18,14 @@ abstract class TestCase extends BaseTestCase
 
     private function clearConfigCache(): void
     {
-        $cachedConfig = dirname(__DIR__).'/bootstrap/cache/config.php';
+        $cacheDir = dirname(__DIR__).'/bootstrap/cache';
 
-        if (is_file($cachedConfig)) {
-            unlink($cachedConfig);
+        foreach (['config.php', 'routes-v7.php'] as $file) {
+            $path = $cacheDir.'/'.$file;
+
+            if (is_file($path)) {
+                unlink($path);
+            }
         }
     }
 }

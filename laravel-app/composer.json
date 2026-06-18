@@ -64,10 +64,12 @@
         ],
         "test": [
             "@php artisan config:clear --ansi",
+            "@php artisan route:clear --ansi",
             "@php artisan test"
         ],
         "test:ci": [
             "@php artisan config:clear --ansi",
+            "@php artisan route:clear --ansi",
             "vendor/bin/phpunit --log-junit tests/_reports/junit.xml"
         ],
         "lint": [

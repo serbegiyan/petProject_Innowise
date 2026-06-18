@@ -1,5 +1,4 @@
 import Header from "@/Components/Header";
-import FlashMessage from '@/Components/FlashMessage';
 import TextInput from "@/Components/TextInput";
 import InputLabel from "@/Components/InputLabel";
 import { usePage, useForm, Link } from '@inertiajs/react';
@@ -36,7 +35,6 @@ export default function Create({ items, totalAmount }) {
                     </select>
                 }
             />
-            <FlashMessage />
             <div className="flex flex-row justify-items-end">
                 <h2 className="font-bold text-2xl mx-auto text-center p-3">Ваш заказ</h2>
                 <Link

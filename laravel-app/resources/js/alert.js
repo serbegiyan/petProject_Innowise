@@ -1,11 +1,5 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const alerts = document.querySelectorAll('.flash-message');
+import { dismissElement } from './shared/flashDismiss';
 
-    alerts.forEach(alert => {
-        setTimeout(() => {
-            alert.style.transition = "opacity 0.5s ease";
-            alert.style.opacity = "0";
-            setTimeout(() => alert.remove(), 500);
-        }, 2000);
-    });
-})
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.flash-message').forEach(dismissElement);
+});

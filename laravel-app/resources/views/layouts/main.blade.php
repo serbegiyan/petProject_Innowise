@@ -4,11 +4,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script>
-        window.routes = {
-            changeCurrency: "{{ route('currency.change') }}"
-        };
-    </script>
     @vite(['resources/css/app.css', 'resources/js/admin.js'])
     <title>@yield('title')</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -26,11 +21,15 @@
     <header class="w-full bg-stone-300 h-14.5 flex flex-row justify-between">
         <img src="/images/logo.jpg" class="w-10 rounded-full" />
         <div class=" p-4 ">Вы вошли как {{ auth()->user()->name }}</div>
-        <x-search class="" />
-        <x-select aria-label="Выбор валюты" class="bg-stone-300 w-max pl-5 pr-8 h-min my-auto rounded" name="rates"
-            :options="$rates" onchange="changeCurrency(this.value)" :selected="session('currency_id')">
-            Выберите валюту
-        </x-select>
+        <x-search />
+        @if (request()->routeIs('product.*'))
+            <form method="POST" action="{{ route('currency.change') }}">
+                @csrf
+                <x-select aria-label="Выбор валюты" class="bg-stone-300 w-max pl-5 pr-8 h-min mt-0.5 rounded"
+                    name="id" :options="$rates" :selected="session('currency_id')" onchange="this.form.submit()">
+                </x-select>
+            </form>
+        @endif
         @if (Route::has('login'))
             <nav class="flex items-center justify-end gap-4 mr-4">
                 @auth
@@ -152,6 +151,7 @@
             </ul>
         </div>
         <div class="w-5/6 p-4 bg-stone-100">
+            <x-flash />
             @yield('content')
         </div>
     </div>
