@@ -14,6 +14,7 @@ class Export extends Model
 
     protected $table = 'exports';
 
+    #[\Override]
     protected function casts(): array
     {
         return [

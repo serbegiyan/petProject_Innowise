@@ -27,6 +27,7 @@ class Category extends Model
         return SlugOptions::create()->generateSlugsFrom('name')->saveSlugsTo('slug')->doNotGenerateSlugsOnUpdate();
     }
 
+    #[\Override]
     public function getRouteKeyName()
     {
         return 'slug';

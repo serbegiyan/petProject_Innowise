@@ -12,6 +12,7 @@ class CategoryRequest extends AdminRequest
      *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
+    #[\Override]
     public function rules(): array
     {
         return [

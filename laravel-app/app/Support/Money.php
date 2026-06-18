@@ -4,7 +4,7 @@ namespace App\Support;
 
 final class Money
 {
-    private const SCALE = 2;
+    private const int SCALE = 2;
 
     public static function add(string|float|int ...$amounts): string
     {

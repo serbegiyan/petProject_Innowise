@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CategoryService
 {
-    private const NAV_CACHE_KEY = 'nav_categories';
+    private const string NAV_CACHE_KEY = 'nav_categories';
 
-    private const NAV_TTL = 600;
+    private const int NAV_TTL = 600;
 
     public function __construct(protected CacheRepository $cache) {}
 
@@ -21,7 +21,7 @@ class CategoryService
         return $this->cache->remember(self::NAV_CACHE_KEY, self::NAV_TTL, function () {
             try {
                 return Category::withCount('products')->get();
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 return collect();
             }
         });

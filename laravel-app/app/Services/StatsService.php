@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Log;
 
 class StatsService
 {
-    private const SIDEBAR_STATS_TTL = 600;
+    private const int SIDEBAR_STATS_TTL = 600;
 
-    private const SIDEBAR_STATS_DEFAULT = [
+    private const array SIDEBAR_STATS_DEFAULT = [
         'products_count' => 0,
         'categories_count' => 0,
         'services_count' => 0,

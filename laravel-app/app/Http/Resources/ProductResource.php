@@ -12,8 +12,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /** @mixin Product */
 class ProductResource extends JsonResource
 {
-    public static $wrap = null;
+    public static $wrap;
 
+    #[\Override]
     public function toArray(Request $request): array
     {
         /** @var Product $product */
@@ -34,27 +35,23 @@ class ProductResource extends JsonResource
 
             'release_date' => $product->release_date?->format('d.m.Y'),
 
-            'categories' => $this->whenLoaded('categories', function () use ($product) {
-                return $product->categories->map(fn (Category $cat) => [
-                    'id' => $cat->id,
-                    'name' => $cat->name,
-                ]);
-            }),
+            'categories' => $this->whenLoaded('categories', fn () => $product->categories->map(fn (Category $cat) => [
+                'id' => $cat->id,
+                'name' => $cat->name,
+            ])),
 
-            'services' => $this->whenLoaded('services', function () use ($product): array {
-                return $product->services
-                    ->map(fn (Service $service) => [
-                        'id' => $service->id,
-                        'name' => $service->name,
-                        'description' => $service->description,
-                        'pivot' => [
-                            'price' => $service->pivot->price,
-                            'term' => $service->pivot->term,
-                        ],
-                    ])
-                    ->values()
-                    ->all();
-            }),
+            'services' => $this->whenLoaded('services', fn (): array => $product->services
+                ->map(fn (Service $service) => [
+                    'id' => $service->id,
+                    'name' => $service->name,
+                    'description' => $service->description,
+                    'pivot' => [
+                        'price' => $service->pivot->price,
+                        'term' => $service->pivot->term,
+                    ],
+                ])
+                ->values()
+                ->all()),
         ];
     }
 }

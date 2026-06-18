@@ -3,11 +3,31 @@ import { Head } from '@inertiajs/react';
 import { router } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
 import FlashMessage from '@/Components/FlashMessage';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useCurrency } from '@/Hooks/useCurrency';
 
 export default function Index({ items }) {
     const { selectedCurrency, setCurrency, convert, currencies } = useCurrency();
+
+    const [errorsMap, setErrorsMap] = useState({});
+
+    const updateQuantity = (cart_id, newQuantity) => {
+        setErrorsMap(prev => ({ ...prev, [cart_id]: null }));
+
+        router.post(route('basket.update', cart_id),
+            {
+                _method: 'patch',
+                quantity: newQuantity
+            },
+            {
+                preserveScroll: true,
+                onError: (errors) => {
+                    const errorMessage = errors.quantity || errors.message || 'Ошибка при обновлении количества.';
+                    setErrorsMap(prev => ({ ...prev, [cart_id]: errorMessage }));
+                }
+            }
+        );
+    };
 
     const grandTotal = useMemo(() => {
         const total = items.reduce((sum, item) => {
@@ -47,9 +67,7 @@ export default function Index({ items }) {
                     <h2 className="font-bold text-2xl text-center p-3">Ваши товары</h2>
                     <ul className="list-decimal list-inside">
                         {items.map(item => {
-                            // Считаем сумму только услуг для этого товара
                             const servicesTotal = item.selected_services.reduce((sum, s) => sum + (parseFloat(s.pivot.price)), 0);
-                            // Считаем итог для всей строки (товар + услуги) * кол-во
                             const rowTotal = (parseFloat(item.product.price) + servicesTotal) * item.quantity;
 
                             return (
@@ -57,18 +75,18 @@ export default function Index({ items }) {
                                     <img src={item.product.image_url} alt={item.product.name} className="h-40 border" />
                                     <div className="ml-4 w-1/3">
                                         <p><span className="font-semibold">Название товара: </span>{item.product.name}</p>
-                                        <p><span className="font-semibold">Цена: </span>
-                                            {convert(item.product.price)}</p>
+                                        <p><span className="font-semibold">Цена: </span>{convert(item.product.price)}</p>
                                         <p><span className="font-semibold">Количество: </span>{item.quantity}</p>
 
-                                        {item.selected_services.length > 0
-                                            ?
-                                            <> <h3 className="font-bold p-1">Выбранные услуги</h3>
+                                        {item.selected_services.length > 0 ?
+                                            <>
+                                                <h3 className="font-bold p-1">Выбранные услуги</h3>
                                                 <ol className="pl-1 list-disc list-inside">
                                                     {item.selected_services.map(service => (
                                                         <li key={service.id}>
-                                                            <p className="inline"><span className="font-semibold">
-                                                                {service.name}</span> - {convert(service.pivot.price)}</p>
+                                                            <p className="inline">
+                                                                <span className="font-semibold">{service.name}</span> - {convert(service.pivot.price)}
+                                                            </p>
                                                         </li>
                                                     ))}
                                                 </ol>
@@ -76,27 +94,15 @@ export default function Index({ items }) {
                                             :
                                             <h3 className="font-bold p-1">Услуги не добавлены</h3>
                                         }
-
                                     </div>
+
                                     <div className="flex flex-col items-center justify-center gap-3">
+                                        {/* Блок с кнопками */}
                                         <div className="flex flex-row items-center gap-4 mt-2">
                                             <button
-                                                onClick={() =>
-                                                    router.post(route('basket.update', item.cart_id),
-                                                        {
-                                                            _method: 'patch',
-                                                            quantity: item.quantity - 1
-                                                        },
-                                                        {
-                                                            preserveScroll: true,
-                                                            onError: (errors) => {
-                                                                const errorMessage = errors.quantity || errors.message || 'Ошибка при обновлении количества товара.';
-                                                                alert(errorMessage);
-                                                            }
-                                                        })
-                                                }
+                                                onClick={() => updateQuantity(item.cart_id, item.quantity - 1)}
                                                 disabled={item.quantity <= 1}
-                                                className="border border-gray-200 rounded px-2 py-1"
+                                                className="border border-gray-200 rounded px-2 py-1 disabled:opacity-50"
                                             >
                                                 -
                                             </button>
@@ -104,10 +110,7 @@ export default function Index({ items }) {
                                             <span className="font-bold">{item.quantity}</span>
 
                                             <button
-                                                onClick={() => router.post(route('basket.update', item.cart_id), {
-                                                    _method: 'patch',
-                                                    quantity: item.quantity + 1
-                                                }, { preserveScroll: true })}
+                                                onClick={() => updateQuantity(item.cart_id, item.quantity + 1)}
                                                 className="border border-gray-200 rounded px-2 py-1"
                                             >
                                                 +
@@ -118,17 +121,24 @@ export default function Index({ items }) {
                                                 method="delete"
                                                 as="button"
                                                 preserveScroll
-                                                className="text-red-500 hover:text-red-700 text-sm font-medium"
+                                                className="text-red-500 hover:text-red-700 text-sm font-medium ml-2"
                                             >
                                                 <i className="text-lg fa-solid fa-trash-can"></i>
                                             </Link>
-
                                         </div>
-                                        <p className="mt-2 text-center"><span className="font-semibold">
-                                            Итого по позиции:</span> {convert(rowTotal)}
-                                        </p>
 
+                                        {/* ВЫВОД ОШИБКИ ИМЕННО ДЛЯ ЭТОГО ТОВАРА */}
+                                        {errorsMap[item.cart_id] && (
+                                            <div className="text-red-500 text-sm max-w-[200px] text-center">
+                                                {errorsMap[item.cart_id]}
+                                            </div>
+                                        )}
+
+                                        <p className="mt-2 text-center">
+                                            <span className="font-semibold">Итого по позиции:</span> {convert(rowTotal)}
+                                        </p>
                                     </div>
+
                                     <div className="flex flex-row grow">
                                         <Link
                                             href={route('catalog.show', {
@@ -141,15 +151,15 @@ export default function Index({ items }) {
                                             <i className="mr-2 fa-solid fa-person-walking-arrow-loop-left"></i>Изменить выбор услуг
                                         </Link>
                                     </div>
-                                </li>)
-                        }
-                        )}
+                                </li>
+                            )
+                        })}
                     </ul >
+
                     <div className="w-full mt-1 p-6 bg-cyan-200 text-white rounded-xl shadow-lg flex justify-between items-center">
                         <div>
                             <h2 className="text-xl font-semibold text-gray-700 uppercase tracking-widest">К оплате</h2>
-                            <p className="text-3xl font-semibold text-gray-700">
-                                {convert(grandTotal)}</p>
+                            <p className="text-3xl font-semibold text-gray-700">{convert(grandTotal)}</p>
                         </div>
                         <Link href={route('order.create')} className="bg-white text-stone-900 px-8 py-4 rounded-lg font-bold hover:bg-stone-200 transition">
                             Оформить заказ

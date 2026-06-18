@@ -10,6 +10,3 @@
         <span class="font-bold">Ошибка!</span> {{ session('error') }}
     </div>
 @endif
-@push('scripts')
-    @vite(['resources/js/alert.js'])
-@endpush

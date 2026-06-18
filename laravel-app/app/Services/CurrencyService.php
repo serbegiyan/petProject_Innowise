@@ -9,11 +9,11 @@ use Illuminate\Support\Facades\Schema;
 
 class CurrencyService
 {
-    private const CACHE_KEY = 'exchange_rates';
+    private const string CACHE_KEY = 'exchange_rates';
 
-    private ?ExchangeRate $current;
+    private readonly ?ExchangeRate $current;
 
-    private ?ExchangeRate $byn;
+    private readonly ?ExchangeRate $byn;
 
     public function __construct(protected CacheRepository $cache)
     {
@@ -35,7 +35,7 @@ class CurrencyService
         return $this->cache->rememberForever(self::CACHE_KEY, function () {
             try {
                 return ExchangeRate::all();
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 return collect();
             }
         });
@@ -52,7 +52,7 @@ class CurrencyService
         $target = $this->current ?? $this->byn;
         $base = $this->byn;
 
-        if ($target === null || $base === null) {
+        if (! $target instanceof ExchangeRate || ! $base instanceof ExchangeRate) {
             return round($amount, 2);
         }
 
@@ -64,7 +64,7 @@ class CurrencyService
         $target = $this->current ?? $this->byn;
         $converted = $this->convertAmount($amountByn);
 
-        $currencyName = $target !== null ? $target->name : 'BYN';
+        $currencyName = $target instanceof ExchangeRate ? $target->name : 'BYN';
 
         return number_format($converted, 2, '.', ' ').' '.$currencyName;
     }

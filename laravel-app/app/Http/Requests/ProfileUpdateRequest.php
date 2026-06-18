@@ -13,6 +13,7 @@ class ProfileUpdateRequest extends AuthenticatedRequest
      *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
+    #[\Override]
     public function rules(): array
     {
         return [

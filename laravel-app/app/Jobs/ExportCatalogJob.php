@@ -6,11 +6,7 @@ use App\Enums\ExportStatus;
 use App\Mail\CatalogExported;
 use App\Models\Export;
 use App\Models\Product;
-use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
@@ -18,7 +14,7 @@ use Throwable;
 
 class ExportCatalogJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use \Illuminate\Foundation\Queue\Queueable;
 
     public int $tries = 3;
 
@@ -58,7 +54,7 @@ class ExportCatalogJob implements ShouldQueue
             $handle = tmpfile();
 
             $csvHeader = ['ID', 'Name', 'Price', 'Brand'];
-            fputcsv($handle, $csvHeader);
+            fputcsv($handle, $csvHeader, escape: '\\');
 
             Product::query()
                 ->select(['id', 'name', 'price', 'brand'])
@@ -70,7 +66,8 @@ class ExportCatalogJob implements ShouldQueue
                             $product->name,
                             $product->price,
                             $product->brand,
-                        ]);
+                        ],
+                            escape: '\\');
                     }
                 });
 

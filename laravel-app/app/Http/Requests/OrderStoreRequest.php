@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 class OrderStoreRequest extends AuthenticatedRequest
 {
+    #[\Override]
     public function rules(): array
     {
         return [
@@ -16,6 +17,7 @@ class OrderStoreRequest extends AuthenticatedRequest
         ];
     }
 
+    #[\Override]
     public function messages(): array
     {
         return [

@@ -7,9 +7,9 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ProductFilterService
 {
-    private const CATALOG_PER_PAGE = 12;
+    private const int CATALOG_PER_PAGE = 12;
 
-    private const ADMIN_PER_PAGE = 10;
+    private const int ADMIN_PER_PAGE = 10;
 
     /**
      * @param  array{search?: string|null, category?: int|null, category_id?: int|null, sort?: string|null}  $params

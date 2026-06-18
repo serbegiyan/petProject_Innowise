@@ -9,12 +9,11 @@
             changeCurrency: "{{ route('currency.change') }}"
         };
     </script>
-    @vite(['resources/js/admin.js'])
+    @vite(['resources/css/app.css', 'resources/js/admin.js'])
     <title>@yield('title')</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Fonts -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
     <!-- Styles / Scripts -->
 
@@ -25,7 +24,7 @@
     {{-- верхнее меню --}}
 
     <header class="w-full bg-stone-300 h-14.5 flex flex-row justify-between">
-        <img src="/images/logo.jpg" className="w-10 rounded-full" />
+        <img src="/images/logo.jpg" class="w-10 rounded-full" />
         <div class=" p-4 ">Вы вошли как {{ auth()->user()->name }}</div>
         <x-search class="" />
         <x-select aria-label="Выбор валюты" class="bg-stone-300 w-max pl-5 pr-8 h-min my-auto rounded" name="rates"

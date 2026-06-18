@@ -10,7 +10,7 @@ class ProductImageService
 {
     public function handle(?UploadedFile $image, ?Product $product = null): ?string
     {
-        if (! $image) {
+        if (! $image instanceof UploadedFile) {
             return $product?->image;
         }
 

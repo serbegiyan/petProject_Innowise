@@ -53,8 +53,6 @@ class ExportTest extends TestCase
             'Файл не был найден на диске S3'
         );
 
-        Mail::assertSent(CatalogExported::class, function (CatalogExported $mail) use ($recipientEmail, $freshExport) {
-            return $mail->hasTo($recipientEmail) && $mail->filePath === $freshExport->file_path;
-        });
+        Mail::assertSent(CatalogExported::class, fn (CatalogExported $mail) => $mail->hasTo($recipientEmail) && $mail->filePath === $freshExport->file_path);
     }
 }

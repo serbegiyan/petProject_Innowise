@@ -9,6 +9,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /** @mixin Order */
 class OrderResource extends JsonResource
 {
+    #[\Override]
     public function toArray(Request $request): array
     {
         return [
@@ -19,9 +20,7 @@ class OrderResource extends JsonResource
             'status_label' => $this->status->label(),
             'status_css' => $this->status->cssClass(),
 
-            'items' => $this->whenLoaded('items', function () {
-                return OrderItemResource::collection($this->items->values());
-            }),
+            'items' => $this->whenLoaded('items', fn () => OrderItemResource::collection($this->items->values())),
             'created_at_display' => $this->created_at->format('d.m.Y H:i'),
         ];
     }

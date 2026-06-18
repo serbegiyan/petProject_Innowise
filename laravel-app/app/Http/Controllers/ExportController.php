@@ -15,7 +15,7 @@ class ExportController extends Controller
 
         $exports = $exportService->transformForIndex($exports);
 
-        return view('pages.export.index', compact('exports'));
+        return view('pages.export.index', ['exports' => $exports]);
     }
 
     public function export()

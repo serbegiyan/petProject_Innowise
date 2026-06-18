@@ -12,6 +12,7 @@ class ServiceRequest extends AdminRequest
      *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
+    #[\Override]
     public function rules(): array
     {
         $serviceId = $this->route('service') ? $this->route('service')->id : null;
@@ -23,6 +24,7 @@ class ServiceRequest extends AdminRequest
         ];
     }
 
+    #[\Override]
     public function messages(): array
     {
         return [

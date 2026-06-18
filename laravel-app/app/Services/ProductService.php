@@ -49,7 +49,7 @@ class ProductService
         }
 
         $product = DB::transaction(function () use ($product, $data, $image, $imagePath, $relationData) {
-            if ($image) {
+            if ($image instanceof UploadedFile) {
                 $data['image'] = $imagePath;
             }
 

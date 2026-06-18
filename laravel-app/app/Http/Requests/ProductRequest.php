@@ -12,6 +12,7 @@ class ProductRequest extends AdminRequest
      *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
+    #[\Override]
     public function rules(): array
     {
         $productId = $this->route('product') ? $this->route('product')->id : null;
@@ -42,6 +43,7 @@ class ProductRequest extends AdminRequest
         ];
     }
 
+    #[\Override]
     public function messages(): array
     {
         return [

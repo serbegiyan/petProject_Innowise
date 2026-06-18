@@ -26,7 +26,7 @@ class UpdateExchangeRatesJobTest extends TestCase
 
     public function test_it_aborts_if_bank_url_is_not_configured(): void
     {
-        config()->set('services.bank.url', null);
+        config()->set('services.bank.url');
 
         Log::shouldReceive('error')->once()->with('URL банка не настроен в конфигурации.');
 
@@ -88,9 +88,7 @@ class UpdateExchangeRatesJobTest extends TestCase
         );
 
         Log::shouldReceive('info')->twice(); // Начало и конец
-        Log::shouldReceive('warning')->once()->withArgs(function ($message) {
-            return str_contains($message, 'Использую дефолтные значения');
-        });
+        Log::shouldReceive('warning')->once()->withArgs(fn ($message) => str_contains((string) $message, 'Использую дефолтные значения'));
 
         $job = new UpdateExchangeRatesJob;
         $job->handle(app(CurrencyService::class));

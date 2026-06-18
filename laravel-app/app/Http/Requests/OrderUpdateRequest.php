@@ -7,6 +7,7 @@ use Illuminate\Validation\Rules\Enum;
 
 class OrderUpdateRequest extends AdminRequest
 {
+    #[\Override]
     public function rules(): array
     {
         return [

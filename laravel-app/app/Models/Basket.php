@@ -18,6 +18,7 @@ class Basket extends Model
 
     protected $fillable = ['user_id', 'product_id', 'quantity', 'services', 'services_key'];
 
+    #[\Override]
     protected static function booted(): void
     {
         static::saving(function (Basket $basket): void {
@@ -64,6 +65,7 @@ class Basket extends Model
         return $this->belongsTo(Product::class);
     }
 
+    #[\Override]
     protected function casts(): array
     {
         return [

@@ -33,6 +33,7 @@ class OrderItem extends Model
         return $this->belongsTo(Order::class);
     }
 
+    #[\Override]
     protected function casts(): array
     {
         return [

@@ -11,6 +11,7 @@ class UserRequest extends AdminRequest
      *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
+    #[\Override]
     public function rules(): array
     {
         $userId = $this->route('user')?->id;
@@ -23,6 +24,7 @@ class UserRequest extends AdminRequest
         ];
     }
 
+    #[\Override]
     public function messages(): array
     {
         return [

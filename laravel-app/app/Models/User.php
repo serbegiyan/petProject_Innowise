@@ -39,6 +39,7 @@ class User extends Authenticatable
     /**
      * Включаем автоматическое приведение поля role к объекту Enum
      */
+    #[\Override]
     protected function casts(): array
     {
         return [

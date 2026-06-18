@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ProductSort;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
@@ -42,6 +43,7 @@ class Product extends Model
         ];
     }
 
+    #[\Override]
     protected function casts(): array
     {
         return [
@@ -52,7 +54,8 @@ class Product extends Model
 
     // Фильтрация
 
-    public function scopeSearch(Builder $query, ?string $search = null): Builder
+    #[Scope]
+    protected function search(Builder $query, ?string $search = null): Builder
     {
         if (blank($search)) {
             return $query;
@@ -66,14 +69,16 @@ class Product extends Model
         return $query->whereFullText('name', $formattedSearch, ['mode' => 'boolean']);
     }
 
-    public function scopeByCategory(Builder $query, ?int $categoryId): Builder
+    #[Scope]
+    protected function byCategory(Builder $query, ?int $categoryId): Builder
     {
         return $query->when($categoryId, function ($q) use ($categoryId): void {
             $q->whereHas('categories', fn ($c) => $c->where('categories.id', $categoryId));
         });
     }
 
-    public function scopeApplySort(Builder $query, ?string $sort): Builder
+    #[Scope]
+    protected function applySort(Builder $query, ?string $sort): Builder
     {
         $sortEnum = ProductSort::tryFrom($sort) ?? ProductSort::DEFAULT;
 
@@ -93,6 +98,7 @@ class Product extends Model
         return SlugOptions::create()->generateSlugsFrom('name')->saveSlugsTo('slug')->doNotGenerateSlugsOnUpdate();
     }
 
+    #[\Override]
     public function getRouteKeyName()
     {
         return 'slug';

@@ -13,6 +13,7 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
     /**
      * Register any application services.
      */
+    #[\Override]
     public function register(): void
     {
         // Telescope::night();
@@ -21,14 +22,12 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 
         $isLocal = $this->app->environment('local');
 
-        Telescope::filter(function (IncomingEntry $entry) use ($isLocal) {
-            return $isLocal ||
-                   $entry->isReportableException() ||
-                   $entry->isFailedRequest() ||
-                   $entry->isFailedJob() ||
-                   $entry->isScheduledTask() ||
-                   $entry->hasMonitoredTag();
-        });
+        Telescope::filter(fn (IncomingEntry $entry) => $isLocal ||
+               $entry->isReportableException() ||
+               $entry->isFailedRequest() ||
+               $entry->isFailedJob() ||
+               $entry->isScheduledTask() ||
+               $entry->hasMonitoredTag());
     }
 
     /**
@@ -54,10 +53,9 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
      *
      * This gate determines who can access Telescope in non-local environments.
      */
+    #[\Override]
     protected function gate(): void
     {
-        Gate::define('viewTelescope', function (?User $user): bool {
-            return $user !== null && $user->isAdmin();
-        });
+        Gate::define('viewTelescope', fn (?User $user): bool => $user instanceof User && $user->isAdmin());
     }
 }

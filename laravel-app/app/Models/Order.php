@@ -28,6 +28,7 @@ class Order extends Model
         'customer_email', 'customer_address',
     ];
 
+    #[\Override]
     protected function casts(): array
     {
         return [
