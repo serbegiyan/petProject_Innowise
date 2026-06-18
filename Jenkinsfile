@@ -10,6 +10,7 @@ pipeline {
     environment {
         PHP_CONTAINER = 'php_fpm_petProject'
         MYSQL_CONTAINER = 'mysql_db_petProject'
+        COMPOSE_FILE = 'docker-compose.yml'
     }
 
     stages {
@@ -25,15 +26,11 @@ pipeline {
         }
 
         stage('Start infrastructure') {
-            stage('Start infrastructure') {
             steps {
-                // Вместо REPO_ROOT явно переходим в папку, где лежит ваш docker-compose.yml
-                // Если он лежит в корне репозитория, то dir("${WORKSPACE}") { ... }
-                dir("${WORKSPACE}") {
+                dir("${env.REPO_ROOT}") {
                     sh '''
                         set -e
-                        # Добавляем флаг -f, чтобы Docker Compose точно знал, какой файл использовать
-                        docker compose -f docker-compose.yml up -d mysql_db redis rabbitmq localstack php
+                        docker compose -f "${COMPOSE_FILE}" up -d mysql_db redis rabbitmq localstack php
 
                         echo "Waiting for MySQL..."
                         for i in $(seq 1 30); do
@@ -75,7 +72,7 @@ pipeline {
                 dir("${env.REPO_ROOT}") {
                     sh '''
                         set -e
-                        docker compose run --rm --no-deps --entrypoint "" node \
+                        docker compose -f "${COMPOSE_FILE}" run --rm --no-deps --entrypoint "" node \
                             sh -c "npm ci && npm run build"
                     '''
                 }
@@ -87,7 +84,7 @@ pipeline {
                 stage('Pint (code style)') {
                     steps {
                         dir("${env.REPO_ROOT}") {
-                            sh "docker exec ${PHP_CONTAINER} composer lint"
+                            sh "docker exec ${env.PHP_CONTAINER} composer lint"
                         }
                     }
                 }
@@ -95,7 +92,7 @@ pipeline {
                 stage('PHPStan') {
                     steps {
                         dir("${env.REPO_ROOT}") {
-                            sh "docker exec ${PHP_CONTAINER} composer analyse"
+                            sh "docker exec ${env.PHP_CONTAINER} composer analyse"
                         }
                     }
                 }
