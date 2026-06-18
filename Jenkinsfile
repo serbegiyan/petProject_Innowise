@@ -138,13 +138,31 @@ pipeline {
 
     post {
         always {
+            // Публикация результатов тестов в интерфейс Дженкинса
             junit allowEmptyResults: true, testResults: 'ci-reports/*.xml'
         }
         success {
             echo 'Pipeline finished successfully.'
+            // Отправляем зеленую метку в GitHub
+            repoStatus('SUCCESS', 'All tests passed!')
         }
         failure {
             echo 'Pipeline failed. Check stage logs above.'
+            // Отправляем красный крестик в GitHub
+            repoStatus('FAILURE', 'Pipeline failed. Check Jenkins logs.')
         }
     }
+}
+
+def repoStatus(String state, String message) {
+    step([
+        $class: 'GitHubCommitStatusSetter',
+        reposSource: [$class: 'ManuallyEnteredRepositorySource', url: 'https://github.com/serbegiyan/petProject_Innowise'],
+        contextSource: [$class: 'ManuallyEnteredCommitStatusContextSource', context: 'Jenkins CI/CD'],
+        errorHandlers: [[$class: 'ChangingBuildStatusErrorHandler', result: 'UNSTABLE']],
+        statusResultSource: [
+            $class: 'ConditionalStatusResultSource',
+            results: [[$class: 'AnyBuildResult', message: message, state: state]]
+        ]
+    ])
 }
