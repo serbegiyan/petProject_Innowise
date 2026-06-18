@@ -155,14 +155,13 @@ pipeline {
 }
 
 def repoStatus(String state, String message) {
-    step([
-        $class: 'GitHubCommitStatusSetter',
-        reposSource: [$class: 'ManuallyEnteredRepositorySource', url: 'https://github.com/serbegiyan/petProject_Innowise'],
-        contextSource: [$class: 'ManuallyEnteredCommitStatusContextSource', context: 'Jenkins CI/CD'],
-        errorHandlers: [[$class: 'ChangingBuildStatusErrorHandler', result: 'UNSTABLE']],
-        statusResultSource: [
-            $class: 'ConditionalStatusResultSource',
-            results: [[$class: 'AnyBuildResult', message: message, state: state]]
-        ]
-    ])
+    withCredentials([string(credentialsId: 'github-token-status', variable: 'TOKEN')]) {
+        sh """
+            curl -X POST \
+              -H "Authorization: token ${TOKEN}" \
+              -H "Accept: application/vnd.github.v3+json" \
+              https://api.github.com/repos/serbegiyan/petProject_Innowise/statuses/${env.GIT_COMMIT} \
+              -d '{"state": "${state.toLowerCase()}", "target_url": "${env.BUILD_URL}", "description": "${message}", "context": "Jenkins CI/CD"}'
+        """
+    }
 }
