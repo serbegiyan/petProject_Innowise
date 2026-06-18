@@ -76,6 +76,7 @@ pipeline {
                 dir("${env.REPO_ROOT}") {
                     sh '''
                         set -e
+                        docker exec ${PHP_CONTAINER} sh -c "grep -q '^TELESCOPE_ENABLED=' .env || echo '\\nTELESCOPE_ENABLED=false' >> .env"
                         docker exec ${PHP_CONTAINER} composer install \
                             --no-interaction \
                             --prefer-dist \
