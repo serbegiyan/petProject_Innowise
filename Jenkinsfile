@@ -155,7 +155,7 @@ pipeline {
 }
 
 def repoStatus(String state, String message) {
-    withCredentials([string(credentialsId: 'github-token-status', variable: 'TOKEN')]) {
+    withCredentials([string(credentialsId: 'github_token', variable: 'TOKEN')]) {
         sh """
             curl -X POST \
               -H "Authorization: token ${TOKEN}" \
