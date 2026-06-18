@@ -25,11 +25,15 @@ pipeline {
         }
 
         stage('Start infrastructure') {
+            stage('Start infrastructure') {
             steps {
-                dir("${env.REPO_ROOT}") {
+                // Вместо REPO_ROOT явно переходим в папку, где лежит ваш docker-compose.yml
+                // Если он лежит в корне репозитория, то dir("${WORKSPACE}") { ... }
+                dir("${WORKSPACE}") {
                     sh '''
                         set -e
-                        docker compose up -d mysql_db redis rabbitmq localstack php
+                        # Добавляем флаг -f, чтобы Docker Compose точно знал, какой файл использовать
+                        docker compose -f docker-compose.yml up -d mysql_db redis rabbitmq localstack php
 
                         echo "Waiting for MySQL..."
                         for i in $(seq 1 30); do

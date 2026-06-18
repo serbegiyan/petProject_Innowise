@@ -1,2 +1,0 @@
-// CI-конфигурация перенесена в корень репозитория: ../Jenkinsfile
-// В Jenkins укажите Script Path: Jenkinsfile (корень petProject), не laravel-app/Jenkinsfile.
