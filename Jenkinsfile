@@ -10,7 +10,7 @@ pipeline {
     environment {
         PHP_CONTAINER = 'php_fpm_petProject'
         MYSQL_CONTAINER = 'mysql_db_petProject'
-        COMPOSE_FILE = 'docker-compose.yml'
+        NODE_CONTAINER = 'node_petProject'
     }
 
     stages {
@@ -30,7 +30,22 @@ pipeline {
                 dir("${env.REPO_ROOT}") {
                     sh '''
                         set -e
-                        docker compose -f "${COMPOSE_FILE}" up -d mysql_db redis rabbitmq localstack php
+
+                        start_container() {
+                            if ! docker inspect "$1" >/dev/null 2>&1; then
+                                echo "Container $1 not found."
+                                echo "Create the stack once from the project root:"
+                                echo "  docker compose up -d"
+                                exit 1
+                            fi
+                            docker start "$1" >/dev/null
+                        }
+
+                        start_container ${MYSQL_CONTAINER}
+                        start_container redis_petProject
+                        start_container rabbitmq
+                        start_container localstack_s3
+                        start_container ${PHP_CONTAINER}
 
                         echo "Waiting for MySQL..."
                         for i in $(seq 1 30); do
@@ -72,8 +87,8 @@ pipeline {
                 dir("${env.REPO_ROOT}") {
                     sh '''
                         set -e
-                        docker compose -f "${COMPOSE_FILE}" run --rm --no-deps --entrypoint "" node \
-                            sh -c "npm ci && npm run build"
+                        docker start ${NODE_CONTAINER} >/dev/null
+                        docker exec ${NODE_CONTAINER} sh -c "npm ci && npm run build"
                     '''
                 }
             }
