@@ -18,22 +18,24 @@
                     <p class="w-1/3">{{ $order->id }}</p>
                     <p class="w-1/3">{{ $order->created_at }}</p>
                     <p class="w-1/3">{{ Number::format($order->total_price, precision: 2, locale: 'ru') }} BYN</p>
-                    <p class="w-1/3"><span
-                            class="badge {{ $order->status->cssClass() }} py-1 px-2 rounded-lg">{{ $order->status->label() }}</span>
+                    <p class="w-1/3">
+                        <span
+                            class="badge {{ $order->status->cssClass() }} py-1 px-2 rounded-lg">{{ $order->status->label() }}
+                        </span>
                     </p>
-                    <div class="flex flex-row">
                 </a>
-                <a class="ml-4 text-blue-600 hover:text-blue-800" title="Редактировать"
-                    href="{{ route('admin.order.edit', $order) }}">
-                    <i class="fa-regular fa-pen-to-square"></i>
-                </a>
-                <form action="{{ route('admin.order.destroy', $order) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button title="Удалить" type="submit" class="ml-4 text-red-500 hover:text-red-700 cursor-pointer">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </button>
-                </form>
+                <div class="flex flex-row">
+                    <a class="ml-4 text-blue-600 hover:text-blue-800" title="Редактировать"
+                        href="{{ route('admin.order.edit', $order) }}">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </a>
+                    <form action="{{ route('admin.order.destroy', $order) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button title="Удалить" type="submit" class="ml-4 text-red-500 hover:text-red-700 cursor-pointer">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </form>
                 </div>
             </li>
         @endforeach

@@ -7,6 +7,7 @@ use App\Mail\CatalogExported;
 use App\Models\Export;
 use App\Models\Product;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
@@ -14,7 +15,7 @@ use Throwable;
 
 class ExportCatalogJob implements ShouldQueue
 {
-    use \Illuminate\Foundation\Queue\Queueable;
+    use Queueable;
 
     public int $tries = 3;
 

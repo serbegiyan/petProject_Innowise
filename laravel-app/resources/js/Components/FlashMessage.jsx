@@ -17,7 +17,7 @@ export default function FlashMessage() {
     if (!visible) return null;
 
     return (
-        <div className="fixed w-fit ml-10 z-50 animate-bounce-in">
+        <div className="fixed top-4 left-4 transform animate-[slideIn_0.2s_ease-out_forwards] bg-white shadow-xl border-l-4 border-green-500 p-3 rounded flex items-center space-x-3">
             {flash.success && (
                 <div className="bg-green-500 mx-auto text-white px-6 py-3 rounded-lg shadow-lg border border-green-600">
                     ✅ {flash.success}

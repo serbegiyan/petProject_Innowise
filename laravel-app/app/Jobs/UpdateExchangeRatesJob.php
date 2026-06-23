@@ -5,12 +5,13 @@ namespace App\Jobs;
 use App\Models\ExchangeRate;
 use App\Services\CurrencyService;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class UpdateExchangeRatesJob implements ShouldQueue
 {
-    use \Illuminate\Foundation\Queue\Queueable;
+    use Queueable;
 
     public function handle(CurrencyService $currencyService): void
     {

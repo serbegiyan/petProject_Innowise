@@ -18,7 +18,7 @@ Route::get('/catalog/{product:slug}', [CatalogController::class, 'show'])->name(
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
 
 Route::post('/currency/change', [CurrencyController::class, 'change'])
-    ->middleware(['web', 'throttle:5,1'])
+    ->middleware(['throttle:5,1'])
     ->name('currency.change');
 
 Route::get('/dashboard', [OrderController::class, 'index'])
