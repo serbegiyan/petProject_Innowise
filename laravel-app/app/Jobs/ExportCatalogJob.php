@@ -75,6 +75,10 @@ class ExportCatalogJob implements ShouldQueue
             rewind($handle);
 
             Storage::disk('s3')->writeStream($export->file_path, $handle);
+
+            $stats = fstat($handle);
+            $fileSize = $stats['size'] ?? 0;
+
             fclose($handle);
 
             Mail::to($recipient)
@@ -82,9 +86,8 @@ class ExportCatalogJob implements ShouldQueue
 
             $export->update([
                 'status' => ExportStatus::COMPLETED,
+                'size' => $fileSize,
             ]);
-
-            Log::info("Export ID {$this->exportId} completed successfully.");
 
         } catch (Throwable $e) {
             $this->markAsFailed($export, $e->getMessage());

@@ -53,7 +53,7 @@ class HandleInertiaRequests extends Middleware
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
-            'is_Admin' => $user->isAdmin(),
+            'is_admin' => $user->isAdmin(),
             'basket_count' => (int) $user->baskets_count,
         ];
     }

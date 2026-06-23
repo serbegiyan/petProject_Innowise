@@ -16,8 +16,8 @@
         @enderror
 
         <x-label for="role">Выберите роль пользователя</x-label>
-        <x-select id="role" name="role" :options="$roles" :selected="old('role', $user->role ?? null)">
-            {{ $user->role_label }}
+        <x-select id="role" name="role" :options="$roles" :selected="old('role', $user->role?->value)">
+            -- Выберите роль --
         </x-select>
 
         <x-label for="email">Email</x-label>

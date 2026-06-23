@@ -8,7 +8,8 @@
     <form method="POST" action="{{ route('user.store') }}" class="flex flex-col gap-3">
         @csrf
         <x-label for="name">Имя пользователя</x-label>
-        <x-input id="name" placeholder="Введите имя пользователя" name="name" type="text" autocomplete="off" />
+        <x-input id="name" value="{{ old('name') }}" placeholder="Введите имя пользователя" name="name" type="text"
+            autocomplete="off" />
         @error('name')
             <span class="text-red-500 text-sm italic">{{ $message }}</span>
         @enderror
@@ -19,7 +20,8 @@
         </x-select>
 
         <x-label for="email">Email</x-label>
-        <x-input id="email" placeholder="Email" name="email" type="email" autocomplete="off" />
+        <x-input id="email" value="{{ old('email') }}" placeholder="Email" name="email" type="email"
+            autocomplete="off" />
         @error('email')
             <span class="text-red-500 text-sm italic">{{ $message }}</span>
         @enderror

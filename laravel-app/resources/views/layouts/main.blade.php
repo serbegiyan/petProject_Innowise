@@ -19,7 +19,7 @@
     {{-- верхнее меню --}}
 
     <header class="w-full bg-stone-300 h-14.5 flex flex-row justify-between">
-        <img src="/images/logo.jpg" class="w-10 rounded-full" />
+        <img src="/images/logo.jpg" class="w-12 ml-2 my-1 rounded-full" />
         <div class=" p-4 ">Вы вошли как {{ auth()->user()->name }}</div>
         <x-search />
         @if (request()->routeIs('product.*'))

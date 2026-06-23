@@ -22,6 +22,7 @@ class ExportController extends Controller
     {
         $exportRecord = Export::create([
             'status' => ExportStatus::PENDING,
+
             ...Export::newStoragePaths(),
         ]);
 

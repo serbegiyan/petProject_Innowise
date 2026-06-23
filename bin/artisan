@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+CONTAINER="${PHP_CONTAINER:-php_fpm_petProject}"
+
+if ! docker inspect "$CONTAINER" >/dev/null 2>&1; then
+    echo "Error: Docker container '$CONTAINER' is not running." >&2
+    echo "Start the stack from the repo root: docker compose up -d" >&2
+    exit 1
+fi
+
+exec docker exec "$CONTAINER" php /var/www/html/artisan "$@"

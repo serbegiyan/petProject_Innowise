@@ -2,21 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserRole;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use App\Services\UserService;
 
 class UserController extends Controller
 {
-    private array $roles = [
-        [
-            'id' => 'user',
-            'name' => 'Пользователь',
-        ],
-        [
-            'id' => 'admin',
-            'name' => 'Администратор',
-        ],
-    ];
+    public function __construct(
+        protected UserService $userService
+    ) {}
 
     public function index()
     {
@@ -32,14 +27,14 @@ class UserController extends Controller
 
     public function create()
     {
-        $roles = collect($this->roles)->map(fn ($role) => (object) $role);
+        $roles = $this->userService->getRolesForSelect();
 
         return view('pages.user.create', ['roles' => $roles]);
     }
 
     public function edit(User $user)
     {
-        $roles = collect($this->roles)->map(fn ($role) => (object) $role);
+        $roles = $this->userService->getRolesForSelect();
 
         return view('pages.user.edit', ['user' => $user, 'roles' => $roles]);
     }
@@ -50,6 +45,10 @@ class UserController extends Controller
 
         if (empty($data['password'])) {
             unset($data['password']);
+        }
+
+        if (isset($data['role'])) {
+            $data['role'] = UserRole::from($data['role']);
         }
 
         $user->update($data);

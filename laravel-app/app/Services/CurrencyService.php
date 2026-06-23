@@ -50,13 +50,12 @@ class CurrencyService
     {
         $amount = (float) $amountByn;
         $target = $this->current ?? $this->byn;
-        $base = $this->byn;
 
-        if (! $target instanceof ExchangeRate || ! $base instanceof ExchangeRate) {
+        if (! $target instanceof ExchangeRate) {
             return round($amount, 2);
         }
 
-        return $base->convertAmountTo($target->name, $amount);
+        return ExchangeRate::convertFromByn($amount, $target);
     }
 
     public function format(float|string $amountByn): string

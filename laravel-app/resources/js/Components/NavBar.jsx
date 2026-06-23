@@ -25,7 +25,7 @@ export default function NavBar() {
                     </span>
                 )}
             </NavLink>
-            {auth.user && auth.user.is_Admin &&
+            {auth.user && auth.user.is_admin &&
                 <>
                     <a
                         href={route('admin.main')}

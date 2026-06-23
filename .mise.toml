@@ -1,0 +1,4 @@
+# PHP 8.5 runs in Docker (php_fpm_petProject). bin/ proxies CLI to the container.
+[env]
+_.path = ["{{config_root}}/bin"]
+PHP_CONTAINER = "php_fpm_petProject"

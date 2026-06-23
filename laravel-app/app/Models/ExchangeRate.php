@@ -32,6 +32,23 @@ class ExchangeRate extends Model
     }
 
     /**
+     * Конвертирует сумму, уже выраженную в BYN, в целевую валюту.
+     * Курс хранится как BYN за 1 единицу валюты (unit_rate = rate / scale).
+     */
+    public static function convertFromByn(float $amountByn, self $target): float
+    {
+        if (strcasecmp($target->name, 'BYN') === 0) {
+            return round($amountByn, 2);
+        }
+
+        if ($target->unit_rate <= 0) {
+            return 0.0;
+        }
+
+        return round($amountByn / $target->unit_rate, 2);
+    }
+
+    /**
      * Конвертирует сумму из валюты этой записи ($this->name) в целевую валюту.
      * Курс хранится как BYN за 1 единицу валюты
      */

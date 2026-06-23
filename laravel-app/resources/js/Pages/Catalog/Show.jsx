@@ -11,6 +11,8 @@ export default function Show({ product, preSelectedIds, edit_cart_id, filters, c
         preSelectedIds ? preSelectedIds.map(id => Number(id)) : []
     );
 
+    const [error, setError] = useState(null);
+
     const { selectedCurrency, setCurrency, convert, currencies } = useCurrency();
 
     const isInCart = useMemo(() => {
@@ -44,7 +46,8 @@ export default function Show({ product, preSelectedIds, edit_cart_id, filters, c
     }
 
     function handleBasket() {
-        // Формируем массив объектов услуг на основе выбранных ID
+        setError(null);
+
         const formattedServices = productServices
             .filter(service => selectedServices.includes(service.id))
             .map(service => ({
@@ -60,6 +63,10 @@ export default function Show({ product, preSelectedIds, edit_cart_id, filters, c
             edit_cart_id: edit_cart_id
         }, {
             preserveScroll: true,
+            onError: (errors) => {
+                const errorMessage = errors.quantity || errors.services || errors.message || 'Ошибка при добавлении в корзину.';
+                setError(errorMessage);
+            }
         });
     }
 
@@ -137,12 +144,20 @@ export default function Show({ product, preSelectedIds, edit_cart_id, filters, c
                                 Перейти в корзину
                             </Link>
                         ) : (
-                            <button
-                                onClick={handleBasket}
-                                className="bg-blue-600 text-white hover:bg-blue-700 w-fit px-4 py-2 rounded mt-3"
-                            >
-                                {edit_cart_id ? 'Обновить в корзине' : 'Добавить в корзину'}
-                            </button>
+                            <>
+                                <button
+                                    onClick={handleBasket}
+                                    className="bg-blue-600 text-white hover:bg-blue-700 w-fit px-4 py-2 rounded mt-3"
+                                >
+                                    {edit_cart_id ? 'Обновить в корзине' : 'Добавить в корзину'}
+                                </button>
+
+                                {error && (
+                                    <div className="text-red-500 text-sm max-w-[200px] text-center mt-2 font-medium">
+                                        {error}
+                                    </div>
+                                )}
+                            </>
                         )}
                     </div>
                 </div>
