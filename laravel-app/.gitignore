@@ -20,7 +20,6 @@
 /storage/*.key
 /storage/pail
 /tests/_reports/
-/.localstack_data/
 /vendor
 Homestead.json
 Homestead.yaml
